@@ -1,0 +1,316 @@
+.startup-screen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+}
+
+.startup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-primary);
+  -webkit-app-region: drag;
+}
+
+.window-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.window-control {
+  width: 32px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+  -webkit-app-region: no-drag;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.window-control:hover {
+  background: var(--bg-hover);
+}
+
+.window-control.close:hover {
+  background: var(--accent-red);
+  color: white;
+}
+
+.theme-toggle {
+  -webkit-app-region: no-drag;
+}
+
+.theme-btn {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.startup-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.logo-icon {
+  font-size: 48px;
+  background: var(--accent-blue);
+  color: white;
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-medium);
+}
+
+.logo-text {
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.logo-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin: 8px 0 4px;
+}
+
+.version {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.mode-selection {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.mode-selection h2 {
+  font-size: 24px;
+  margin-bottom: 24px;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.mode-cards {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.mode-card {
+  flex: 1;
+  min-width: 280px;
+  max-width: 360px;
+  padding: 32px 24px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-primary);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-align: left;
+}
+
+.mode-card:hover {
+  border-color: var(--accent-blue);
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+.mode-card.arduino-card:hover {
+  border-color: #00979d;
+}
+
+.mode-card.platformio-card:hover {
+  border-color: #ff7043;
+}
+
+.mode-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.mode-card h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.mode-card p {
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.mode-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mode-card li {
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 4px 0;
+  position: relative;
+  padding-left: 16px;
+}
+
+.mode-card li::before {
+  content: '•';
+  color: var(--accent-blue);
+  position: absolute;
+  left: 0;
+}
+
+.recent-projects {
+  width: 100%;
+  max-width: 800px;
+}
+
+.recent-projects h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.project-list {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.project-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-primary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.project-item:last-child {
+  border-bottom: none;
+}
+
+.project-item:hover {
+  background: var(--bg-hover);
+}
+
+.project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.project-name {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.project-path {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.project-mode {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.project-mode.arduino {
+  background: #00979d20;
+  color: #00979d;
+}
+
+.project-mode.platformio {
+  background: #ff704320;
+  color: #ff7043;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .startup-content {
+    padding: 20px 16px;
+    gap: 24px;
+  }
+  
+  .logo-text {
+    font-size: 32px;
+  }
+  
+  .logo-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 36px;
+  }
+  
+  .mode-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .mode-card {
+    max-width: none;
+    width: 100%;
+  }
+  
+  .quick-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .quick-actions button {
+    width: 100%;
+  }
+}

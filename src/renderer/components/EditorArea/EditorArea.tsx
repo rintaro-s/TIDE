@@ -1,0 +1,219 @@
+import React, { useState, useEffect } from 'react';
+import { useApp } from '../../contexts/AppContext';
+// import MonacoEditor from '../MonacoEditor/MonacoEditor';
+import './EditorArea.css';
+
+interface FileContent {
+  [filePath: string]: string;
+}
+
+const EditorArea: React.FC = () => {
+  const { state, closeFile, setActiveFile } = useApp();
+  const [fileContents, setFileContents] = useState<FileContent>({});
+
+  // ファイルが開かれたら実際の内容をロード
+  useEffect(() => {
+    const loadFileContents = async () => {
+      const newContents: FileContent = {};
+      
+      for (const file of state.openFiles) {
+        if (!fileContents[file.path]) {
+          try {
+            const content = await window.electronAPI.fs.readFile(file.path);
+            newContents[file.path] = content;
+          } catch (error) {
+            console.error('Failed to load file:', file.path, error);
+            newContents[file.path] = file.content || '';
+          }
+        }
+      }
+      
+      if (Object.keys(newContents).length > 0) {
+        setFileContents(prev => ({ ...prev, ...newContents }));
+      }
+    };
+    
+    loadFileContents();
+  }, [state.openFiles]);
+
+  const getFileLanguage = (filePath: string): string => {
+    const ext = filePath.split('.').pop()?.toLowerCase();
+    switch (ext) {
+      case 'cpp': case 'c': case 'cc': case 'ino': return 'cpp';
+      case 'h': case 'hpp': return 'cpp';
+      case 'md': return 'markdown';
+      case 'json': return 'json';
+      case 'ini': return 'ini';
+      case 'txt': return 'plaintext';
+      default: return 'plaintext';
+    }
+  };
+
+  const getFileIcon = (filePath: string) => {
+    const ext = filePath.split('.').pop()?.toLowerCase();
+    switch (ext) {
+      case 'cpp': case 'c': case 'cc': return '⚡';
+      case 'h': case 'hpp': return '📋';
+      case 'ino': return '🔧';
+      case 'json': return '⚙️';
+      case 'md': return '📖';
+      case 'txt': return '📄';
+      case 'ini': return '⚙️';
+      default: return '📄';
+    }
+  };
+
+  const handleFileContentChange = async (filePath: string, content: string) => {
+    setFileContents(prev => ({
+      ...prev,
+      [filePath]: content
+    }));
+    
+    // ファイルを保存（自動保存）
+    try {
+      await window.electronAPI.fs.writeFile(filePath, content);
+    } catch (error) {
+      console.error('Failed to save file:', error);
+    }
+  };
+
+  const handleNewFile = async () => {
+    try {
+      const result = await window.electronAPI?.dialog.showSaveDialog({
+        title: '新規ファイルを保存',
+        defaultPath: 'untitled.cpp',
+        filters: [
+          { name: 'C++ Files', extensions: ['cpp', 'c', 'h', 'hpp'] },
+          { name: 'Arduino Sketch', extensions: ['ino'] },
+          { name: 'All Files', extensions: ['*'] }
+        ]
+      });
+
+      if (result && !result.canceled && result.filePath) {
+        const content = '// New file\n\nvoid setup() {\n  \n}\n\nvoid loop() {\n  \n}\n';
+        await window.electronAPI?.fs.writeFile(result.filePath, content);
+        console.log('File created:', result.filePath);
+        // TODO: ファイルを開く処理
+      }
+    } catch (error) {
+      console.error('Failed to create file:', error);
+    }
+  };
+
+  const handleOpenFolder = async () => {
+    try {
+      const result = await window.electronAPI?.dialog.showOpenDialog({
+        title: 'フォルダを開く',
+        properties: ['openDirectory']
+      });
+
+      if (result && !result.canceled && result.filePaths.length > 0) {
+        console.log('Opening folder:', result.filePaths[0]);
+        // TODO: フォルダ内のファイルをロード
+      }
+    } catch (error) {
+      console.error('Failed to open folder:', error);
+    }
+  };
+
+  if (state.openFiles.length === 0) {
+    return (
+      <div className="editor-area">
+        <div className="editor-container">
+          <div className="editor-welcome">
+            <div className="welcome-content">
+              <div className="welcome-icon">⚡</div>
+              <h2>Tova IDEへようこそ</h2>
+              <p>Arduinoとプラットフォーム開発のための統合環境</p>
+              
+              <div className="quick-actions">
+                <button className="btn btn-primary" onClick={handleNewFile}>
+                  New File
+                </button>
+                <button className="btn" onClick={handleOpenFolder}>
+                  Open Folder
+                </button>
+              </div>
+              
+              <div className="shortcuts">
+                <h3>ショートカットキー</h3>
+                <div className="shortcut-list">
+                  <div className="shortcut-item">
+                    <span className="shortcut-key">Ctrl+N</span>
+                    <span className="shortcut-desc">新規ファイル</span>
+                  </div>
+                  <div className="shortcut-item">
+                    <span className="shortcut-key">Ctrl+O</span>
+                    <span className="shortcut-desc">フォルダを開く</span>
+                  </div>
+                  <div className="shortcut-item">
+                    <span className="shortcut-key">Ctrl+S</span>
+                    <span className="shortcut-desc">保存</span>
+                  </div>
+                  <div className="shortcut-item">
+                    <span className="shortcut-key">F7</span>
+                    <span className="shortcut-desc">ビルド</span>
+                  </div>
+                  <div className="shortcut-item">
+                    <span className="shortcut-key">F5</span>
+                    <span className="shortcut-desc">アップロード</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="editor-area">
+      <div className="editor-tabs">
+        {state.openFiles.map(file => {
+          const fileName = file.name;
+          const isActive = state.activeFile === file.id;
+          
+          return (
+            <div 
+              key={file.id}
+              className={`editor-tab ${isActive ? 'active' : ''}`}
+              onClick={() => setActiveFile(file.id)}
+            >
+              <span className="tab-icon">{getFileIcon(file.path)}</span>
+              <span className="tab-name">{fileName}</span>
+              <button 
+                className="tab-close" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeFile(file.id);
+                }}
+              >
+                ×
+              </button>
+            </div>
+          );
+        })}
+        <button className="new-tab-btn" onClick={handleNewFile}>+</button>
+      </div>
+      
+      <div className="editor-container">
+        {state.activeFile && (
+          <div className="simple-editor">
+            <div className="editor-header">
+              <span className="editing-file">{state.activeFile}</span>
+            </div>
+            <textarea
+              value={fileContents[state.activeFile] || ''}
+              onChange={(e) => handleFileContentChange(state.activeFile!, e.target.value)}
+              className="text-editor"
+              placeholder="ファイルの内容がここに表示されます..."
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default EditorArea;

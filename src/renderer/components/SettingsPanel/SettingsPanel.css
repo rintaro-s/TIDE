@@ -1,0 +1,338 @@
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+}
+
+.settings-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--secondary-background);
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.settings-content {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.settings-tabs {
+  width: 200px;
+  background: var(--secondary-background);
+  border-right: 1px solid var(--border-color);
+  padding: 12px 0;
+}
+
+.settings-tab {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.settings-tab:hover {
+  background: var(--hover-background);
+}
+
+.settings-tab.active {
+  background: var(--accent-color);
+  color: var(--accent-text-color);
+}
+
+.tab-icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.tab-name {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.settings-main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.settings-section {
+  max-width: 600px;
+}
+
+.settings-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.setting-item label {
+  min-width: 120px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color-secondary);
+}
+
+.setting-item input,
+.setting-item select,
+.setting-item textarea {
+  background: var(--input-background);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.setting-item input:focus,
+.setting-item select:focus,
+.setting-item textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-color-alpha);
+}
+
+.setting-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.setting-item input[type="number"] {
+  width: 80px;
+}
+
+.setting-item select {
+  min-width: 120px;
+}
+
+.setting-item textarea {
+  min-width: 300px;
+  resize: vertical;
+}
+
+/* Theme Selector */
+.theme-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.theme-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-option:hover {
+  border-color: var(--accent-color-alpha);
+}
+
+.theme-option.active {
+  border-color: var(--accent-color);
+  background: var(--accent-color-alpha);
+}
+
+.theme-preview {
+  width: 120px;
+  height: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  position: relative;
+  border: 1px solid var(--border-color);
+}
+
+.theme-preview-dark {
+  background: #1e1e1e;
+}
+
+.theme-preview-light {
+  background: #ffffff;
+}
+
+.theme-preview-modern-blue {
+  background: #0d1421;
+}
+
+.preview-header {
+  height: 20px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-preview-dark .preview-header {
+  background: #2d2d30;
+}
+
+.theme-preview-light .preview-header {
+  background: #f3f3f3;
+}
+
+.theme-preview-modern-blue .preview-header {
+  background: #1e293b;
+}
+
+.preview-sidebar {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  width: 30px;
+  height: calc(100% - 20px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-preview-dark .preview-sidebar {
+  background: #252526;
+}
+
+.theme-preview-light .preview-sidebar {
+  background: #f8f8f8;
+}
+
+.theme-preview-modern-blue .preview-sidebar {
+  background: #1e2937;
+}
+
+.preview-content {
+  position: absolute;
+  left: 30px;
+  top: 20px;
+  right: 0;
+  height: calc(100% - 20px);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.theme-preview-dark .preview-content {
+  background: #1e1e1e;
+}
+
+.theme-preview-light .preview-content {
+  background: #ffffff;
+}
+
+.theme-preview-modern-blue .preview-content {
+  background: #0f172a;
+}
+
+.theme-name {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Keybind Settings */
+.keybind-list {
+  margin-bottom: 16px;
+}
+
+.keybind-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.action-name {
+  min-width: 120px;
+  font-size: 13px;
+  color: var(--text-color-secondary);
+}
+
+.keybind-item input {
+  flex: 1;
+  max-width: 200px;
+}
+
+.add-keybind-btn {
+  background: var(--accent-color);
+  color: var(--accent-text-color);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.add-keybind-btn:hover {
+  background: var(--accent-hover-color);
+}
+
+/* Pin Configurator */
+.pin-configurator {
+  margin-top: 16px;
+}
+
+.board-selector {
+  margin-bottom: 20px;
+}
+
+.pin-assignments h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.pin-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pin-item label {
+  font-size: 12px;
+  font-weight: 500;
+  min-width: auto;
+}
+
+.pin-item select {
+  font-size: 12px;
+  padding: 4px 6px;
+}
+
+/* Scrollbar Styling */
+.settings-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.settings-main::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+.settings-main::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.settings-main::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}

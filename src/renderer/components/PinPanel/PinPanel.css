@@ -1,0 +1,231 @@
+.pin-panel {
+  padding: 16px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.pin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.pin-header h4 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-pin-btn {
+  background: var(--accent-color);
+  color: var(--accent-text-color);
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.add-pin-btn:hover {
+  background: var(--accent-color-hover);
+  transform: scale(1.1);
+}
+
+.add-pin-form {
+  background: var(--secondary-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.pin-input,
+.pin-select {
+  width: 100%;
+  background: var(--input-background);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 8px;
+  color: var(--text-color);
+  font-size: 13px;
+}
+
+.pin-input:focus,
+.pin-select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.pin-form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.pin-save-btn,
+.pin-cancel-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pin-save-btn {
+  background: var(--accent-color);
+  color: var(--accent-text-color);
+  border: none;
+}
+
+.pin-save-btn:hover {
+  background: var(--accent-color-hover);
+}
+
+.pin-cancel-btn {
+  background: none;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.pin-cancel-btn:hover {
+  background: var(--hover-background);
+}
+
+.pin-list {
+  margin-bottom: 24px;
+}
+
+.pin-empty {
+  text-align: center;
+  color: var(--text-color-secondary);
+  font-size: 13px;
+  padding: 32px 16px;
+}
+
+.pin-empty p {
+  margin: 8px 0;
+}
+
+.pin-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.pin-item:hover {
+  background: var(--hover-background);
+}
+
+.pin-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 12px;
+}
+
+.pin-icon {
+  font-size: 18px;
+  min-width: 24px;
+}
+
+.pin-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pin-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 2px;
+}
+
+.pin-type {
+  font-size: 11px;
+  color: var(--text-color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pin-description {
+  font-size: 12px;
+  color: var(--text-color-secondary);
+  margin-top: 2px;
+}
+
+.pin-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-color-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  transition: all 0.15s ease;
+  opacity: 0;
+}
+
+.pin-item:hover .pin-remove-btn {
+  opacity: 1;
+}
+
+.pin-remove-btn:hover {
+  background: rgba(218, 54, 51, 0.2);
+  color: #da3633;
+}
+
+.pin-quick-actions {
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+}
+
+.pin-quick-actions h5 {
+  margin: 0 0 12px 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quick-action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.quick-action-btn {
+  background: var(--secondary-background);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  text-align: center;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-action-btn:hover {
+  background: var(--hover-background);
+  border-color: var(--accent-color);
+}
