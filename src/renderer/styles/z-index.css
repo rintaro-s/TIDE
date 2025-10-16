@@ -1,0 +1,33 @@
+/* Z-Index Hierarchy - グローバル定義 */
+:root {
+  --z-base: 0;
+  --z-background: 0;
+  --z-content: 1;
+  --z-sidebar: 10;
+  --z-bottom-panel: 10;
+  --z-resizer: 15;
+  --z-titlebar: 100;
+  --z-context-menu: 1000;
+  --z-modal-backdrop: 5000;
+  --z-modal: 5001;
+  --z-progress: 9000;
+  --z-toast: 10000;
+}
+
+/* 適用 */
+.sidebar { z-index: var(--z-sidebar) !important; }
+.bottom-panel { z-index: var(--z-bottom-panel) !important; }
+.title-bar { z-index: var(--z-titlebar) !important; }
+.context-menu { z-index: var(--z-context-menu) !important; }
+.modal-overlay { z-index: var(--z-modal-backdrop) !important; }
+.modal-content { z-index: var(--z-modal) !important; }
+.progress-indicator { z-index: var(--z-progress) !important; }
+.toast-container { z-index: var(--z-toast) !important; }
+
+/* Animeテーマの背景エフェクトは最背面 */
+[data-theme="anime"]::before,
+[data-theme="anime"]::after,
+[data-theme="anime"] .sidebar::before,
+[data-theme="anime"] .file-explorer::before {
+  z-index: var(--z-background) !important;
+}

@@ -260,7 +260,17 @@ class TovaIDE {
         });
         electron_1.ipcMain.handle('fs:stat', async (_, path) => {
             const { stat } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
-            return await stat(path);
+            const stats = await stat(path);
+            // Serialize stats object with methods as properties
+            return {
+                isFile: stats.isFile(),
+                isDirectory: stats.isDirectory(),
+                isSymbolicLink: stats.isSymbolicLink(),
+                size: stats.size,
+                mtime: stats.mtime,
+                ctime: stats.ctime,
+                atime: stats.atime
+            };
         });
         electron_1.ipcMain.handle('fs:rename', async (_, oldPath, newPath) => {
             const { rename } = await Promise.resolve().then(() => __importStar(require('fs/promises')));

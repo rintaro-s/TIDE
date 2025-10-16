@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 type DevMode = 'arduino' | 'platformio';
 
@@ -54,6 +54,20 @@ interface AppSettings {
     githubToken?: string;
     libraryIndexUrl?: string;
     platformioRegistryUrl?: string;
+  };
+  arduino?: {
+    board?: string;
+    port?: string;
+    programmer?: string;
+    baudrate?: number;
+    verifyAfterUpload?: boolean;
+  };
+  platformio?: {
+    environment?: string;
+    port?: string;
+    uploadProtocol?: string;
+    uploadSpeed?: number;
+    uploadFlags?: string[];
   };
 }
 
@@ -129,18 +143,97 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       },
       api: {
         githubToken: '',
-        libraryIndexUrl: 'https://downloads.arduino.cc/libraries/library_index.json',
-        platformioRegistryUrl: 'https://registry.platformio.org',
+        libraryIndexUrl: '',
+        platformioRegistryUrl: '',
+      },
+      arduino: {
+        board: '',
+        port: '',
+        programmer: 'arduino',
+        baudrate: 115200,
+        verifyAfterUpload: true,
+      },
+      platformio: {
+        environment: 'default',
+        port: '',
+        uploadProtocol: 'serial',
+        uploadSpeed: 921600,
+        uploadFlags: [],
       },
     },
   });
+
+  // Load settings from electron store on mount
+  useEffect(() => {
+    const loadSettings = async () => {
+      if (window.electronAPI) {
+        try {
+          const savedSettings = await window.electronAPI.store.get('appSettings');
+          if (savedSettings) {
+            setState(prev => ({
+              ...prev,
+              settings: { ...prev.settings, ...savedSettings }
+            }));
+          }
+          
+          const savedMode = await window.electronAPI.store.get('devMode');
+          if (savedMode) {
+            setState(prev => ({ ...prev, mode: savedMode }));
+          }
+        } catch (error) {
+          console.error('Failed to load settings:', error);
+        }
+      }
+    };
+    
+    loadSettings();
+  }, []);
+
+  // Save settings to electron store whenever they change
+  useEffect(() => {
+    if (window.electronAPI) {
+      window.electronAPI.store.set('appSettings', state.settings);
+    }
+  }, [state.settings]);
+
+  // Save mode whenever it changes
+  useEffect(() => {
+    if (window.electronAPI && state.mode) {
+      window.electronAPI.store.set('devMode', state.mode);
+    }
+  }, [state.mode]);
 
   const setMode = (mode: DevMode) => {
     setState(prev => ({ ...prev, mode }));
   };
 
-  const setCurrentProject = (project: Project | null) => {
-    setState(prev => ({ ...prev, currentProject: project }));
+  const setCurrentProject = async (project: Project | null) => {
+    if (project) {
+      // プロジェクトタイプを自動判定
+      try {
+        const platformioIni = `${project.path}/platformio.ini`;
+        const hasPlatformioIni = await window.electronAPI.fs.exists(platformioIni);
+        
+        if (hasPlatformioIni) {
+          project.type = 'platformio';
+        } else {
+          // .ino ファイルを検索
+          const files = await window.electronAPI.fs.readdir(project.path);
+          const hasInoFile = files.some((f: string) => f.endsWith('.ino'));
+          project.type = hasInoFile ? 'arduino' : 'platformio';
+        }
+      } catch (error) {
+        console.error('Failed to detect project type:', error);
+        // デフォルトはArduino
+        project.type = 'arduino';
+      }
+    }
+    
+    setState(prev => ({ 
+      ...prev, 
+      currentProject: project,
+      mode: project?.type || null
+    }));
     
     // プロジェクトが設定されたときに最近のプロジェクトに追加
     if (project) {

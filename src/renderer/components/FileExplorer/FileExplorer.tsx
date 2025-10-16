@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useApp } from '../../contexts/AppContext';
+import { logger, toast } from '../../utils/logger';
 import './FileExplorer.css';
 
 interface FileNode {
@@ -15,8 +16,10 @@ interface FileExplorerProps {
 }
 
 const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
-  const { openFile, state } = useApp();
+  const { openFile, state, updateFileContent } = useApp();
   const [fileTree, setFileTree] = useState<FileNode[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [contextMenu, setContextMenu] = useState<{
     visible: boolean;
     x: number;
@@ -24,42 +27,69 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
     node: FileNode | null;
   }>({ visible: false, x: 0, y: 0, node: null });
 
-  const loadDirectory = async (path?: string) => {
+  const loadDirectory = useCallback(async (path?: string) => {
     const targetPath = path || state.currentProject?.path;
+    
     if (!targetPath) {
+      logger.info('No project path, clearing file tree');
       setFileTree([]);
       return;
     }
 
+    setLoading(true);
+    logger.info('Loading directory', { path: targetPath });
+
     try {
+      // Check if electronAPI is available
+      if (!window.electronAPI?.fs) {
+        throw new Error('Electron API not available');
+      }
+
       const exists = await window.electronAPI.fs.exists(targetPath);
       if (!exists) {
+        logger.error('Directory does not exist', { path: targetPath });
+        toast.error('ディレクトリが見つかりません', targetPath);
         setFileTree([]);
+        setLoading(false);
         return;
       }
 
       const stat = await window.electronAPI.fs.stat(targetPath);
-      if (!stat.isDirectory()) {
+      if (!stat.isDirectory) {
+        logger.error('Path is not a directory', { path: targetPath });
+        toast.error('パスはディレクトリではありません', targetPath);
         setFileTree([]);
+        setLoading(false);
         return;
       }
 
       const files = await window.electronAPI.fs.readdir(targetPath);
+      logger.info('Directory contents loaded', { count: files.length });
+      
       const nodes: FileNode[] = [];
 
       for (const file of files) {
-        if (file.startsWith('.')) continue; // Skip hidden files
+        // Skip hidden files and common build artifacts
+        if (file.startsWith('.') || file === 'node_modules' || file === 'build' || file === 'dist') {
+          continue;
+        }
         
-        const filePath = targetPath + '/' + file;
-        const fileStat = await window.electronAPI.fs.stat(filePath);
+        const filePath = `${targetPath}/${file}`;
         
-        nodes.push({
-          name: file,
-          path: filePath,
-          type: fileStat.isDirectory() ? 'folder' : 'file',
-          children: fileStat.isDirectory() ? [] : undefined,
-          expanded: false
-        });
+        try {
+          const fileStat = await window.electronAPI.fs.stat(filePath);
+          
+          nodes.push({
+            name: file,
+            path: filePath,
+            type: fileStat.isDirectory ? 'folder' : 'file',
+            children: fileStat.isDirectory ? [] : undefined,
+            expanded: false
+          });
+        } catch (err) {
+          logger.error('Failed to stat file', { file, error: err });
+          // Continue with other files
+        }
       }
 
       // Sort: folders first, then files
@@ -70,19 +100,30 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
         return a.name.localeCompare(b.name);
       });
 
+      logger.success('File tree loaded', { nodes: nodes.length });
       setFileTree(nodes);
+      toast.success('プロジェクトを読み込みました', `${nodes.length}個のファイル/フォルダ`);
     } catch (error) {
-      console.error('Failed to load directory:', error);
+      logger.error('Failed to load directory', { error });
+      toast.error('ディレクトリの読み込みに失敗', String(error));
       setFileTree([]);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [state.currentProject?.path]);
 
   useEffect(() => {
+    logger.info('FileExplorer: Project changed, reloading', { 
+      path: state.currentProject?.path,
+      name: state.currentProject?.name 
+    });
     loadDirectory();
-  }, [state.currentProject]);
+  }, [state.currentProject?.path, refreshKey]);
 
   const toggleFolder = async (node: FileNode) => {
     if (node.type !== 'folder') return;
+
+    logger.info('Toggling folder', { name: node.name, expanded: node.expanded });
 
     // フォルダが未展開の場合、子要素をロード
     if (!node.expanded) {
@@ -91,18 +132,23 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
         const children: FileNode[] = [];
 
         for (const file of files) {
-          if (file.startsWith('.')) continue;
+          if (file.startsWith('.') || file === 'node_modules') continue;
           
           const filePath = `${node.path}/${file}`;
-          const fileStat = await window.electronAPI.fs.stat(filePath);
           
-          children.push({
-            name: file,
-            path: filePath,
-            type: fileStat.isDirectory() ? 'folder' : 'file',
-            children: fileStat.isDirectory() ? [] : undefined,
-            expanded: false
-          });
+          try {
+            const fileStat = await window.electronAPI.fs.stat(filePath);
+            
+            children.push({
+              name: file,
+              path: filePath,
+              type: fileStat.isDirectory ? 'folder' : 'file',
+              children: fileStat.isDirectory ? [] : undefined,
+              expanded: false
+            });
+          } catch (err) {
+            logger.error('Failed to stat file in folder', { file, error: err });
+          }
         }
 
         // Sort: folders first, then files
@@ -114,8 +160,10 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
         });
 
         node.children = children;
+        logger.success('Folder contents loaded', { count: children.length });
       } catch (error) {
-        console.error('Failed to load folder:', error);
+        logger.error('Failed to load folder', { error });
+        toast.error('フォルダの読み込みに失敗', node.name);
         return;
       }
     }
@@ -138,9 +186,16 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
 
   const handleFileClick = async (node: FileNode) => {
     if (node.type === 'file') {
+      logger.info('Opening file', { name: node.name, path: node.path });
+      
       try {
         // ファイルの内容を読み込む
         const content = await window.electronAPI.fs.readFile(node.path);
+        
+        logger.success('File content loaded', { 
+          name: node.name, 
+          size: content.length 
+        });
         
         const fileTab = {
           id: node.path,
@@ -149,18 +204,12 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
           content: content,
           isDirty: false
         };
+        
         openFile(fileTab);
+        toast.success('ファイルを開きました', node.name);
       } catch (error) {
-        console.error('Failed to read file:', error);
-        // エラーでも空のファイルとして開く
-        const fileTab = {
-          id: node.path,
-          name: node.name,
-          path: node.path,
-          content: '',
-          isDirty: false
-        };
-        openFile(fileTab);
+        logger.error('Failed to read file', { error, path: node.path });
+        toast.error('ファイルの読み込みに失敗', node.name);
       }
     } else {
       toggleFolder(node);
@@ -182,19 +231,21 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
   };
 
   const handleContextAction = async (action: string) => {
-    if (!contextMenu.node) return;
+    if (!contextMenu.node && action !== 'newFile' && action !== 'newFolder') return;
     
     const node = contextMenu.node;
+    const basePath = state.currentProject?.path || '';
     
-    switch (action) {
-      case 'open':
-        if (node.type === 'file') {
-          await handleFileClick(node);
-        }
-        break;
-        
-      case 'rename':
-        try {
+    try {
+      switch (action) {
+        case 'open':
+          if (node && node.type === 'file') {
+            await handleFileClick(node);
+          }
+          break;
+          
+        case 'rename':
+          if (!node) break;
           const result = await window.electronAPI.dialog.showInputBox({
             title: '名前を変更',
             message: '新しい名前を入力してください:',
@@ -204,83 +255,72 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
           if (result && result !== node.name) {
             const newPath = node.path.replace(node.name, result);
             await window.electronAPI.fs.rename(node.path, newPath);
-            // ファイルツリーを再読み込み
-            window.location.reload();
+            logger.success('File renamed', { from: node.name, to: result });
+            toast.success('名前を変更しました', `${node.name} → ${result}`);
+            setRefreshKey(k => k + 1);
           }
-        } catch (error) {
-          console.error('Failed to rename:', error);
-          alert('名前の変更に失敗しました: ' + error);
-        }
-        break;
-        
-      case 'delete':
-        if (confirm(`"${node.name}" を削除してもよろしいですか？`)) {
-          try {
+          break;
+          
+        case 'delete':
+          if (!node) break;
+          if (confirm(`"${node.name}" を削除してもよろしいですか？`)) {
             if (node.type === 'folder') {
               await window.electronAPI.fs.rmdir(node.path);
             } else {
               await window.electronAPI.fs.unlink(node.path);
             }
-            // ファイルツリーを再読み込み
-            window.location.reload();
-          } catch (error) {
-            console.error('Failed to delete:', error);
-            alert('削除に失敗しました: ' + error);
+            logger.success('File deleted', { name: node.name });
+            toast.success('削除しました', node.name);
+            setRefreshKey(k => k + 1);
           }
-        }
-        break;
-        
-      case 'copy':
-        try {
+          break;
+          
+        case 'copy':
+          if (!node) break;
           await navigator.clipboard.writeText(node.path);
-          console.log('Path copied to clipboard:', node.path);
-        } catch (error) {
-          console.error('Failed to copy path:', error);
-        }
-        break;
-        
-      case 'newFile':
-        try {
-          const parentPath = node.type === 'folder' ? node.path : node.path.substring(0, node.path.lastIndexOf('/'));
-          const result = await window.electronAPI.dialog.showInputBox({
+          logger.info('Path copied to clipboard', { path: node.path });
+          toast.info('パスをコピーしました', node.path);
+          break;
+          
+        case 'newFile':
+          const fileResult = await window.electronAPI.dialog.showInputBox({
             title: '新規ファイル',
             message: 'ファイル名を入力してください:',
-            defaultValue: 'newfile.cpp'
+            defaultValue: 'newfile.ino'
           });
           
-          if (result) {
-            const newFilePath = `${parentPath}/${result}`;
-            await window.electronAPI.fs.writeFile(newFilePath, '');
-            // ファイルツリーを再読み込み
-            window.location.reload();
+          if (fileResult) {
+            const parentPath = node?.type === 'folder' ? node.path : basePath;
+            const newFilePath = `${parentPath}/${fileResult}`;
+            await window.electronAPI.fs.writeFile(newFilePath, '// New file\n');
+            logger.success('File created', { path: newFilePath });
+            toast.success('ファイルを作成しました', fileResult);
+            setRefreshKey(k => k + 1);
           }
-        } catch (error) {
-          console.error('Failed to create file:', error);
-          alert('ファイルの作成に失敗しました: ' + error);
-        }
-        break;
-        
-      case 'newFolder':
-        try {
-          const parentPath = node.type === 'folder' ? node.path : node.path.substring(0, node.path.lastIndexOf('/'));
-          const result = await window.electronAPI.dialog.showInputBox({
+          break;
+          
+        case 'newFolder':
+          const folderResult = await window.electronAPI.dialog.showInputBox({
             title: '新規フォルダ',
             message: 'フォルダ名を入力してください:',
             defaultValue: 'newfolder'
           });
           
-          if (result) {
-            const newFolderPath = `${parentPath}/${result}`;
+          if (folderResult) {
+            const parentPath = node?.type === 'folder' ? node.path : basePath;
+            const newFolderPath = `${parentPath}/${folderResult}`;
             await window.electronAPI.fs.mkdir(newFolderPath);
-            // ファイルツリーを再読み込み
-            window.location.reload();
+            logger.success('Folder created', { path: newFolderPath });
+            toast.success('フォルダを作成しました', folderResult);
+            setRefreshKey(k => k + 1);
           }
-        } catch (error) {
-          console.error('Failed to create folder:', error);
-          alert('フォルダの作成に失敗しました: ' + error);
-        }
-        break;
+          break;
+      }
+    } catch (error) {
+      logger.error('Context action failed', { action, error });
+      toast.error('操作に失敗しました', String(error));
     }
+    
     closeContextMenu();
   };
 
@@ -337,19 +377,54 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
   return (
     <div className="file-explorer">
       <div className="explorer-header">
-        <div className="section-title">エクスプローラー</div>
+        <div className="section-title">Files</div>
         <div className="explorer-actions">
-          <button className="action-btn" title="新規ファイル" onClick={() => handleContextAction('newFile')}>
+          <button 
+            className="action-btn" 
+            title="新規ファイル" 
+            onClick={() => handleContextAction('newFile')}
+            disabled={!state.currentProject}
+          >
             +F
           </button>
-          <button className="action-btn" title="新規フォルダ" onClick={() => handleContextAction('newFolder')}>
+          <button 
+            className="action-btn" 
+            title="新規フォルダ" 
+            onClick={() => handleContextAction('newFolder')}
+            disabled={!state.currentProject}
+          >
             +D
           </button>
-          <button className="action-btn" title="更新" onClick={() => loadDirectory()}>
+          <button 
+            className="action-btn" 
+            title="更新" 
+            onClick={() => setRefreshKey(k => k + 1)}
+            disabled={!state.currentProject || loading}
+          >
             R
           </button>
         </div>
       </div>
+      
+      {loading && (
+        <div className="explorer-loading">
+          <div className="loading-spinner"></div>
+          <p>読み込み中...</p>
+        </div>
+      )}
+      
+      {!loading && !state.currentProject && (
+        <div className="explorer-empty">
+          <p>プロジェクトが開かれていません</p>
+          <p className="hint">プロジェクトを開いてください</p>
+        </div>
+      )}
+      
+      {!loading && state.currentProject && fileTree.length === 0 && (
+        <div className="explorer-empty">
+          <p>フォルダは空です</p>
+        </div>
+      )}
       
       <div className="file-tree">
         {fileTree.map(node => renderFileNode(node))}
@@ -362,34 +437,35 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
             left: contextMenu.x, 
             top: contextMenu.y,
             position: 'fixed',
-            zIndex: 1000 
+            zIndex: 10000 
           }}
+          onClick={(e) => e.stopPropagation()}
         >
           {contextMenu.node?.type === 'file' && (
             <div className="context-item" onClick={() => handleContextAction('open')}>
-              開く
+              Open
             </div>
           )}
           <div className="context-item" onClick={() => handleContextAction('rename')}>
-            名前を変更
+            Rename
           </div>
           <div className="context-item" onClick={() => handleContextAction('copy')}>
-            コピー
+            Copy Path
           </div>
           <div className="context-separator"></div>
           {contextMenu.node?.type === 'folder' && (
             <>
               <div className="context-item" onClick={() => handleContextAction('newFile')}>
-                新規ファイル
+                New File
               </div>
               <div className="context-item" onClick={() => handleContextAction('newFolder')}>
-                新規フォルダ
+                New Folder
               </div>
               <div className="context-separator"></div>
             </>
           )}
           <div className="context-item delete" onClick={() => handleContextAction('delete')}>
-            削除
+            Delete
           </div>
         </div>
       )}

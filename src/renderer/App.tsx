@@ -4,6 +4,10 @@ import ToastNotification from './components/ToastContainer/ToastNotification';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AppProvider, useApp } from './contexts/AppContext';
 import './styles/App.css';
+import './styles/z-index.css';
+import './styles/theme-liquid-glass.css';
+import './styles/theme-material.css';
+import './styles/theme-anime.css';
 
 const AppContent: React.FC = () => {
   const { setMode, setCurrentProject } = useApp();

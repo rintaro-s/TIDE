@@ -5113,47 +5113,50 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.board-library-manager {
-  padding: 16px;
+  padding: 8px;
   height: 100%;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .manager-header {
-  margin-bottom: 24px;
-  text-align: center;
+  margin-bottom: 12px;
+  padding: 8px;
 }
 
 .manager-header h3 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-color);
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
 }
 
 .manager-header p {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-color-secondary);
   margin: 0;
 }
 
 .search-controls {
-  margin-bottom: 24px;
+  margin-bottom: 12px;
+  padding: 0 8px;
 }
 
 .search-bar {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
 .search-input {
   flex: 1;
-  padding: 10px 12px;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
   background: var(--background-color);
   color: var(--text-color);
-  font-size: 14px;
+  font-size: 13px;
   transition: border-color 0.2s ease;
 }
 
@@ -5164,13 +5167,13 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.board-library-manager {
 
 .search-btn,
 .refresh-btn {
-  padding: 10px 16px;
+  padding: 6px 12px;
   background: var(--accent-color);
   color: var(--accent-text-color);
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   transition: all 0.2s ease;
 }
 
@@ -5188,22 +5191,24 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.board-library-manager {
 
 .filter-controls {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
 .category-select {
-  padding: 8px 12px;
+  padding: 6px 10px;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--background-color);
   color: var(--text-color);
-  font-size: 13px;
+  font-size: 12px;
   flex: 1;
 }
 
 .items-container {
-  min-height: 400px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 8px;
 }
 
 .loading-state,
@@ -5212,19 +5217,19 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.board-library-manager {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 40px 16px;
   text-align: center;
   color: var(--text-color-secondary);
 }
 
 .loading-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border-color);
-  border-top: 3px solid var(--accent-color);
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color);
+  border-top: 2px solid var(--accent-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 @keyframes spin {
@@ -5234,7 +5239,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.board-library-manager {
 
 .items-grid {
   display: grid;
-  gap: 16px;
+  gap: 8px;
   grid-template-columns: 1fr;
 }
 
@@ -5242,39 +5247,44 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.board-library-manager {
 .library-item {
   background: var(--background-color);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 6px;
+  padding: 12px;
   transition: all 0.2s ease;
 }
 
 .board-item:hover,
 .library-item:hover {
   border-color: var(--accent-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .item-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 8px;
 }
 
 .item-name {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-color);
   margin: 0;
+  flex: 1;
+  word-break: break-word;
 }
 
 .platform-badge,
 .version-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .platform-badge {
@@ -5290,72 +5300,82 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.board-library-manager {
 .board-specs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 16px;
-  padding: 12px;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 8px;
   background: var(--secondary-background);
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .spec-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 4px;
 }
 
 .spec-label {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-color-secondary);
   font-weight: 500;
 }
 
 .spec-value {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-color);
   font-family: var(--font-mono);
+  text-align: right;
+  word-break: break-all;
 }
 
 .library-description {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-color);
-  margin: 0 0 12px 0;
-  line-height: 1.4;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .library-meta {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .meta-item {
   display: flex;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
+  gap: 4px;
 }
 
 .meta-label {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-color-secondary);
   font-weight: 500;
-  min-width: 80px;
+  min-width: 60px;
+  flex-shrink: 0;
 }
 
 .meta-value {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-color);
   flex: 1;
+  word-break: break-word;
 }
 
 .item-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   justify-content: flex-end;
 }
 
 .select-btn,
 .install-btn,
 .info-btn {
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -5404,30 +5424,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.board-library-manager {
   text-decoration: none;
 }
 
-/* Responsive Design */
-@media (min-width: 768px) {
-  .items-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  .board-specs {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-}
-
-@media (min-width: 1024px) {
-  .items-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Dark theme adjustments */
-@media (prefers-color-scheme: dark) {
-  .loading-spinner {
-    border-color: var(--border-color);
-    border-top-color: var(--accent-color);
-  }
-}`, "",{"version":3,"sources":["webpack://./src/renderer/components/BoardLibraryManager/BoardLibraryManager.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,mBAAmB;EACnB,kBAAkB;AACpB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,wBAAwB;EACxB,iBAAiB;AACnB;;AAEA;EACE,eAAe;EACf,kCAAkC;EAClC,SAAS;AACX;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,QAAQ;EACR,mBAAmB;AACrB;;AAEA;EACE,OAAO;EACP,kBAAkB;EAClB,qCAAqC;EACrC,kBAAkB;EAClB,mCAAmC;EACnC,wBAAwB;EACxB,eAAe;EACf,kCAAkC;AACpC;;AAEA;EACE,aAAa;EACb,iCAAiC;AACnC;;AAEA;;EAEE,kBAAkB;EAClB,+BAA+B;EAC/B,+BAA+B;EAC/B,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,yBAAyB;AAC3B;;AAEA;;EAEE,qCAAqC;AACvC;;AAEA;;EAEE,sCAAsC;EACtC,2BAA2B;EAC3B,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,QAAQ;EACR,mBAAmB;AACrB;;AAEA;EACE,iBAAiB;EACjB,qCAAqC;EACrC,kBAAkB;EAClB,mCAAmC;EACnC,wBAAwB;EACxB,eAAe;EACf,OAAO;AACT;;AAEA;EACE,iBAAiB;AACnB;;AAEA;;EAEE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,uBAAuB;EACvB,kBAAkB;EAClB,kBAAkB;EAClB,kCAAkC;AACpC;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,qCAAqC;EACrC,yCAAyC;EACzC,kBAAkB;EAClB,kCAAkC;EAClC,mBAAmB;AACrB;;AAEA;EACE,KAAK,uBAAuB,EAAE;EAC9B,OAAO,yBAAyB,EAAE;AACpC;;AAEA;EACE,aAAa;EACb,SAAS;EACT,0BAA0B;AAC5B;;AAEA;;EAEE,mCAAmC;EACnC,qCAAqC;EACrC,mBAAmB;EACnB,aAAa;EACb,yBAAyB;AAC3B;;AAEA;;EAEE,iCAAiC;EACjC,yCAAyC;AAC3C;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,mBAAmB;AACrB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,wBAAwB;EACxB,SAAS;AACX;;AAEA;;EAEE,gBAAgB;EAChB,mBAAmB;EACnB,eAAe;EACf,gBAAgB;EAChB,yBAAyB;EACzB,qBAAqB;AACvB;;AAEA;EACE,mCAAmC;EACnC,cAAc;AAChB;;AAEA;EACE,kCAAkC;EAClC,cAAc;AAChB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,QAAQ;EACR,mBAAmB;EACnB,aAAa;EACb,uCAAuC;EACvC,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;AACrB;;AAEA;EACE,eAAe;EACf,kCAAkC;EAClC,gBAAgB;AAClB;;AAEA;EACE,eAAe;EACf,wBAAwB;EACxB,6BAA6B;AAC/B;;AAEA;EACE,eAAe;EACf,wBAAwB;EACxB,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,kBAAkB;AACpB;;AAEA;EACE,eAAe;EACf,kCAAkC;EAClC,gBAAgB;EAChB,eAAe;AACjB;;AAEA;EACE,eAAe;EACf,wBAAwB;EACxB,OAAO;AACT;;AAEA;EACE,aAAa;EACb,QAAQ;EACR,yBAAyB;AAC3B;;AAEA;;;EAGE,iBAAiB;EACjB,kBAAkB;EAClB,eAAe;EACf,gBAAgB;EAChB,eAAe;EACf,yBAAyB;EACzB,qBAAqB;EACrB,oBAAoB;EACpB,mBAAmB;EACnB,QAAQ;AACV;;AAEA;EACE,+BAA+B;EAC/B,+BAA+B;EAC/B,YAAY;AACd;;AAEA;EACE,qCAAqC;AACvC;;AAEA;EACE,+BAA+B;EAC/B,+BAA+B;EAC/B,YAAY;AACd;;AAEA;EACE,qCAAqC;AACvC;;AAEA;;EAEE,sCAAsC;EACtC,2BAA2B;EAC3B,mBAAmB;AACrB;;AAEA;EACE,uCAAuC;EACvC,wBAAwB;EACxB,qCAAqC;AACvC;;AAEA;EACE,mCAAmC;EACnC,iCAAiC;EACjC,qBAAqB;AACvB;;AAEA,sBAAsB;AACtB;EACE;IACE,8BAA8B;EAChC;;EAEA;IACE,sCAAsC;EACxC;AACF;;AAEA;EACE;IACE,qCAAqC;EACvC;AACF;;AAEA,2BAA2B;AAC3B;EACE;IACE,iCAAiC;IACjC,qCAAqC;EACvC;AACF","sourcesContent":[".board-library-manager {\r\n  padding: 16px;\r\n  height: 100%;\r\n  overflow-y: auto;\r\n}\r\n\r\n.manager-header {\r\n  margin-bottom: 24px;\r\n  text-align: center;\r\n}\r\n\r\n.manager-header h3 {\r\n  font-size: 20px;\r\n  font-weight: 700;\r\n  color: var(--text-color);\r\n  margin: 0 0 8px 0;\r\n}\r\n\r\n.manager-header p {\r\n  font-size: 14px;\r\n  color: var(--text-color-secondary);\r\n  margin: 0;\r\n}\r\n\r\n.search-controls {\r\n  margin-bottom: 24px;\r\n}\r\n\r\n.search-bar {\r\n  display: flex;\r\n  gap: 8px;\r\n  margin-bottom: 12px;\r\n}\r\n\r\n.search-input {\r\n  flex: 1;\r\n  padding: 10px 12px;\r\n  border: 2px solid var(--border-color);\r\n  border-radius: 8px;\r\n  background: var(--background-color);\r\n  color: var(--text-color);\r\n  font-size: 14px;\r\n  transition: border-color 0.2s ease;\r\n}\r\n\r\n.search-input:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n}\r\n\r\n.search-btn,\r\n.refresh-btn {\r\n  padding: 10px 16px;\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  border-radius: 8px;\r\n  cursor: pointer;\r\n  font-size: 14px;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.search-btn:hover:not(:disabled),\r\n.refresh-btn:hover:not(:disabled) {\r\n  background: var(--accent-color-hover);\r\n}\r\n\r\n.search-btn:disabled,\r\n.refresh-btn:disabled {\r\n  background: var(--disabled-background);\r\n  color: var(--disabled-text);\r\n  cursor: not-allowed;\r\n}\r\n\r\n.filter-controls {\r\n  display: flex;\r\n  gap: 8px;\r\n  align-items: center;\r\n}\r\n\r\n.category-select {\r\n  padding: 8px 12px;\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 6px;\r\n  background: var(--background-color);\r\n  color: var(--text-color);\r\n  font-size: 13px;\r\n  flex: 1;\r\n}\r\n\r\n.items-container {\r\n  min-height: 400px;\r\n}\r\n\r\n.loading-state,\r\n.empty-state {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  padding: 60px 20px;\r\n  text-align: center;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.loading-spinner {\r\n  width: 32px;\r\n  height: 32px;\r\n  border: 3px solid var(--border-color);\r\n  border-top: 3px solid var(--accent-color);\r\n  border-radius: 50%;\r\n  animation: spin 1s linear infinite;\r\n  margin-bottom: 16px;\r\n}\r\n\r\n@keyframes spin {\r\n  0% { transform: rotate(0deg); }\r\n  100% { transform: rotate(360deg); }\r\n}\r\n\r\n.items-grid {\r\n  display: grid;\r\n  gap: 16px;\r\n  grid-template-columns: 1fr;\r\n}\r\n\r\n.board-item,\r\n.library-item {\r\n  background: var(--background-color);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 12px;\r\n  padding: 20px;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.board-item:hover,\r\n.library-item:hover {\r\n  border-color: var(--accent-color);\r\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.item-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  margin-bottom: 12px;\r\n}\r\n\r\n.item-name {\r\n  font-size: 16px;\r\n  font-weight: 600;\r\n  color: var(--text-color);\r\n  margin: 0;\r\n}\r\n\r\n.platform-badge,\r\n.version-badge {\r\n  padding: 4px 8px;\r\n  border-radius: 12px;\r\n  font-size: 11px;\r\n  font-weight: 600;\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.5px;\r\n}\r\n\r\n.platform-badge {\r\n  background: rgba(33, 150, 243, 0.2);\r\n  color: #2196f3;\r\n}\r\n\r\n.version-badge {\r\n  background: rgba(76, 175, 80, 0.2);\r\n  color: #4caf50;\r\n}\r\n\r\n.board-specs {\r\n  display: grid;\r\n  grid-template-columns: 1fr 1fr;\r\n  gap: 8px;\r\n  margin-bottom: 16px;\r\n  padding: 12px;\r\n  background: var(--secondary-background);\r\n  border-radius: 8px;\r\n}\r\n\r\n.spec-item {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n}\r\n\r\n.spec-label {\r\n  font-size: 12px;\r\n  color: var(--text-color-secondary);\r\n  font-weight: 500;\r\n}\r\n\r\n.spec-value {\r\n  font-size: 12px;\r\n  color: var(--text-color);\r\n  font-family: var(--font-mono);\r\n}\r\n\r\n.library-description {\r\n  font-size: 14px;\r\n  color: var(--text-color);\r\n  margin: 0 0 12px 0;\r\n  line-height: 1.4;\r\n}\r\n\r\n.library-meta {\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.meta-item {\r\n  display: flex;\r\n  margin-bottom: 4px;\r\n}\r\n\r\n.meta-label {\r\n  font-size: 12px;\r\n  color: var(--text-color-secondary);\r\n  font-weight: 500;\r\n  min-width: 80px;\r\n}\r\n\r\n.meta-value {\r\n  font-size: 12px;\r\n  color: var(--text-color);\r\n  flex: 1;\r\n}\r\n\r\n.item-actions {\r\n  display: flex;\r\n  gap: 8px;\r\n  justify-content: flex-end;\r\n}\r\n\r\n.select-btn,\r\n.install-btn,\r\n.info-btn {\r\n  padding: 8px 16px;\r\n  border-radius: 6px;\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n  cursor: pointer;\r\n  transition: all 0.2s ease;\r\n  text-decoration: none;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  gap: 4px;\r\n}\r\n\r\n.select-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n}\r\n\r\n.select-btn:hover {\r\n  background: var(--accent-color-hover);\r\n}\r\n\r\n.install-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n}\r\n\r\n.install-btn:hover:not(:disabled) {\r\n  background: var(--accent-color-hover);\r\n}\r\n\r\n.install-btn:disabled,\r\n.install-btn.installing {\r\n  background: var(--disabled-background);\r\n  color: var(--disabled-text);\r\n  cursor: not-allowed;\r\n}\r\n\r\n.info-btn {\r\n  background: var(--secondary-background);\r\n  color: var(--text-color);\r\n  border: 1px solid var(--border-color);\r\n}\r\n\r\n.info-btn:hover {\r\n  background: var(--hover-background);\r\n  border-color: var(--accent-color);\r\n  text-decoration: none;\r\n}\r\n\r\n/* Responsive Design */\r\n@media (min-width: 768px) {\r\n  .items-grid {\r\n    grid-template-columns: 1fr 1fr;\r\n  }\r\n  \r\n  .board-specs {\r\n    grid-template-columns: 1fr 1fr 1fr 1fr;\r\n  }\r\n}\r\n\r\n@media (min-width: 1024px) {\r\n  .items-grid {\r\n    grid-template-columns: repeat(3, 1fr);\r\n  }\r\n}\r\n\r\n/* Dark theme adjustments */\r\n@media (prefers-color-scheme: dark) {\r\n  .loading-spinner {\r\n    border-color: var(--border-color);\r\n    border-top-color: var(--accent-color);\r\n  }\r\n}"],"sourceRoot":""}]);
+/* Responsive Design - Removed to keep UI minimal */`, "",{"version":3,"sources":["webpack://./src/renderer/components/BoardLibraryManager/BoardLibraryManager.css"],"names":[],"mappings":"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","sourcesContent":[".board-library-manager {\r\n  padding: 8px;\r\n  height: 100%;\r\n  overflow-y: auto;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.manager-header {\r\n  margin-bottom: 12px;\r\n  padding: 8px;\r\n}\r\n\r\n.manager-header h3 {\r\n  font-size: 16px;\r\n  font-weight: 600;\r\n  color: var(--text-color);\r\n  margin: 0 0 4px 0;\r\n}\r\n\r\n.manager-header p {\r\n  font-size: 12px;\r\n  color: var(--text-color-secondary);\r\n  margin: 0;\r\n}\r\n\r\n.search-controls {\r\n  margin-bottom: 12px;\r\n  padding: 0 8px;\r\n}\r\n\r\n.search-bar {\r\n  display: flex;\r\n  gap: 6px;\r\n  margin-bottom: 8px;\r\n}\r\n\r\n.search-input {\r\n  flex: 1;\r\n  padding: 6px 10px;\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 4px;\r\n  background: var(--background-color);\r\n  color: var(--text-color);\r\n  font-size: 13px;\r\n  transition: border-color 0.2s ease;\r\n}\r\n\r\n.search-input:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n}\r\n\r\n.search-btn,\r\n.refresh-btn {\r\n  padding: 6px 12px;\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  border-radius: 4px;\r\n  cursor: pointer;\r\n  font-size: 13px;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.search-btn:hover:not(:disabled),\r\n.refresh-btn:hover:not(:disabled) {\r\n  background: var(--accent-color-hover);\r\n}\r\n\r\n.search-btn:disabled,\r\n.refresh-btn:disabled {\r\n  background: var(--disabled-background);\r\n  color: var(--disabled-text);\r\n  cursor: not-allowed;\r\n}\r\n\r\n.filter-controls {\r\n  display: flex;\r\n  gap: 6px;\r\n  align-items: center;\r\n}\r\n\r\n.category-select {\r\n  padding: 6px 10px;\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 4px;\r\n  background: var(--background-color);\r\n  color: var(--text-color);\r\n  font-size: 12px;\r\n  flex: 1;\r\n}\r\n\r\n.items-container {\r\n  flex: 1;\r\n  overflow-y: auto;\r\n  padding: 0 8px;\r\n}\r\n\r\n.loading-state,\r\n.empty-state {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  padding: 40px 16px;\r\n  text-align: center;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.loading-spinner {\r\n  width: 24px;\r\n  height: 24px;\r\n  border: 2px solid var(--border-color);\r\n  border-top: 2px solid var(--accent-color);\r\n  border-radius: 50%;\r\n  animation: spin 1s linear infinite;\r\n  margin-bottom: 12px;\r\n}\r\n\r\n@keyframes spin {\r\n  0% { transform: rotate(0deg); }\r\n  100% { transform: rotate(360deg); }\r\n}\r\n\r\n.items-grid {\r\n  display: grid;\r\n  gap: 8px;\r\n  grid-template-columns: 1fr;\r\n}\r\n\r\n.board-item,\r\n.library-item {\r\n  background: var(--background-color);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 6px;\r\n  padding: 12px;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.board-item:hover,\r\n.library-item:hover {\r\n  border-color: var(--accent-color);\r\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.item-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: flex-start;\r\n  margin-bottom: 8px;\r\n  gap: 8px;\r\n}\r\n\r\n.item-name {\r\n  font-size: 13px;\r\n  font-weight: 600;\r\n  color: var(--text-color);\r\n  margin: 0;\r\n  flex: 1;\r\n  word-break: break-word;\r\n}\r\n\r\n.platform-badge,\r\n.version-badge {\r\n  padding: 2px 6px;\r\n  border-radius: 3px;\r\n  font-size: 10px;\r\n  font-weight: 600;\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.3px;\r\n  white-space: nowrap;\r\n  flex-shrink: 0;\r\n}\r\n\r\n.platform-badge {\r\n  background: rgba(33, 150, 243, 0.2);\r\n  color: #2196f3;\r\n}\r\n\r\n.version-badge {\r\n  background: rgba(76, 175, 80, 0.2);\r\n  color: #4caf50;\r\n}\r\n\r\n.board-specs {\r\n  display: grid;\r\n  grid-template-columns: 1fr 1fr;\r\n  gap: 6px;\r\n  margin-bottom: 10px;\r\n  padding: 8px;\r\n  background: var(--secondary-background);\r\n  border-radius: 4px;\r\n}\r\n\r\n.spec-item {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  gap: 4px;\r\n}\r\n\r\n.spec-label {\r\n  font-size: 10px;\r\n  color: var(--text-color-secondary);\r\n  font-weight: 500;\r\n}\r\n\r\n.spec-value {\r\n  font-size: 10px;\r\n  color: var(--text-color);\r\n  font-family: var(--font-mono);\r\n  text-align: right;\r\n  word-break: break-all;\r\n}\r\n\r\n.library-description {\r\n  font-size: 12px;\r\n  color: var(--text-color);\r\n  margin: 0 0 8px 0;\r\n  line-height: 1.3;\r\n  display: -webkit-box;\r\n  -webkit-line-clamp: 2;\r\n  -webkit-box-orient: vertical;\r\n  overflow: hidden;\r\n}\r\n\r\n.library-meta {\r\n  margin-bottom: 10px;\r\n}\r\n\r\n.meta-item {\r\n  display: flex;\r\n  margin-bottom: 3px;\r\n  gap: 4px;\r\n}\r\n\r\n.meta-label {\r\n  font-size: 11px;\r\n  color: var(--text-color-secondary);\r\n  font-weight: 500;\r\n  min-width: 60px;\r\n  flex-shrink: 0;\r\n}\r\n\r\n.meta-value {\r\n  font-size: 11px;\r\n  color: var(--text-color);\r\n  flex: 1;\r\n  word-break: break-word;\r\n}\r\n\r\n.item-actions {\r\n  display: flex;\r\n  gap: 6px;\r\n  justify-content: flex-end;\r\n}\r\n\r\n.select-btn,\r\n.install-btn,\r\n.info-btn {\r\n  padding: 6px 12px;\r\n  border-radius: 4px;\r\n  font-size: 12px;\r\n  font-weight: 500;\r\n  cursor: pointer;\r\n  transition: all 0.2s ease;\r\n  text-decoration: none;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  gap: 4px;\r\n}\r\n\r\n.select-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n}\r\n\r\n.select-btn:hover {\r\n  background: var(--accent-color-hover);\r\n}\r\n\r\n.install-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n}\r\n\r\n.install-btn:hover:not(:disabled) {\r\n  background: var(--accent-color-hover);\r\n}\r\n\r\n.install-btn:disabled,\r\n.install-btn.installing {\r\n  background: var(--disabled-background);\r\n  color: var(--disabled-text);\r\n  cursor: not-allowed;\r\n}\r\n\r\n.info-btn {\r\n  background: var(--secondary-background);\r\n  color: var(--text-color);\r\n  border: 1px solid var(--border-color);\r\n}\r\n\r\n.info-btn:hover {\r\n  background: var(--hover-background);\r\n  border-color: var(--accent-color);\r\n  text-decoration: none;\r\n}\r\n\r\n/* Responsive Design - Removed to keep UI minimal */"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6570,6 +6567,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.git-panel {
   padding: 16px;
   height: 100%;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .git-panel.loading,
@@ -6582,6 +6581,22 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.git-panel {
   color: var(--text-color-secondary);
 }
 
+.git-init-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.git-init-message p {
+  margin-bottom: 20px;
+  color: var(--text-color-secondary);
+  font-size: 14px;
+}
+
 .git-header {
   display: flex;
   justify-content: space-between;
@@ -6591,143 +6606,295 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.git-panel {
   border-bottom: 1px solid var(--border-color);
 }
 
-.git-branch {
+.git-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.refresh-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background: var(--hover-background);
+  transform: rotate(180deg);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.git-branch-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--secondary-background);
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.branch-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
 }
 
 .branch-icon {
   font-size: 16px;
 }
 
-.branch-name {
+.sync-status {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--text-color);
+}
+
+.sync-status .ahead {
+  color: #2ea043;
+}
+
+.sync-status .behind {
+  color: #da3633;
 }
 
 .git-actions {
   display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.git-actions .btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 8px 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 4px;
 }
 
-.git-btn {
-  background: none;
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
-  padding: 6px 8px;
+/* Commit History */
+.commit-history {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: var(--secondary-background);
+  border-radius: 6px;
+}
+
+.commit-history h4 {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+}
+
+.commit-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.commit-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background: var(--background-color);
   border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: all 0.15s ease;
+  border-left: 3px solid var(--accent-color);
 }
 
-.git-btn:hover {
-  background: var(--hover-background);
+.commit-hash {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-color);
+  min-width: 60px;
 }
 
-.git-section {
+.commit-info {
+  flex: 1;
+}
+
+.commit-message {
+  font-size: 13px;
+  color: var(--text-color);
+  margin-bottom: 4px;
+}
+
+.commit-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-color-secondary);
+}
+
+/* Git Staging */
+.git-staging {
+  flex: 1;
+  overflow-y: auto;
   margin-bottom: 16px;
 }
 
-.git-section h4 {
+.staging-section {
+  margin-bottom: 16px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.section-header h4 {
+  margin: 0;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-color-secondary);
-  margin: 0 0 8px 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.git-file {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 8px;
-  margin-bottom: 2px;
+.stage-all-btn,
+.unstage-all-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-color-secondary);
+  padding: 4px 8px;
   border-radius: 4px;
-  font-size: 13px;
-  transition: background-color 0.15s ease;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.2s ease;
 }
 
-.git-file:hover {
+.stage-all-btn:hover,
+.unstage-all-btn:hover {
+  background: var(--hover-background);
+  color: var(--text-color);
+}
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+  font-size: 13px;
+}
+
+.file-item:hover {
   background: var(--hover-background);
 }
 
-.git-file.staged {
-  background: rgba(46, 160, 67, 0.1);
-  border-left: 3px solid #2ea043;
+.file-item.staged {
+  border-left-color: #2ea043;
+  background: rgba(46, 160, 67, 0.05);
 }
 
-.git-file.modified {
-  background: rgba(251, 189, 8, 0.1);
-  border-left: 3px solid #fbbd08;
+.file-status {
+  font-size: 14px;
 }
 
-.git-file.untracked {
-  background: rgba(218, 54, 51, 0.1);
-  border-left: 3px solid #da3633;
-}
-
-.file-name {
+.file-path {
   flex: 1;
-  color: var(--text-color);
   font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-color);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.stage-btn,
-.unstage-btn {
+.file-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.action-btn {
   background: none;
   border: 1px solid var(--border-color);
-  color: var(--text-color);
-  width: 24px;
-  height: 24px;
-  border-radius: 3px;
+  color: var(--text-color-secondary);
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  font-weight: bold;
-  transition: all 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease;
 }
 
-.stage-btn:hover {
-  background: rgba(46, 160, 67, 0.2);
-  border-color: #2ea043;
+.action-btn:hover {
+  background: var(--hover-background);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
 }
 
-.unstage-btn:hover {
-  background: rgba(218, 54, 51, 0.2);
-  border-color: #da3633;
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-color-secondary);
+  font-size: 12px;
+  font-style: italic;
 }
 
-.commit-section {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
+/* Commit Section */
+.git-commit {
+  padding: 12px;
+  background: var(--secondary-background);
+  border-radius: 6px;
+  border-top: 2px solid var(--accent-color);
 }
 
-.commit-message {
+.git-commit textarea {
   width: 100%;
   background: var(--input-background);
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  padding: 8px;
+  padding: 10px;
   color: var(--text-color);
   font-family: var(--font-family);
   font-size: 13px;
   resize: vertical;
-  min-height: 60px;
-  margin-bottom: 8px;
+  min-height: 70px;
+  margin-bottom: 10px;
+  transition: border-color 0.2s ease;
 }
 
-.commit-message:focus {
+.git-commit textarea:focus {
   outline: none;
   border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(var(--accent-color), 0.1);
+}
+
+.git-commit textarea::placeholder {
+  color: var(--text-color-secondary);
+  font-style: italic;
 }
 
 .commit-btn {
@@ -6735,35 +6902,157 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.git-panel {
   background: var(--accent-color);
   color: var(--accent-text-color);
   border: none;
-  padding: 8px 16px;
+  padding: 10px 16px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .commit-btn:hover:not(:disabled) {
-  background: var(--accent-color-hover);
+  background: var(--accent-hover-color);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .commit-btn:disabled {
   background: var(--disabled-background);
   color: var(--disabled-text);
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
-.git-init-btn {
-  background: var(--accent-color);
-  color: var(--accent-text-color);
-  border: none;
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.modal-content h3 {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color-secondary);
+}
+
+.form-group input {
+  width: 100%;
+  background: var(--input-background);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px;
+  color: var(--text-color);
+  font-size: 13px;
+  font-family: var(--font-mono);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(var(--accent-color), 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn {
   padding: 8px 16px;
   border-radius: 4px;
-  cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  margin-top: 8px;
-}`, "",{"version":3,"sources":["webpack://./src/renderer/components/GitPanel/GitPanel.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,gBAAgB;AAClB;;AAEA;;EAEE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,uBAAuB;EACvB,aAAa;EACb,kCAAkC;AACpC;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,mBAAmB;EACnB,oBAAoB;EACpB,4CAA4C;AAC9C;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,QAAQ;AACV;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,gBAAgB;EAChB,wBAAwB;AAC1B;;AAEA;EACE,aAAa;EACb,QAAQ;AACV;;AAEA;EACE,gBAAgB;EAChB,qCAAqC;EACrC,wBAAwB;EACxB,gBAAgB;EAChB,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,0BAA0B;AAC5B;;AAEA;EACE,mCAAmC;AACrC;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,kCAAkC;EAClC,iBAAiB;EACjB,yBAAyB;EACzB,qBAAqB;AACvB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,gBAAgB;EAChB,kBAAkB;EAClB,kBAAkB;EAClB,eAAe;EACf,uCAAuC;AACzC;;AAEA;EACE,mCAAmC;AACrC;;AAEA;EACE,kCAAkC;EAClC,8BAA8B;AAChC;;AAEA;EACE,kCAAkC;EAClC,8BAA8B;AAChC;;AAEA;EACE,kCAAkC;EAClC,8BAA8B;AAChC;;AAEA;EACE,OAAO;EACP,wBAAwB;EACxB,6BAA6B;EAC7B,gBAAgB;EAChB,uBAAuB;EACvB,mBAAmB;AACrB;;AAEA;;EAEE,gBAAgB;EAChB,qCAAqC;EACrC,wBAAwB;EACxB,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,iBAAiB;EACjB,0BAA0B;EAC1B,aAAa;EACb,mBAAmB;EACnB,uBAAuB;AACzB;;AAEA;EACE,kCAAkC;EAClC,qBAAqB;AACvB;;AAEA;EACE,kCAAkC;EAClC,qBAAqB;AACvB;;AAEA;EACE,gBAAgB;EAChB,iBAAiB;EACjB,yCAAyC;AAC3C;;AAEA;EACE,WAAW;EACX,mCAAmC;EACnC,qCAAqC;EACrC,kBAAkB;EAClB,YAAY;EACZ,wBAAwB;EACxB,+BAA+B;EAC/B,eAAe;EACf,gBAAgB;EAChB,gBAAgB;EAChB,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,iCAAiC;AACnC;;AAEA;EACE,WAAW;EACX,+BAA+B;EAC/B,+BAA+B;EAC/B,YAAY;EACZ,iBAAiB;EACjB,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,gBAAgB;EAChB,0BAA0B;AAC5B;;AAEA;EACE,qCAAqC;AACvC;;AAEA;EACE,sCAAsC;EACtC,2BAA2B;EAC3B,mBAAmB;AACrB;;AAEA;EACE,+BAA+B;EAC/B,+BAA+B;EAC/B,YAAY;EACZ,iBAAiB;EACjB,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,gBAAgB;EAChB,eAAe;AACjB","sourcesContent":[".git-panel {\r\n  padding: 16px;\r\n  height: 100%;\r\n  overflow-y: auto;\r\n}\r\n\r\n.git-panel.loading,\r\n.git-panel.no-git {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  height: 200px;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.git-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  margin-bottom: 16px;\r\n  padding-bottom: 12px;\r\n  border-bottom: 1px solid var(--border-color);\r\n}\r\n\r\n.git-branch {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 8px;\r\n}\r\n\r\n.branch-icon {\r\n  font-size: 16px;\r\n}\r\n\r\n.branch-name {\r\n  font-weight: 600;\r\n  color: var(--text-color);\r\n}\r\n\r\n.git-actions {\r\n  display: flex;\r\n  gap: 4px;\r\n}\r\n\r\n.git-btn {\r\n  background: none;\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color);\r\n  padding: 6px 8px;\r\n  border-radius: 4px;\r\n  cursor: pointer;\r\n  font-size: 12px;\r\n  transition: all 0.15s ease;\r\n}\r\n\r\n.git-btn:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n.git-section {\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.git-section h4 {\r\n  font-size: 12px;\r\n  font-weight: 600;\r\n  color: var(--text-color-secondary);\r\n  margin: 0 0 8px 0;\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.5px;\r\n}\r\n\r\n.git-file {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  padding: 6px 8px;\r\n  margin-bottom: 2px;\r\n  border-radius: 4px;\r\n  font-size: 13px;\r\n  transition: background-color 0.15s ease;\r\n}\r\n\r\n.git-file:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n.git-file.staged {\r\n  background: rgba(46, 160, 67, 0.1);\r\n  border-left: 3px solid #2ea043;\r\n}\r\n\r\n.git-file.modified {\r\n  background: rgba(251, 189, 8, 0.1);\r\n  border-left: 3px solid #fbbd08;\r\n}\r\n\r\n.git-file.untracked {\r\n  background: rgba(218, 54, 51, 0.1);\r\n  border-left: 3px solid #da3633;\r\n}\r\n\r\n.file-name {\r\n  flex: 1;\r\n  color: var(--text-color);\r\n  font-family: var(--font-mono);\r\n  overflow: hidden;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n}\r\n\r\n.stage-btn,\r\n.unstage-btn {\r\n  background: none;\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color);\r\n  width: 24px;\r\n  height: 24px;\r\n  border-radius: 3px;\r\n  cursor: pointer;\r\n  font-size: 12px;\r\n  font-weight: bold;\r\n  transition: all 0.15s ease;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n}\r\n\r\n.stage-btn:hover {\r\n  background: rgba(46, 160, 67, 0.2);\r\n  border-color: #2ea043;\r\n}\r\n\r\n.unstage-btn:hover {\r\n  background: rgba(218, 54, 51, 0.2);\r\n  border-color: #da3633;\r\n}\r\n\r\n.commit-section {\r\n  margin-top: 16px;\r\n  padding-top: 16px;\r\n  border-top: 1px solid var(--border-color);\r\n}\r\n\r\n.commit-message {\r\n  width: 100%;\r\n  background: var(--input-background);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 4px;\r\n  padding: 8px;\r\n  color: var(--text-color);\r\n  font-family: var(--font-family);\r\n  font-size: 13px;\r\n  resize: vertical;\r\n  min-height: 60px;\r\n  margin-bottom: 8px;\r\n}\r\n\r\n.commit-message:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n}\r\n\r\n.commit-btn {\r\n  width: 100%;\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  padding: 8px 16px;\r\n  border-radius: 4px;\r\n  cursor: pointer;\r\n  font-size: 13px;\r\n  font-weight: 600;\r\n  transition: all 0.15s ease;\r\n}\r\n\r\n.commit-btn:hover:not(:disabled) {\r\n  background: var(--accent-color-hover);\r\n}\r\n\r\n.commit-btn:disabled {\r\n  background: var(--disabled-background);\r\n  color: var(--disabled-text);\r\n  cursor: not-allowed;\r\n}\r\n\r\n.git-init-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  padding: 8px 16px;\r\n  border-radius: 4px;\r\n  cursor: pointer;\r\n  font-size: 13px;\r\n  font-weight: 600;\r\n  margin-top: 8px;\r\n}"],"sourceRoot":""}]);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn.primary {
+  background: var(--accent-color);
+  color: var(--accent-text-color);
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: var(--accent-hover-color);
+}
+
+.btn.secondary {
+  background: var(--secondary-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.btn.secondary:hover {
+  background: var(--hover-background);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Scrollbar */
+.git-panel::-webkit-scrollbar,
+.commit-list::-webkit-scrollbar,
+.git-staging::-webkit-scrollbar {
+  width: 6px;
+}
+
+.git-panel::-webkit-scrollbar-track,
+.commit-list::-webkit-scrollbar-track,
+.git-staging::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.git-panel::-webkit-scrollbar-thumb,
+.commit-list::-webkit-scrollbar-thumb,
+.git-staging::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+.git-panel::-webkit-scrollbar-thumb:hover,
+.commit-list::-webkit-scrollbar-thumb:hover,
+.git-staging::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}`, "",{"version":3,"sources":["webpack://./src/renderer/components/GitPanel/GitPanel.css"],"names":[],"mappings":"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","sourcesContent":[".git-panel {\r\n  padding: 16px;\r\n  height: 100%;\r\n  overflow-y: auto;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.git-panel.loading,\r\n.git-panel.no-git {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  height: 200px;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.git-init-container {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  flex: 1;\r\n  text-align: center;\r\n  padding: 40px 20px;\r\n}\r\n\r\n.git-init-message p {\r\n  margin-bottom: 20px;\r\n  color: var(--text-color-secondary);\r\n  font-size: 14px;\r\n}\r\n\r\n.git-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  margin-bottom: 16px;\r\n  padding-bottom: 12px;\r\n  border-bottom: 1px solid var(--border-color);\r\n}\r\n\r\n.git-header h3 {\r\n  margin: 0;\r\n  font-size: 16px;\r\n  font-weight: 600;\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 8px;\r\n}\r\n\r\n.refresh-btn {\r\n  background: none;\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color);\r\n  padding: 4px 8px;\r\n  border-radius: 4px;\r\n  cursor: pointer;\r\n  font-size: 14px;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.refresh-btn:hover:not(:disabled) {\r\n  background: var(--hover-background);\r\n  transform: rotate(180deg);\r\n}\r\n\r\n.refresh-btn:disabled {\r\n  opacity: 0.5;\r\n  cursor: not-allowed;\r\n}\r\n\r\n.git-branch-info {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  padding: 12px;\r\n  background: var(--secondary-background);\r\n  border-radius: 6px;\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.branch-name {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 8px;\r\n  font-size: 14px;\r\n}\r\n\r\n.branch-icon {\r\n  font-size: 16px;\r\n}\r\n\r\n.sync-status {\r\n  display: flex;\r\n  gap: 8px;\r\n  font-size: 12px;\r\n  font-weight: 600;\r\n}\r\n\r\n.sync-status .ahead {\r\n  color: #2ea043;\r\n}\r\n\r\n.sync-status .behind {\r\n  color: #da3633;\r\n}\r\n\r\n.git-actions {\r\n  display: flex;\r\n  gap: 8px;\r\n  margin-bottom: 16px;\r\n  flex-wrap: wrap;\r\n}\r\n\r\n.git-actions .btn {\r\n  flex: 1;\r\n  min-width: 80px;\r\n  padding: 8px 12px;\r\n  font-size: 12px;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  gap: 4px;\r\n}\r\n\r\n/* Commit History */\r\n.commit-history {\r\n  margin-bottom: 16px;\r\n  padding: 12px;\r\n  background: var(--secondary-background);\r\n  border-radius: 6px;\r\n}\r\n\r\n.commit-history h4 {\r\n  margin: 0 0 12px 0;\r\n  font-size: 13px;\r\n  font-weight: 600;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.commit-list {\r\n  max-height: 200px;\r\n  overflow-y: auto;\r\n}\r\n\r\n.commit-item {\r\n  display: flex;\r\n  gap: 12px;\r\n  padding: 8px;\r\n  margin-bottom: 8px;\r\n  background: var(--background-color);\r\n  border-radius: 4px;\r\n  border-left: 3px solid var(--accent-color);\r\n}\r\n\r\n.commit-hash {\r\n  font-family: var(--font-mono);\r\n  font-size: 11px;\r\n  color: var(--accent-color);\r\n  min-width: 60px;\r\n}\r\n\r\n.commit-info {\r\n  flex: 1;\r\n}\r\n\r\n.commit-message {\r\n  font-size: 13px;\r\n  color: var(--text-color);\r\n  margin-bottom: 4px;\r\n}\r\n\r\n.commit-meta {\r\n  display: flex;\r\n  gap: 12px;\r\n  font-size: 11px;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n/* Git Staging */\r\n.git-staging {\r\n  flex: 1;\r\n  overflow-y: auto;\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.staging-section {\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.section-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  margin-bottom: 8px;\r\n}\r\n\r\n.section-header h4 {\r\n  margin: 0;\r\n  font-size: 12px;\r\n  font-weight: 600;\r\n  color: var(--text-color-secondary);\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.5px;\r\n}\r\n\r\n.stage-all-btn,\r\n.unstage-all-btn {\r\n  background: none;\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color-secondary);\r\n  padding: 4px 8px;\r\n  border-radius: 4px;\r\n  cursor: pointer;\r\n  font-size: 11px;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.stage-all-btn:hover,\r\n.unstage-all-btn:hover {\r\n  background: var(--hover-background);\r\n  color: var(--text-color);\r\n}\r\n\r\n.file-list {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 4px;\r\n}\r\n\r\n.file-item {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 8px;\r\n  padding: 6px 8px;\r\n  border-radius: 4px;\r\n  border-left: 3px solid transparent;\r\n  transition: all 0.2s ease;\r\n  font-size: 13px;\r\n}\r\n\r\n.file-item:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n.file-item.staged {\r\n  border-left-color: #2ea043;\r\n  background: rgba(46, 160, 67, 0.05);\r\n}\r\n\r\n.file-status {\r\n  font-size: 14px;\r\n}\r\n\r\n.file-path {\r\n  flex: 1;\r\n  font-family: var(--font-mono);\r\n  font-size: 12px;\r\n  color: var(--text-color);\r\n  overflow: hidden;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n}\r\n\r\n.file-actions {\r\n  display: flex;\r\n  gap: 4px;\r\n}\r\n\r\n.action-btn {\r\n  background: none;\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color-secondary);\r\n  width: 26px;\r\n  height: 26px;\r\n  border-radius: 4px;\r\n  cursor: pointer;\r\n  font-size: 12px;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.action-btn:hover {\r\n  background: var(--hover-background);\r\n  color: var(--accent-color);\r\n  border-color: var(--accent-color);\r\n}\r\n\r\n.empty-state {\r\n  padding: 20px;\r\n  text-align: center;\r\n  color: var(--text-color-secondary);\r\n  font-size: 12px;\r\n  font-style: italic;\r\n}\r\n\r\n/* Commit Section */\r\n.git-commit {\r\n  padding: 12px;\r\n  background: var(--secondary-background);\r\n  border-radius: 6px;\r\n  border-top: 2px solid var(--accent-color);\r\n}\r\n\r\n.git-commit textarea {\r\n  width: 100%;\r\n  background: var(--input-background);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 4px;\r\n  padding: 10px;\r\n  color: var(--text-color);\r\n  font-family: var(--font-family);\r\n  font-size: 13px;\r\n  resize: vertical;\r\n  min-height: 70px;\r\n  margin-bottom: 10px;\r\n  transition: border-color 0.2s ease;\r\n}\r\n\r\n.git-commit textarea:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n  box-shadow: 0 0 0 2px rgba(var(--accent-color), 0.1);\r\n}\r\n\r\n.git-commit textarea::placeholder {\r\n  color: var(--text-color-secondary);\r\n  font-style: italic;\r\n}\r\n\r\n.commit-btn {\r\n  width: 100%;\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  padding: 10px 16px;\r\n  border-radius: 4px;\r\n  cursor: pointer;\r\n  font-size: 13px;\r\n  font-weight: 600;\r\n  transition: all 0.2s ease;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  gap: 6px;\r\n}\r\n\r\n.commit-btn:hover:not(:disabled) {\r\n  background: var(--accent-hover-color);\r\n  transform: translateY(-1px);\r\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.commit-btn:disabled {\r\n  background: var(--disabled-background);\r\n  color: var(--disabled-text);\r\n  cursor: not-allowed;\r\n  opacity: 0.6;\r\n}\r\n\r\n/* Modal */\r\n.modal-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  background: rgba(0, 0, 0, 0.5);\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  z-index: 1000;\r\n  backdrop-filter: blur(4px);\r\n}\r\n\r\n.modal-content {\r\n  background: var(--background-color);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 8px;\r\n  padding: 24px;\r\n  max-width: 500px;\r\n  width: 90%;\r\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\r\n}\r\n\r\n.modal-content h3 {\r\n  margin: 0 0 20px 0;\r\n  font-size: 16px;\r\n  font-weight: 600;\r\n  color: var(--text-color);\r\n}\r\n\r\n.form-group {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.form-group label {\r\n  display: block;\r\n  margin-bottom: 8px;\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.form-group input {\r\n  width: 100%;\r\n  background: var(--input-background);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 4px;\r\n  padding: 10px;\r\n  color: var(--text-color);\r\n  font-size: 13px;\r\n  font-family: var(--font-mono);\r\n}\r\n\r\n.form-group input:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n  box-shadow: 0 0 0 2px rgba(var(--accent-color), 0.1);\r\n}\r\n\r\n.modal-actions {\r\n  display: flex;\r\n  gap: 12px;\r\n  justify-content: flex-end;\r\n}\r\n\r\n.btn {\r\n  padding: 8px 16px;\r\n  border-radius: 4px;\r\n  font-size: 13px;\r\n  font-weight: 600;\r\n  cursor: pointer;\r\n  transition: all 0.2s ease;\r\n  border: none;\r\n}\r\n\r\n.btn.primary {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n}\r\n\r\n.btn.primary:hover:not(:disabled) {\r\n  background: var(--accent-hover-color);\r\n}\r\n\r\n.btn.secondary {\r\n  background: var(--secondary-background);\r\n  color: var(--text-color);\r\n  border: 1px solid var(--border-color);\r\n}\r\n\r\n.btn.secondary:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n.btn:disabled {\r\n  opacity: 0.5;\r\n  cursor: not-allowed;\r\n}\r\n\r\n/* Scrollbar */\r\n.git-panel::-webkit-scrollbar,\r\n.commit-list::-webkit-scrollbar,\r\n.git-staging::-webkit-scrollbar {\r\n  width: 6px;\r\n}\r\n\r\n.git-panel::-webkit-scrollbar-track,\r\n.commit-list::-webkit-scrollbar-track,\r\n.git-staging::-webkit-scrollbar-track {\r\n  background: transparent;\r\n}\r\n\r\n.git-panel::-webkit-scrollbar-thumb,\r\n.commit-list::-webkit-scrollbar-thumb,\r\n.git-staging::-webkit-scrollbar-thumb {\r\n  background: var(--scrollbar-thumb);\r\n  border-radius: 3px;\r\n}\r\n\r\n.git-panel::-webkit-scrollbar-thumb:hover,\r\n.commit-list::-webkit-scrollbar-thumb:hover,\r\n.git-staging::-webkit-scrollbar-thumb:hover {\r\n  background: var(--scrollbar-thumb-hover);\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6811,262 +7100,6 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.main-workspace {
   flex-direction: column;
   overflow: hidden;
 }`, "",{"version":3,"sources":["webpack://./src/renderer/components/MainWorkspace/MainWorkspace.css"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,aAAa;EACb,aAAa;EACb,sBAAsB;EACtB,6BAA6B;EAC7B,0BAA0B;EAC1B,gBAAgB;AAClB;;AAEA;EACE,OAAO;EACP,aAAa;EACb,gBAAgB;AAClB;;AAEA;EACE,OAAO;EACP,aAAa;EACb,sBAAsB;EACtB,gBAAgB;AAClB","sourcesContent":[".main-workspace {\r\n  width: 100vw;\r\n  height: 100vh;\r\n  display: flex;\r\n  flex-direction: column;\r\n  background: var(--bg-primary);\r\n  color: var(--text-primary);\r\n  overflow: hidden;\r\n}\r\n\r\n.workspace-content {\r\n  flex: 1;\r\n  display: flex;\r\n  overflow: hidden;\r\n}\r\n\r\n.main-area {\r\n  flex: 1;\r\n  display: flex;\r\n  flex-direction: column;\r\n  overflow: hidden;\r\n}"],"sourceRoot":""}]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/cjs.js!./src/renderer/components/PinPanel/PinPanel.css":
-/*!*********************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./src/renderer/components/PinPanel/PinPanel.css ***!
-  \*********************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-// Imports
-
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, `.pin-panel {
-  padding: 16px;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.pin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.pin-header h4 {
-  margin: 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-color-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.add-pin-btn {
-  background: var(--accent-color);
-  color: var(--accent-text-color);
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-}
-
-.add-pin-btn:hover {
-  background: var(--accent-color-hover);
-  transform: scale(1.1);
-}
-
-.add-pin-form {
-  background: var(--secondary-background);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.pin-input,
-.pin-select {
-  width: 100%;
-  background: var(--input-background);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 8px;
-  margin-bottom: 8px;
-  color: var(--text-color);
-  font-size: 13px;
-}
-
-.pin-input:focus,
-.pin-select:focus {
-  outline: none;
-  border-color: var(--accent-color);
-}
-
-.pin-form-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.pin-save-btn,
-.pin-cancel-btn {
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.pin-save-btn {
-  background: var(--accent-color);
-  color: var(--accent-text-color);
-  border: none;
-}
-
-.pin-save-btn:hover {
-  background: var(--accent-color-hover);
-}
-
-.pin-cancel-btn {
-  background: none;
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-}
-
-.pin-cancel-btn:hover {
-  background: var(--hover-background);
-}
-
-.pin-list {
-  margin-bottom: 24px;
-}
-
-.pin-empty {
-  text-align: center;
-  color: var(--text-color-secondary);
-  font-size: 13px;
-  padding: 32px 16px;
-}
-
-.pin-empty p {
-  margin: 8px 0;
-}
-
-.pin-item {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  margin-bottom: 4px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.pin-item:hover {
-  background: var(--hover-background);
-}
-
-.pin-content {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  gap: 12px;
-}
-
-.pin-icon {
-  font-size: 18px;
-  min-width: 24px;
-}
-
-.pin-details {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.pin-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-color);
-  margin-bottom: 2px;
-}
-
-.pin-type {
-  font-size: 11px;
-  color: var(--text-color-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.pin-description {
-  font-size: 12px;
-  color: var(--text-color-secondary);
-  margin-top: 2px;
-}
-
-.pin-remove-btn {
-  background: none;
-  border: none;
-  color: var(--text-color-secondary);
-  font-size: 16px;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 3px;
-  transition: all 0.15s ease;
-  opacity: 0;
-}
-
-.pin-item:hover .pin-remove-btn {
-  opacity: 1;
-}
-
-.pin-remove-btn:hover {
-  background: rgba(218, 54, 51, 0.2);
-  color: #da3633;
-}
-
-.pin-quick-actions {
-  border-top: 1px solid var(--border-color);
-  padding-top: 16px;
-}
-
-.pin-quick-actions h5 {
-  margin: 0 0 12px 0;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-color-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.quick-action-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.quick-action-btn {
-  background: var(--secondary-background);
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
-  padding: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 11px;
-  text-align: center;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.quick-action-btn:hover {
-  background: var(--hover-background);
-  border-color: var(--accent-color);
-}`, "",{"version":3,"sources":["webpack://./src/renderer/components/PinPanel/PinPanel.css"],"names":[],"mappings":"AAAA;EACE,aAAa;EACb,YAAY;EACZ,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,mBAAmB;AACrB;;AAEA;EACE,SAAS;EACT,eAAe;EACf,gBAAgB;EAChB,kCAAkC;EAClC,yBAAyB;EACzB,qBAAqB;AACvB;;AAEA;EACE,+BAA+B;EAC/B,+BAA+B;EAC/B,YAAY;EACZ,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,iBAAiB;EACjB,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,0BAA0B;AAC5B;;AAEA;EACE,qCAAqC;EACrC,qBAAqB;AACvB;;AAEA;EACE,uCAAuC;EACvC,qCAAqC;EACrC,kBAAkB;EAClB,aAAa;EACb,mBAAmB;AACrB;;AAEA;;EAEE,WAAW;EACX,mCAAmC;EACnC,qCAAqC;EACrC,kBAAkB;EAClB,YAAY;EACZ,kBAAkB;EAClB,wBAAwB;EACxB,eAAe;AACjB;;AAEA;;EAEE,aAAa;EACb,iCAAiC;AACnC;;AAEA;EACE,aAAa;EACb,QAAQ;EACR,yBAAyB;AAC3B;;AAEA;;EAEE,iBAAiB;EACjB,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,0BAA0B;AAC5B;;AAEA;EACE,+BAA+B;EAC/B,+BAA+B;EAC/B,YAAY;AACd;;AAEA;EACE,qCAAqC;AACvC;;AAEA;EACE,gBAAgB;EAChB,wBAAwB;EACxB,qCAAqC;AACvC;;AAEA;EACE,mCAAmC;AACrC;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,kCAAkC;EAClC,eAAe;EACf,kBAAkB;AACpB;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,YAAY;EACZ,kBAAkB;EAClB,kBAAkB;EAClB,eAAe;EACf,uCAAuC;AACzC;;AAEA;EACE,mCAAmC;AACrC;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,OAAO;EACP,SAAS;AACX;;AAEA;EACE,eAAe;EACf,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,OAAO;AACT;;AAEA;EACE,eAAe;EACf,gBAAgB;EAChB,wBAAwB;EACxB,kBAAkB;AACpB;;AAEA;EACE,eAAe;EACf,kCAAkC;EAClC,yBAAyB;EACzB,qBAAqB;AACvB;;AAEA;EACE,eAAe;EACf,kCAAkC;EAClC,eAAe;AACjB;;AAEA;EACE,gBAAgB;EAChB,YAAY;EACZ,kCAAkC;EAClC,eAAe;EACf,eAAe;EACf,YAAY;EACZ,kBAAkB;EAClB,0BAA0B;EAC1B,UAAU;AACZ;;AAEA;EACE,UAAU;AACZ;;AAEA;EACE,kCAAkC;EAClC,cAAc;AAChB;;AAEA;EACE,yCAAyC;EACzC,iBAAiB;AACnB;;AAEA;EACE,kBAAkB;EAClB,eAAe;EACf,gBAAgB;EAChB,kCAAkC;EAClC,yBAAyB;EACzB,qBAAqB;AACvB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,QAAQ;AACV;;AAEA;EACE,uCAAuC;EACvC,qCAAqC;EACrC,wBAAwB;EACxB,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,kBAAkB;EAClB,0BAA0B;EAC1B,mBAAmB;EACnB,gBAAgB;EAChB,uBAAuB;AACzB;;AAEA;EACE,mCAAmC;EACnC,iCAAiC;AACnC","sourcesContent":[".pin-panel {\r\n  padding: 16px;\r\n  height: 100%;\r\n  overflow-y: auto;\r\n}\r\n\r\n.pin-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.pin-header h4 {\r\n  margin: 0;\r\n  font-size: 12px;\r\n  font-weight: 600;\r\n  color: var(--text-color-secondary);\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.5px;\r\n}\r\n\r\n.add-pin-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  width: 24px;\r\n  height: 24px;\r\n  border-radius: 50%;\r\n  cursor: pointer;\r\n  font-size: 16px;\r\n  font-weight: bold;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  transition: all 0.15s ease;\r\n}\r\n\r\n.add-pin-btn:hover {\r\n  background: var(--accent-color-hover);\r\n  transform: scale(1.1);\r\n}\r\n\r\n.add-pin-form {\r\n  background: var(--secondary-background);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 8px;\r\n  padding: 16px;\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.pin-input,\r\n.pin-select {\r\n  width: 100%;\r\n  background: var(--input-background);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 4px;\r\n  padding: 8px;\r\n  margin-bottom: 8px;\r\n  color: var(--text-color);\r\n  font-size: 13px;\r\n}\r\n\r\n.pin-input:focus,\r\n.pin-select:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n}\r\n\r\n.pin-form-actions {\r\n  display: flex;\r\n  gap: 8px;\r\n  justify-content: flex-end;\r\n}\r\n\r\n.pin-save-btn,\r\n.pin-cancel-btn {\r\n  padding: 6px 12px;\r\n  border-radius: 4px;\r\n  font-size: 12px;\r\n  cursor: pointer;\r\n  transition: all 0.15s ease;\r\n}\r\n\r\n.pin-save-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n}\r\n\r\n.pin-save-btn:hover {\r\n  background: var(--accent-color-hover);\r\n}\r\n\r\n.pin-cancel-btn {\r\n  background: none;\r\n  color: var(--text-color);\r\n  border: 1px solid var(--border-color);\r\n}\r\n\r\n.pin-cancel-btn:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n.pin-list {\r\n  margin-bottom: 24px;\r\n}\r\n\r\n.pin-empty {\r\n  text-align: center;\r\n  color: var(--text-color-secondary);\r\n  font-size: 13px;\r\n  padding: 32px 16px;\r\n}\r\n\r\n.pin-empty p {\r\n  margin: 8px 0;\r\n}\r\n\r\n.pin-item {\r\n  display: flex;\r\n  align-items: center;\r\n  padding: 8px;\r\n  margin-bottom: 4px;\r\n  border-radius: 6px;\r\n  cursor: pointer;\r\n  transition: background-color 0.15s ease;\r\n}\r\n\r\n.pin-item:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n.pin-content {\r\n  display: flex;\r\n  align-items: center;\r\n  flex: 1;\r\n  gap: 12px;\r\n}\r\n\r\n.pin-icon {\r\n  font-size: 18px;\r\n  min-width: 24px;\r\n}\r\n\r\n.pin-details {\r\n  display: flex;\r\n  flex-direction: column;\r\n  flex: 1;\r\n}\r\n\r\n.pin-name {\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n  color: var(--text-color);\r\n  margin-bottom: 2px;\r\n}\r\n\r\n.pin-type {\r\n  font-size: 11px;\r\n  color: var(--text-color-secondary);\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.5px;\r\n}\r\n\r\n.pin-description {\r\n  font-size: 12px;\r\n  color: var(--text-color-secondary);\r\n  margin-top: 2px;\r\n}\r\n\r\n.pin-remove-btn {\r\n  background: none;\r\n  border: none;\r\n  color: var(--text-color-secondary);\r\n  font-size: 16px;\r\n  cursor: pointer;\r\n  padding: 4px;\r\n  border-radius: 3px;\r\n  transition: all 0.15s ease;\r\n  opacity: 0;\r\n}\r\n\r\n.pin-item:hover .pin-remove-btn {\r\n  opacity: 1;\r\n}\r\n\r\n.pin-remove-btn:hover {\r\n  background: rgba(218, 54, 51, 0.2);\r\n  color: #da3633;\r\n}\r\n\r\n.pin-quick-actions {\r\n  border-top: 1px solid var(--border-color);\r\n  padding-top: 16px;\r\n}\r\n\r\n.pin-quick-actions h5 {\r\n  margin: 0 0 12px 0;\r\n  font-size: 11px;\r\n  font-weight: 600;\r\n  color: var(--text-color-secondary);\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.5px;\r\n}\r\n\r\n.quick-action-grid {\r\n  display: grid;\r\n  grid-template-columns: 1fr 1fr;\r\n  gap: 8px;\r\n}\r\n\r\n.quick-action-btn {\r\n  background: var(--secondary-background);\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color);\r\n  padding: 8px;\r\n  border-radius: 6px;\r\n  cursor: pointer;\r\n  font-size: 11px;\r\n  text-align: center;\r\n  transition: all 0.15s ease;\r\n  white-space: nowrap;\r\n  overflow: hidden;\r\n  text-overflow: ellipsis;\r\n}\r\n\r\n.quick-action-btn:hover {\r\n  background: var(--hover-background);\r\n  border-color: var(--accent-color);\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -8552,7 +8585,249 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.settings-panel {
 
 .settings-main::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
-}`, "",{"version":3,"sources":["webpack://./src/renderer/components/SettingsPanel/SettingsPanel.css"],"names":[],"mappings":"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","sourcesContent":[".settings-panel {\r\n  display: flex;\r\n  flex-direction: column;\r\n  height: 100%;\r\n  background: var(--background-color);\r\n  color: var(--text-color);\r\n  font-family: var(--font-family);\r\n}\r\n\r\n.settings-header {\r\n  padding: 16px 20px;\r\n  border-bottom: 1px solid var(--border-color);\r\n  background: var(--secondary-background);\r\n}\r\n\r\n.settings-header h2 {\r\n  margin: 0;\r\n  font-size: 18px;\r\n  font-weight: 600;\r\n}\r\n\r\n.settings-content {\r\n  display: flex;\r\n  flex: 1;\r\n  min-height: 0;\r\n}\r\n\r\n.settings-tabs {\r\n  width: 200px;\r\n  background: var(--secondary-background);\r\n  border-right: 1px solid var(--border-color);\r\n  padding: 12px 0;\r\n}\r\n\r\n.settings-tab {\r\n  display: flex;\r\n  align-items: center;\r\n  padding: 10px 16px;\r\n  cursor: pointer;\r\n  transition: background-color 0.15s ease;\r\n}\r\n\r\n.settings-tab:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n.settings-tab.active {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n}\r\n\r\n.tab-icon {\r\n  margin-right: 8px;\r\n  font-size: 16px;\r\n}\r\n\r\n.tab-name {\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n}\r\n\r\n.settings-main {\r\n  flex: 1;\r\n  padding: 20px;\r\n  overflow-y: auto;\r\n}\r\n\r\n.settings-section {\r\n  max-width: 600px;\r\n}\r\n\r\n.settings-section h3 {\r\n  margin: 0 0 20px 0;\r\n  font-size: 16px;\r\n  font-weight: 600;\r\n  color: var(--text-color);\r\n}\r\n\r\n.setting-item {\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 16px;\r\n  gap: 12px;\r\n}\r\n\r\n.setting-item label {\r\n  min-width: 120px;\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.setting-item input,\r\n.setting-item select,\r\n.setting-item textarea {\r\n  background: var(--input-background);\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color);\r\n  padding: 6px 8px;\r\n  border-radius: 4px;\r\n  font-size: 13px;\r\n  font-family: inherit;\r\n}\r\n\r\n.setting-item input:focus,\r\n.setting-item select:focus,\r\n.setting-item textarea:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n  box-shadow: 0 0 0 2px var(--accent-color-alpha);\r\n}\r\n\r\n.setting-item input[type=\"checkbox\"] {\r\n  width: 16px;\r\n  height: 16px;\r\n  margin-right: 8px;\r\n}\r\n\r\n.setting-item input[type=\"number\"] {\r\n  width: 80px;\r\n}\r\n\r\n.setting-item select {\r\n  min-width: 120px;\r\n}\r\n\r\n.setting-item textarea {\r\n  min-width: 300px;\r\n  resize: vertical;\r\n}\r\n\r\n/* Theme Selector */\r\n.theme-selector {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));\r\n  gap: 16px;\r\n  margin-top: 16px;\r\n}\r\n\r\n.theme-option {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  padding: 12px;\r\n  border: 2px solid var(--border-color);\r\n  border-radius: 8px;\r\n  cursor: pointer;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.theme-option:hover {\r\n  border-color: var(--accent-color-alpha);\r\n}\r\n\r\n.theme-option.active {\r\n  border-color: var(--accent-color);\r\n  background: var(--accent-color-alpha);\r\n}\r\n\r\n.theme-preview {\r\n  width: 120px;\r\n  height: 80px;\r\n  border-radius: 4px;\r\n  overflow: hidden;\r\n  margin-bottom: 8px;\r\n  position: relative;\r\n  border: 1px solid var(--border-color);\r\n}\r\n\r\n.theme-preview-dark {\r\n  background: #1e1e1e;\r\n}\r\n\r\n.theme-preview-light {\r\n  background: #ffffff;\r\n}\r\n\r\n.theme-preview-modern-blue {\r\n  background: #0d1421;\r\n}\r\n\r\n.preview-header {\r\n  height: 20px;\r\n  background: rgba(255, 255, 255, 0.1);\r\n}\r\n\r\n.theme-preview-dark .preview-header {\r\n  background: #2d2d30;\r\n}\r\n\r\n.theme-preview-light .preview-header {\r\n  background: #f3f3f3;\r\n}\r\n\r\n.theme-preview-modern-blue .preview-header {\r\n  background: #1e293b;\r\n}\r\n\r\n.preview-sidebar {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 20px;\r\n  width: 30px;\r\n  height: calc(100% - 20px);\r\n  background: rgba(255, 255, 255, 0.05);\r\n}\r\n\r\n.theme-preview-dark .preview-sidebar {\r\n  background: #252526;\r\n}\r\n\r\n.theme-preview-light .preview-sidebar {\r\n  background: #f8f8f8;\r\n}\r\n\r\n.theme-preview-modern-blue .preview-sidebar {\r\n  background: #1e2937;\r\n}\r\n\r\n.preview-content {\r\n  position: absolute;\r\n  left: 30px;\r\n  top: 20px;\r\n  right: 0;\r\n  height: calc(100% - 20px);\r\n  background: rgba(255, 255, 255, 0.02);\r\n}\r\n\r\n.theme-preview-dark .preview-content {\r\n  background: #1e1e1e;\r\n}\r\n\r\n.theme-preview-light .preview-content {\r\n  background: #ffffff;\r\n}\r\n\r\n.theme-preview-modern-blue .preview-content {\r\n  background: #0f172a;\r\n}\r\n\r\n.theme-name {\r\n  font-size: 12px;\r\n  font-weight: 500;\r\n}\r\n\r\n/* Keybind Settings */\r\n.keybind-list {\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.keybind-item {\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 8px;\r\n  gap: 12px;\r\n}\r\n\r\n.action-name {\r\n  min-width: 120px;\r\n  font-size: 13px;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.keybind-item input {\r\n  flex: 1;\r\n  max-width: 200px;\r\n}\r\n\r\n.add-keybind-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  padding: 8px 16px;\r\n  border-radius: 4px;\r\n  font-size: 13px;\r\n  cursor: pointer;\r\n  transition: background-color 0.15s ease;\r\n}\r\n\r\n.add-keybind-btn:hover {\r\n  background: var(--accent-hover-color);\r\n}\r\n\r\n/* Pin Configurator */\r\n.pin-configurator {\r\n  margin-top: 16px;\r\n}\r\n\r\n.board-selector {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.pin-assignments h4 {\r\n  margin: 0 0 12px 0;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n}\r\n\r\n.pin-grid {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));\r\n  gap: 12px;\r\n}\r\n\r\n.pin-item {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 4px;\r\n}\r\n\r\n.pin-item label {\r\n  font-size: 12px;\r\n  font-weight: 500;\r\n  min-width: auto;\r\n}\r\n\r\n.pin-item select {\r\n  font-size: 12px;\r\n  padding: 4px 6px;\r\n}\r\n\r\n/* Scrollbar Styling */\r\n.settings-main::-webkit-scrollbar {\r\n  width: 8px;\r\n}\r\n\r\n.settings-main::-webkit-scrollbar-track {\r\n  background: var(--scrollbar-track);\r\n}\r\n\r\n.settings-main::-webkit-scrollbar-thumb {\r\n  background: var(--scrollbar-thumb);\r\n  border-radius: 4px;\r\n}\r\n\r\n.settings-main::-webkit-scrollbar-thumb:hover {\r\n  background: var(--scrollbar-thumb-hover);\r\n}"],"sourceRoot":""}]);
+}
+
+/* Wallpaper Settings */
+.wallpaper-preview-container {
+  margin: 20px 0;
+}
+
+.wallpaper-preview {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.wallpaper-preview.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--secondary-background);
+  border-style: dashed;
+}
+
+.wallpaper-preview.empty span {
+  color: var(--text-color-secondary);
+  font-size: 14px;
+  font-style: italic;
+}
+
+.preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.file-selector {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.file-selector input {
+  flex: 1;
+}
+
+.file-selector .btn {
+  padding: 6px 12px;
+  white-space: nowrap;
+}
+
+.opacity-slider {
+  flex: 1;
+  max-width: 300px;
+  height: 6px;
+  -webkit-appearance: none;
+  background: var(--border-color);
+  border-radius: 3px;
+  outline: none;
+}
+
+.opacity-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.opacity-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px var(--accent-color);
+}
+
+.opacity-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-color-secondary);
+}
+
+.switch {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background: var(--border-color);
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.switch.checked {
+  background: var(--accent-color);
+}
+
+.switch.checked::after {
+  transform: translateX(24px);
+}
+
+.wallpaper-tips {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--secondary-background);
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-color);
+}
+
+.wallpaper-tips h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.wallpaper-tips ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.wallpaper-tips li {
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--text-color-secondary);
+  line-height: 1.5;
+}
+
+.btn {
+  background: var(--accent-color);
+  color: var(--accent-text-color);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn:hover {
+  background: var(--accent-hover-color);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn.secondary {
+  background: var(--secondary-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.btn.secondary:hover {
+  background: var(--hover-background);
+}
+
+/* Additional theme previews */
+.theme-preview-liquid-glass {
+  background: rgba(99, 179, 237, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.theme-preview-liquid-glass .preview-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.theme-preview-liquid-glass .preview-sidebar {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.theme-preview-liquid-glass .preview-content {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.theme-preview-material {
+  background: #1C1B1F;
+}
+
+.theme-preview-material .preview-header {
+  background: #2B2930;
+}
+
+.theme-preview-material .preview-sidebar {
+  background: #201F26;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.theme-preview-material .preview-content {
+  background: #0F0D13;
+}
+
+.theme-preview-anime {
+  background: #0a0e27;
+  border: 2px solid #00E5FF;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+
+.theme-preview-anime .preview-header {
+  background: #9D00FF;
+  height: 3px;
+}
+
+.theme-preview-anime .preview-sidebar {
+  background: #252a48;
+  border-right: 2px solid #00E5FF;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+}
+
+.theme-preview-anime .preview-content {
+  background: #0a0e27;
+}`, "",{"version":3,"sources":["webpack://./src/renderer/components/SettingsPanel/SettingsPanel.css"],"names":[],"mappings":"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","sourcesContent":[".settings-panel {\r\n  display: flex;\r\n  flex-direction: column;\r\n  height: 100%;\r\n  background: var(--background-color);\r\n  color: var(--text-color);\r\n  font-family: var(--font-family);\r\n}\r\n\r\n.settings-header {\r\n  padding: 16px 20px;\r\n  border-bottom: 1px solid var(--border-color);\r\n  background: var(--secondary-background);\r\n}\r\n\r\n.settings-header h2 {\r\n  margin: 0;\r\n  font-size: 18px;\r\n  font-weight: 600;\r\n}\r\n\r\n.settings-content {\r\n  display: flex;\r\n  flex: 1;\r\n  min-height: 0;\r\n}\r\n\r\n.settings-tabs {\r\n  width: 200px;\r\n  background: var(--secondary-background);\r\n  border-right: 1px solid var(--border-color);\r\n  padding: 12px 0;\r\n}\r\n\r\n.settings-tab {\r\n  display: flex;\r\n  align-items: center;\r\n  padding: 10px 16px;\r\n  cursor: pointer;\r\n  transition: background-color 0.15s ease;\r\n}\r\n\r\n.settings-tab:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n.settings-tab.active {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n}\r\n\r\n.tab-icon {\r\n  margin-right: 8px;\r\n  font-size: 16px;\r\n}\r\n\r\n.tab-name {\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n}\r\n\r\n.settings-main {\r\n  flex: 1;\r\n  padding: 20px;\r\n  overflow-y: auto;\r\n}\r\n\r\n.settings-section {\r\n  max-width: 600px;\r\n}\r\n\r\n.settings-section h3 {\r\n  margin: 0 0 20px 0;\r\n  font-size: 16px;\r\n  font-weight: 600;\r\n  color: var(--text-color);\r\n}\r\n\r\n.setting-item {\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 16px;\r\n  gap: 12px;\r\n}\r\n\r\n.setting-item label {\r\n  min-width: 120px;\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.setting-item input,\r\n.setting-item select,\r\n.setting-item textarea {\r\n  background: var(--input-background);\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color);\r\n  padding: 6px 8px;\r\n  border-radius: 4px;\r\n  font-size: 13px;\r\n  font-family: inherit;\r\n}\r\n\r\n.setting-item input:focus,\r\n.setting-item select:focus,\r\n.setting-item textarea:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n  box-shadow: 0 0 0 2px var(--accent-color-alpha);\r\n}\r\n\r\n.setting-item input[type=\"checkbox\"] {\r\n  width: 16px;\r\n  height: 16px;\r\n  margin-right: 8px;\r\n}\r\n\r\n.setting-item input[type=\"number\"] {\r\n  width: 80px;\r\n}\r\n\r\n.setting-item select {\r\n  min-width: 120px;\r\n}\r\n\r\n.setting-item textarea {\r\n  min-width: 300px;\r\n  resize: vertical;\r\n}\r\n\r\n/* Theme Selector */\r\n.theme-selector {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));\r\n  gap: 16px;\r\n  margin-top: 16px;\r\n}\r\n\r\n.theme-option {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  padding: 12px;\r\n  border: 2px solid var(--border-color);\r\n  border-radius: 8px;\r\n  cursor: pointer;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.theme-option:hover {\r\n  border-color: var(--accent-color-alpha);\r\n}\r\n\r\n.theme-option.active {\r\n  border-color: var(--accent-color);\r\n  background: var(--accent-color-alpha);\r\n}\r\n\r\n.theme-preview {\r\n  width: 120px;\r\n  height: 80px;\r\n  border-radius: 4px;\r\n  overflow: hidden;\r\n  margin-bottom: 8px;\r\n  position: relative;\r\n  border: 1px solid var(--border-color);\r\n}\r\n\r\n.theme-preview-dark {\r\n  background: #1e1e1e;\r\n}\r\n\r\n.theme-preview-light {\r\n  background: #ffffff;\r\n}\r\n\r\n.theme-preview-modern-blue {\r\n  background: #0d1421;\r\n}\r\n\r\n.preview-header {\r\n  height: 20px;\r\n  background: rgba(255, 255, 255, 0.1);\r\n}\r\n\r\n.theme-preview-dark .preview-header {\r\n  background: #2d2d30;\r\n}\r\n\r\n.theme-preview-light .preview-header {\r\n  background: #f3f3f3;\r\n}\r\n\r\n.theme-preview-modern-blue .preview-header {\r\n  background: #1e293b;\r\n}\r\n\r\n.preview-sidebar {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 20px;\r\n  width: 30px;\r\n  height: calc(100% - 20px);\r\n  background: rgba(255, 255, 255, 0.05);\r\n}\r\n\r\n.theme-preview-dark .preview-sidebar {\r\n  background: #252526;\r\n}\r\n\r\n.theme-preview-light .preview-sidebar {\r\n  background: #f8f8f8;\r\n}\r\n\r\n.theme-preview-modern-blue .preview-sidebar {\r\n  background: #1e2937;\r\n}\r\n\r\n.preview-content {\r\n  position: absolute;\r\n  left: 30px;\r\n  top: 20px;\r\n  right: 0;\r\n  height: calc(100% - 20px);\r\n  background: rgba(255, 255, 255, 0.02);\r\n}\r\n\r\n.theme-preview-dark .preview-content {\r\n  background: #1e1e1e;\r\n}\r\n\r\n.theme-preview-light .preview-content {\r\n  background: #ffffff;\r\n}\r\n\r\n.theme-preview-modern-blue .preview-content {\r\n  background: #0f172a;\r\n}\r\n\r\n.theme-name {\r\n  font-size: 12px;\r\n  font-weight: 500;\r\n}\r\n\r\n/* Keybind Settings */\r\n.keybind-list {\r\n  margin-bottom: 16px;\r\n}\r\n\r\n.keybind-item {\r\n  display: flex;\r\n  align-items: center;\r\n  margin-bottom: 8px;\r\n  gap: 12px;\r\n}\r\n\r\n.action-name {\r\n  min-width: 120px;\r\n  font-size: 13px;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.keybind-item input {\r\n  flex: 1;\r\n  max-width: 200px;\r\n}\r\n\r\n.add-keybind-btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  padding: 8px 16px;\r\n  border-radius: 4px;\r\n  font-size: 13px;\r\n  cursor: pointer;\r\n  transition: background-color 0.15s ease;\r\n}\r\n\r\n.add-keybind-btn:hover {\r\n  background: var(--accent-hover-color);\r\n}\r\n\r\n/* Pin Configurator */\r\n.pin-configurator {\r\n  margin-top: 16px;\r\n}\r\n\r\n.board-selector {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.pin-assignments h4 {\r\n  margin: 0 0 12px 0;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n}\r\n\r\n.pin-grid {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));\r\n  gap: 12px;\r\n}\r\n\r\n.pin-item {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 4px;\r\n}\r\n\r\n.pin-item label {\r\n  font-size: 12px;\r\n  font-weight: 500;\r\n  min-width: auto;\r\n}\r\n\r\n.pin-item select {\r\n  font-size: 12px;\r\n  padding: 4px 6px;\r\n}\r\n\r\n/* Scrollbar Styling */\r\n.settings-main::-webkit-scrollbar {\r\n  width: 8px;\r\n}\r\n\r\n.settings-main::-webkit-scrollbar-track {\r\n  background: var(--scrollbar-track);\r\n}\r\n\r\n.settings-main::-webkit-scrollbar-thumb {\r\n  background: var(--scrollbar-thumb);\r\n  border-radius: 4px;\r\n}\r\n\r\n.settings-main::-webkit-scrollbar-thumb:hover {\r\n  background: var(--scrollbar-thumb-hover);\r\n}\r\n\r\n/* Wallpaper Settings */\r\n.wallpaper-preview-container {\r\n  margin: 20px 0;\r\n}\r\n\r\n.wallpaper-preview {\r\n  width: 100%;\r\n  height: 200px;\r\n  border-radius: 12px;\r\n  border: 2px solid var(--border-color);\r\n  position: relative;\r\n  overflow: hidden;\r\n  background-size: cover;\r\n  background-position: center;\r\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.wallpaper-preview.empty {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  background: var(--secondary-background);\r\n  border-style: dashed;\r\n}\r\n\r\n.wallpaper-preview.empty span {\r\n  color: var(--text-color-secondary);\r\n  font-size: 14px;\r\n  font-style: italic;\r\n}\r\n\r\n.preview-overlay {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  pointer-events: none;\r\n}\r\n\r\n.file-selector {\r\n  display: flex;\r\n  gap: 8px;\r\n  flex: 1;\r\n}\r\n\r\n.file-selector input {\r\n  flex: 1;\r\n}\r\n\r\n.file-selector .btn {\r\n  padding: 6px 12px;\r\n  white-space: nowrap;\r\n}\r\n\r\n.opacity-slider {\r\n  flex: 1;\r\n  max-width: 300px;\r\n  height: 6px;\r\n  -webkit-appearance: none;\r\n  background: var(--border-color);\r\n  border-radius: 3px;\r\n  outline: none;\r\n}\r\n\r\n.opacity-slider::-webkit-slider-thumb {\r\n  -webkit-appearance: none;\r\n  appearance: none;\r\n  width: 18px;\r\n  height: 18px;\r\n  border-radius: 50%;\r\n  background: var(--accent-color);\r\n  cursor: pointer;\r\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.opacity-slider::-webkit-slider-thumb:hover {\r\n  transform: scale(1.2);\r\n  box-shadow: 0 0 12px var(--accent-color);\r\n}\r\n\r\n.opacity-labels {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  margin-top: 4px;\r\n  font-size: 11px;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.switch {\r\n  position: relative;\r\n  width: 50px;\r\n  height: 26px;\r\n  background: var(--border-color);\r\n  border-radius: 13px;\r\n  cursor: pointer;\r\n  transition: background 0.3s ease;\r\n}\r\n\r\n.switch::after {\r\n  content: '';\r\n  position: absolute;\r\n  top: 3px;\r\n  left: 3px;\r\n  width: 20px;\r\n  height: 20px;\r\n  background: white;\r\n  border-radius: 50%;\r\n  transition: transform 0.3s ease;\r\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.switch.checked {\r\n  background: var(--accent-color);\r\n}\r\n\r\n.switch.checked::after {\r\n  transform: translateX(24px);\r\n}\r\n\r\n.wallpaper-tips {\r\n  margin-top: 24px;\r\n  padding: 16px;\r\n  background: var(--secondary-background);\r\n  border-radius: 8px;\r\n  border-left: 4px solid var(--accent-color);\r\n}\r\n\r\n.wallpaper-tips h4 {\r\n  margin: 0 0 12px 0;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n  color: var(--accent-color);\r\n}\r\n\r\n.wallpaper-tips ul {\r\n  margin: 0;\r\n  padding-left: 20px;\r\n}\r\n\r\n.wallpaper-tips li {\r\n  margin-bottom: 8px;\r\n  font-size: 13px;\r\n  color: var(--text-color-secondary);\r\n  line-height: 1.5;\r\n}\r\n\r\n.btn {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  border: none;\r\n  padding: 8px 16px;\r\n  border-radius: 6px;\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n  cursor: pointer;\r\n  transition: all 0.2s ease;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  gap: 6px;\r\n}\r\n\r\n.btn:hover {\r\n  background: var(--accent-hover-color);\r\n  transform: translateY(-1px);\r\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.btn:active {\r\n  transform: translateY(0);\r\n}\r\n\r\n.btn.secondary {\r\n  background: var(--secondary-background);\r\n  color: var(--text-color);\r\n  border: 1px solid var(--border-color);\r\n}\r\n\r\n.btn.secondary:hover {\r\n  background: var(--hover-background);\r\n}\r\n\r\n/* Additional theme previews */\r\n.theme-preview-liquid-glass {\r\n  background: rgba(99, 179, 237, 0.15);\r\n  backdrop-filter: blur(10px);\r\n}\r\n\r\n.theme-preview-liquid-glass .preview-header {\r\n  background: rgba(255, 255, 255, 0.1);\r\n  backdrop-filter: blur(8px);\r\n}\r\n\r\n.theme-preview-liquid-glass .preview-sidebar {\r\n  background: rgba(255, 255, 255, 0.08);\r\n  backdrop-filter: blur(12px);\r\n}\r\n\r\n.theme-preview-liquid-glass .preview-content {\r\n  background: rgba(0, 0, 0, 0.3);\r\n}\r\n\r\n.theme-preview-material {\r\n  background: #1C1B1F;\r\n}\r\n\r\n.theme-preview-material .preview-header {\r\n  background: #2B2930;\r\n}\r\n\r\n.theme-preview-material .preview-sidebar {\r\n  background: #201F26;\r\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);\r\n}\r\n\r\n.theme-preview-material .preview-content {\r\n  background: #0F0D13;\r\n}\r\n\r\n.theme-preview-anime {\r\n  background: #0a0e27;\r\n  border: 2px solid #00E5FF;\r\n  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);\r\n}\r\n\r\n.theme-preview-anime .preview-header {\r\n  background: #9D00FF;\r\n  height: 3px;\r\n}\r\n\r\n.theme-preview-anime .preview-sidebar {\r\n  background: #252a48;\r\n  border-right: 2px solid #00E5FF;\r\n  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);\r\n}\r\n\r\n.theme-preview-anime .preview-content {\r\n  background: #0a0e27;\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9155,6 +9430,330 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.toast-container {
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.css":
+/*!*******************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.css ***!
+  \*******************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.upload-settings-panel {
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.refresh-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-color-secondary);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background: var(--hover-background);
+  color: var(--text-color);
+  transform: rotate(180deg);
+}
+
+.refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mode-indicator {
+  padding: 12px;
+  background: var(--secondary-background);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.mode-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.mode-badge.arduino {
+  background: #00BFCC;
+}
+
+.mode-badge.platformio {
+  background: #FFA500;
+}
+
+.settings-section {
+  background: var(--secondary-background);
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid var(--accent-color);
+}
+
+.settings-section h4 {
+  margin: 0 0 20px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.setting-item {
+  margin-bottom: 20px;
+}
+
+.setting-item label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color-secondary);
+}
+
+.setting-item select,
+.setting-item input[type="text"],
+.setting-item input[type="number"],
+.setting-item textarea {
+  width: 100%;
+  background: var(--input-background);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--text-color);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  transition: all 0.2s ease;
+}
+
+.setting-item select:focus,
+.setting-item input:focus,
+.setting-item textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(var(--accent-color), 0.1);
+}
+
+.setting-item textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: var(--font-mono);
+}
+
+.setting-item small {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-color-secondary);
+  font-style: italic;
+}
+
+.setting-item.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.setting-item.checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.setting-item.checkbox label {
+  margin: 0;
+  cursor: pointer;
+}
+
+.panel-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn.primary {
+  background: var(--accent-color);
+  color: var(--accent-text-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn.primary:hover:not(:disabled) {
+  background: var(--accent-hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn.secondary {
+  background: var(--secondary-background);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+.btn.secondary:hover:not(:disabled) {
+  background: var(--hover-background);
+  border-color: var(--accent-color);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.settings-tips {
+  background: var(--secondary-background);
+  border-radius: 8px;
+  padding: 16px;
+  border-left: 4px solid #FFA500;
+}
+
+.settings-tips h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFA500;
+}
+
+.settings-tips ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.settings-tips li {
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--text-color-secondary);
+  line-height: 1.6;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-color-secondary);
+}
+
+/* Scrollbar */
+.upload-settings-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.upload-settings-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.upload-settings-panel::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.upload-settings-panel::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .setting-item select,
+[data-theme="dark"] .setting-item input,
+[data-theme="dark"] .setting-item textarea {
+  background: #2a2a2a;
+  border-color: #404040;
+}
+
+[data-theme="dark"] .settings-section {
+  background: #1e1e1e;
+}
+
+/* Light theme adjustments */
+[data-theme="light"] .setting-item select,
+[data-theme="light"] .setting-item input,
+[data-theme="light"] .setting-item textarea {
+  background: #ffffff;
+  border-color: #d0d0d0;
+}
+
+[data-theme="light"] .settings-section {
+  background: #f5f5f5;
+}
+`, "",{"version":3,"sources":["webpack://./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.css"],"names":[],"mappings":"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","sourcesContent":[".upload-settings-panel {\r\n  padding: 20px;\r\n  height: 100%;\r\n  overflow-y: auto;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 20px;\r\n}\r\n\r\n.panel-header {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  align-items: center;\r\n  padding-bottom: 16px;\r\n  border-bottom: 2px solid var(--border-color);\r\n}\r\n\r\n.panel-header h3 {\r\n  margin: 0;\r\n  font-size: 18px;\r\n  font-weight: 600;\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 8px;\r\n}\r\n\r\n.refresh-btn {\r\n  background: none;\r\n  border: 1px solid var(--border-color);\r\n  color: var(--text-color-secondary);\r\n  padding: 6px 10px;\r\n  border-radius: 6px;\r\n  cursor: pointer;\r\n  font-size: 14px;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.refresh-btn:hover:not(:disabled) {\r\n  background: var(--hover-background);\r\n  color: var(--text-color);\r\n  transform: rotate(180deg);\r\n}\r\n\r\n.refresh-btn:disabled {\r\n  opacity: 0.5;\r\n  cursor: not-allowed;\r\n}\r\n\r\n.mode-indicator {\r\n  padding: 12px;\r\n  background: var(--secondary-background);\r\n  border-radius: 8px;\r\n  text-align: center;\r\n}\r\n\r\n.mode-badge {\r\n  display: inline-block;\r\n  padding: 8px 16px;\r\n  border-radius: 20px;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n  color: white;\r\n}\r\n\r\n.mode-badge.arduino {\r\n  background: #00BFCC;\r\n}\r\n\r\n.mode-badge.platformio {\r\n  background: #FFA500;\r\n}\r\n\r\n.settings-section {\r\n  background: var(--secondary-background);\r\n  border-radius: 8px;\r\n  padding: 20px;\r\n  border-left: 4px solid var(--accent-color);\r\n}\r\n\r\n.settings-section h4 {\r\n  margin: 0 0 20px 0;\r\n  font-size: 16px;\r\n  font-weight: 600;\r\n  color: var(--text-color);\r\n}\r\n\r\n.setting-item {\r\n  margin-bottom: 20px;\r\n}\r\n\r\n.setting-item label {\r\n  display: block;\r\n  margin-bottom: 8px;\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n.setting-item select,\r\n.setting-item input[type=\"text\"],\r\n.setting-item input[type=\"number\"],\r\n.setting-item textarea {\r\n  width: 100%;\r\n  background: var(--input-background);\r\n  border: 1px solid var(--border-color);\r\n  border-radius: 6px;\r\n  padding: 10px 12px;\r\n  color: var(--text-color);\r\n  font-size: 13px;\r\n  font-family: var(--font-mono);\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n.setting-item select:focus,\r\n.setting-item input:focus,\r\n.setting-item textarea:focus {\r\n  outline: none;\r\n  border-color: var(--accent-color);\r\n  box-shadow: 0 0 0 3px rgba(var(--accent-color), 0.1);\r\n}\r\n\r\n.setting-item textarea {\r\n  resize: vertical;\r\n  min-height: 80px;\r\n  font-family: var(--font-mono);\r\n}\r\n\r\n.setting-item small {\r\n  display: block;\r\n  margin-top: 6px;\r\n  font-size: 11px;\r\n  color: var(--text-color-secondary);\r\n  font-style: italic;\r\n}\r\n\r\n.setting-item.checkbox {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n}\r\n\r\n.setting-item.checkbox input[type=\"checkbox\"] {\r\n  width: 18px;\r\n  height: 18px;\r\n  cursor: pointer;\r\n}\r\n\r\n.setting-item.checkbox label {\r\n  margin: 0;\r\n  cursor: pointer;\r\n}\r\n\r\n.panel-actions {\r\n  display: flex;\r\n  gap: 12px;\r\n  padding-top: 20px;\r\n  border-top: 1px solid var(--border-color);\r\n}\r\n\r\n.btn {\r\n  flex: 1;\r\n  padding: 12px 20px;\r\n  border-radius: 8px;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n  cursor: pointer;\r\n  transition: all 0.2s ease;\r\n  border: none;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  gap: 8px;\r\n}\r\n\r\n.btn.primary {\r\n  background: var(--accent-color);\r\n  color: var(--accent-text-color);\r\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.btn.primary:hover:not(:disabled) {\r\n  background: var(--accent-hover-color);\r\n  transform: translateY(-2px);\r\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);\r\n}\r\n\r\n.btn.secondary {\r\n  background: var(--secondary-background);\r\n  color: var(--text-color);\r\n  border: 1px solid var(--border-color);\r\n}\r\n\r\n.btn.secondary:hover:not(:disabled) {\r\n  background: var(--hover-background);\r\n  border-color: var(--accent-color);\r\n}\r\n\r\n.btn:disabled {\r\n  opacity: 0.5;\r\n  cursor: not-allowed;\r\n}\r\n\r\n.settings-tips {\r\n  background: var(--secondary-background);\r\n  border-radius: 8px;\r\n  padding: 16px;\r\n  border-left: 4px solid #FFA500;\r\n}\r\n\r\n.settings-tips h4 {\r\n  margin: 0 0 12px 0;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n  color: #FFA500;\r\n}\r\n\r\n.settings-tips ul {\r\n  margin: 0;\r\n  padding-left: 20px;\r\n}\r\n\r\n.settings-tips li {\r\n  margin-bottom: 8px;\r\n  font-size: 12px;\r\n  color: var(--text-color-secondary);\r\n  line-height: 1.6;\r\n}\r\n\r\n.loading-state {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  padding: 60px 20px;\r\n  text-align: center;\r\n}\r\n\r\n.spinner {\r\n  width: 40px;\r\n  height: 40px;\r\n  border: 4px solid var(--border-color);\r\n  border-top-color: var(--accent-color);\r\n  border-radius: 50%;\r\n  animation: spin 1s linear infinite;\r\n  margin-bottom: 16px;\r\n}\r\n\r\n@keyframes spin {\r\n  to { transform: rotate(360deg); }\r\n}\r\n\r\n.loading-state p {\r\n  margin: 0;\r\n  font-size: 14px;\r\n  color: var(--text-color-secondary);\r\n}\r\n\r\n/* Scrollbar */\r\n.upload-settings-panel::-webkit-scrollbar {\r\n  width: 8px;\r\n}\r\n\r\n.upload-settings-panel::-webkit-scrollbar-track {\r\n  background: transparent;\r\n}\r\n\r\n.upload-settings-panel::-webkit-scrollbar-thumb {\r\n  background: var(--scrollbar-thumb);\r\n  border-radius: 4px;\r\n}\r\n\r\n.upload-settings-panel::-webkit-scrollbar-thumb:hover {\r\n  background: var(--scrollbar-thumb-hover);\r\n}\r\n\r\n/* Dark theme adjustments */\r\n[data-theme=\"dark\"] .setting-item select,\r\n[data-theme=\"dark\"] .setting-item input,\r\n[data-theme=\"dark\"] .setting-item textarea {\r\n  background: #2a2a2a;\r\n  border-color: #404040;\r\n}\r\n\r\n[data-theme=\"dark\"] .settings-section {\r\n  background: #1e1e1e;\r\n}\r\n\r\n/* Light theme adjustments */\r\n[data-theme=\"light\"] .setting-item select,\r\n[data-theme=\"light\"] .setting-item input,\r\n[data-theme=\"light\"] .setting-item textarea {\r\n  background: #ffffff;\r\n  border-color: #d0d0d0;\r\n}\r\n\r\n[data-theme=\"light\"] .settings-section {\r\n  background: #f5f5f5;\r\n}\r\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/App.css":
 /*!***************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/App.css ***!
@@ -9190,8 +9789,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.app {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-}`, "",{"version":3,"sources":["webpack://./src/renderer/styles/App.css"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,aAAa;EACb,aAAa;EACb,sBAAsB;EACtB,6BAA6B;EAC7B,0BAA0B;EAC1B,gBAAgB;AAClB;;AAEA,0BAA0B;AAC1B;EACE,OAAO;EACP,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,mFAAmF;AACrF","sourcesContent":[".app {\r\n  width: 100vw;\r\n  height: 100vh;\r\n  display: flex;\r\n  flex-direction: column;\r\n  background: var(--bg-primary);\r\n  color: var(--text-primary);\r\n  overflow: hidden;\r\n}\r\n\r\n/* Startup Screen Styles */\r\n.startup-container {\r\n  flex: 1;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);\r\n}"],"sourceRoot":""}]);
+  background: var(--bg-secondary);
+}`, "",{"version":3,"sources":["webpack://./src/renderer/styles/App.css"],"names":[],"mappings":"AAAA;EACE,YAAY;EACZ,aAAa;EACb,aAAa;EACb,sBAAsB;EACtB,6BAA6B;EAC7B,0BAA0B;EAC1B,gBAAgB;AAClB;;AAEA,0BAA0B;AAC1B;EACE,OAAO;EACP,aAAa;EACb,mBAAmB;EACnB,uBAAuB;EACvB,+BAA+B;AACjC","sourcesContent":[".app {\r\n  width: 100vw;\r\n  height: 100vh;\r\n  display: flex;\r\n  flex-direction: column;\r\n  background: var(--bg-primary);\r\n  color: var(--text-primary);\r\n  overflow: hidden;\r\n}\r\n\r\n/* Startup Screen Styles */\r\n.startup-container {\r\n  flex: 1;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  background: var(--bg-secondary);\r\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9496,6 +10095,1489 @@ body {  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystem
 .slide-in-right {
   animation: slideInFromRight var(--transition-normal);
 }`, "",{"version":3,"sources":["webpack://./src/renderer/styles/global.css"],"names":[],"mappings":"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","sourcesContent":["/* Tova IDE - Modern Global Styles *//* Global CSS Reset and Base Styles */\r\n\r\n* {* {\r\n\r\n  margin: 0;  margin: 0;\r\n\r\n  padding: 0;  padding: 0;\r\n\r\n  box-sizing: border-box;  box-sizing: border-box;\r\n\r\n}}\r\n\r\n\r\n\r\nhtml, body, #root {html, body {\r\n\r\n  width: 100%;  height: 100%;\r\n\r\n  height: 100%;  overflow: hidden;\r\n\r\n  overflow: hidden;}\r\n\r\n}\r\n\r\nbody {\r\n\r\nbody {  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;\r\n\r\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Noto Sans\", Helvetica, Arial, sans-serif;  font-size: 13px;\r\n\r\n  font-size: 14px;  line-height: 1.4;\r\n\r\n  line-height: 1.5;  background-color: var(--bg-primary);\r\n\r\n  color: #171717;  color: var(--text-primary);\r\n\r\n  background: #ffffff;  -webkit-font-smoothing: antialiased;\r\n\r\n  -webkit-font-smoothing: antialiased;  -moz-osx-font-smoothing: grayscale;\r\n\r\n  -moz-osx-font-smoothing: grayscale;}\r\n\r\n}\r\n\r\n/* CSS Variables for Theming */\r\n\r\n::-webkit-scrollbar {:root {\r\n\r\n  width: 10px;  /* Dark Theme (Default) */\r\n\r\n  height: 10px;  --bg-primary: #1e1e1e;\r\n\r\n}  --bg-secondary: #252526;\r\n\r\n  --bg-tertiary: #2d2d30;\r\n\r\n::-webkit-scrollbar-track {  --bg-hover: #37373d;\r\n\r\n  background: #fafafa;  --bg-active: #094771;\r\n\r\n}  \r\n\r\n  --text-primary: #cccccc;\r\n\r\n::-webkit-scrollbar-thumb {  --text-secondary: #969696;\r\n\r\n  background: #d4d4d4;  --text-muted: #6a6a6a;\r\n\r\n  border-radius: 10px;  \r\n\r\n}  --border-primary: #3e3e42;\r\n\r\n  --border-secondary: #2d2d30;\r\n\r\n::-webkit-scrollbar-thumb:hover {  \r\n\r\n  background: #a3a3a3;  --accent-blue: #007acc;\r\n\r\n}  --accent-blue-hover: #1177bb;\r\n\r\n  --accent-green: #28a745;\r\n  --accent-red: #dc3545;\r\n  --accent-yellow: #ffc107;\r\n  \r\n  /* Shadows */\r\n  --shadow-small: 0 1px 3px rgba(0, 0, 0, 0.3);\r\n  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.4);\r\n  --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.5);\r\n  \r\n  /* Transitions */\r\n  --transition-fast: 150ms ease;\r\n  --transition-normal: 250ms ease;\r\n  --transition-slow: 350ms ease;\r\n}\r\n\r\n/* Light Theme Variables */\r\n[data-theme=\"light\"] {\r\n  --bg-primary: #ffffff;\r\n  --bg-secondary: #f8f9fa;\r\n  --bg-tertiary: #e9ecef;\r\n  --bg-hover: #e3e6ea;\r\n  --bg-active: #0366d6;\r\n  \r\n  --text-primary: #24292e;\r\n  --text-secondary: #586069;\r\n  --text-muted: #959da5;\r\n  \r\n  --border-primary: #d0d7de;\r\n  --border-secondary: #e1e4e8;\r\n  \r\n  --accent-blue: #0366d6;\r\n  --accent-blue-hover: #0256cc;\r\n}\r\n\r\n/* Modern Light Blue Theme Variables */\r\n[data-theme=\"modern-blue\"] {\r\n  --bg-primary: #f6f8fa;\r\n  --bg-secondary: #ffffff;\r\n  --bg-tertiary: #e1f5fe;\r\n  --bg-hover: #e3f2fd;\r\n  --bg-active: #2196f3;\r\n  \r\n  --text-primary: #263238;\r\n  --text-secondary: #546e7a;\r\n  --text-muted: #78909c;\r\n  \r\n  --border-primary: #b0bec5;\r\n  --border-secondary: #cfd8dc;\r\n  \r\n  --accent-blue: #2196f3;\r\n  --accent-blue-hover: #1976d2;\r\n}\r\n\r\n/* Utility Classes */\r\n.flex {\r\n  display: flex;\r\n}\r\n\r\n.flex-column {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n.flex-1 {\r\n  flex: 1;\r\n}\r\n\r\n.items-center {\r\n  align-items: center;\r\n}\r\n\r\n.justify-center {\r\n  justify-content: center;\r\n}\r\n\r\n.justify-between {\r\n  justify-content: space-between;\r\n}\r\n\r\n.text-center {\r\n  text-align: center;\r\n}\r\n\r\n.cursor-pointer {\r\n  cursor: pointer;\r\n}\r\n\r\n.select-none {\r\n  user-select: none;\r\n  -webkit-user-select: none;\r\n}\r\n\r\n.no-drag {\r\n  -webkit-app-region: no-drag;\r\n}\r\n\r\n.draggable {\r\n  -webkit-app-region: drag;\r\n}\r\n\r\n/* Scrollbar Styling */\r\n::-webkit-scrollbar {\r\n  width: 8px;\r\n  height: 8px;\r\n}\r\n\r\n::-webkit-scrollbar-track {\r\n  background: var(--bg-secondary);\r\n}\r\n\r\n::-webkit-scrollbar-thumb {\r\n  background: var(--border-primary);\r\n  border-radius: 4px;\r\n}\r\n\r\n::-webkit-scrollbar-thumb:hover {\r\n  background: var(--text-muted);\r\n}\r\n\r\n/* Button Base Styles */\r\n.btn {\r\n  padding: 6px 12px;\r\n  border: 1px solid var(--border-primary);\r\n  background: var(--bg-secondary);\r\n  color: var(--text-primary);\r\n  border-radius: 3px;\r\n  font-size: 13px;\r\n  cursor: pointer;\r\n  transition: all var(--transition-fast);\r\n  outline: none;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  gap: 4px;\r\n}\r\n\r\n.btn:hover {\r\n  background: var(--bg-hover);\r\n  border-color: var(--accent-blue);\r\n}\r\n\r\n.btn:active {\r\n  background: var(--bg-active);\r\n  color: white;\r\n}\r\n\r\n.btn-primary {\r\n  background: var(--accent-blue);\r\n  color: white;\r\n  border-color: var(--accent-blue);\r\n}\r\n\r\n.btn-primary:hover {\r\n  background: var(--accent-blue-hover);\r\n}\r\n\r\n/* Input Base Styles */\r\n.input {\r\n  padding: 6px 8px;\r\n  border: 1px solid var(--border-primary);\r\n  background: var(--bg-primary);\r\n  color: var(--text-primary);\r\n  border-radius: 3px;\r\n  font-size: 13px;\r\n  outline: none;\r\n  transition: border-color var(--transition-fast);\r\n}\r\n\r\n.input:focus {\r\n  border-color: var(--accent-blue);\r\n  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);\r\n}\r\n\r\n/* Animation Classes */\r\n@keyframes fadeIn {\r\n  from { opacity: 0; }\r\n  to { opacity: 1; }\r\n}\r\n\r\n@keyframes slideInFromLeft {\r\n  from { transform: translateX(-100%); }\r\n  to { transform: translateX(0); }\r\n}\r\n\r\n@keyframes slideInFromRight {\r\n  from { transform: translateX(100%); }\r\n  to { transform: translateX(0); }\r\n}\r\n\r\n.fade-in {\r\n  animation: fadeIn var(--transition-normal);\r\n}\r\n\r\n.slide-in-left {\r\n  animation: slideInFromLeft var(--transition-normal);\r\n}\r\n\r\n.slide-in-right {\r\n  animation: slideInFromRight var(--transition-normal);\r\n}"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-anime.css":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-anime.css ***!
+  \***********************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* Anime Theme - Vibrant, colorful, high-energy design inspired by anime aesthetics */
+
+:root[data-theme="anime"] {
+  /* Vibrant Base Colors */
+  --anime-bg-primary: #0a0e27;
+  --anime-bg-secondary: #1a1f3a;
+  --anime-bg-tertiary: #252a48;
+  --anime-bg-hover: #2d3454;
+  --anime-bg-active: #363d5f;
+  
+  /* Neon Accent Colors */
+  --anime-pink: #FF1493;
+  --anime-cyan: #00E5FF;
+  --anime-purple: #9D00FF;
+  --anime-orange: #FF6B35;
+  --anime-yellow: #FFD23F;
+  --anime-green: #39FF14;
+  --anime-blue: #0080FF;
+  --anime-red: #FF0051;
+  
+  /* Text Colors */
+  --anime-text-primary: #FFFFFF;
+  --anime-text-secondary: #E0E0FF;
+  --anime-text-muted: #A0A0C0;
+  --anime-text-glow: 0 0 10px rgba(255, 255, 255, 0.8);
+  
+  /* Neon Glow Effects */
+  --anime-glow-pink: 0 0 20px rgba(255, 20, 147, 0.6), 0 0 40px rgba(255, 20, 147, 0.4);
+  --anime-glow-cyan: 0 0 20px rgba(0, 229, 255, 0.6), 0 0 40px rgba(0, 229, 255, 0.4);
+  --anime-glow-purple: 0 0 20px rgba(157, 0, 255, 0.6), 0 0 40px rgba(157, 0, 255, 0.4);
+  --anime-glow-orange: 0 0 20px rgba(255, 107, 53, 0.6), 0 0 40px rgba(255, 107, 53, 0.4);
+  --anime-glow-green: 0 0 20px rgba(57, 255, 20, 0.6), 0 0 40px rgba(57, 255, 20, 0.4);
+  
+  /* Borders */
+  --anime-border-neon: 2px solid var(--anime-cyan);
+  --anime-border-glow: 0 0 10px rgba(0, 229, 255, 0.5);
+  
+  /* Animations */
+  --anime-transition-fast: 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --anime-transition-normal: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --anime-transition-slow: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Keyframe Animations */
+@keyframes anime-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes anime-glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.8), 0 0 60px rgba(0, 229, 255, 0.4);
+  }
+}
+
+@keyframes anime-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes anime-rainbow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes anime-scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Base Application */
+[data-theme="anime"] body {
+  background: var(--anime-bg-primary);
+  color: var(--anime-text-primary);
+  font-family: 'Poppins', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+}
+
+/* Animated background scan lines */
+[data-theme="anime"] body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 229, 255, 0.02);
+  pointer-events: none;
+  animation: anime-scan-line 8s linear infinite;
+  z-index: 0;
+}
+
+/* Containers */
+[data-theme="anime"] .sidebar,
+[data-theme="anime"] .file-explorer {
+  background: var(--anime-bg-secondary);
+  border-right: 2px solid var(--anime-cyan);
+  box-shadow: var(--anime-glow-cyan);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="anime"] .sidebar::before,
+[data-theme="anime"] .file-explorer::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(0, 229, 255, 0.03);
+  animation: anime-rainbow 10s linear infinite;
+  pointer-events: none;
+}
+
+[data-theme="anime"] .bottom-panel {
+  background: var(--anime-bg-secondary);
+  border-top: 2px solid var(--anime-purple);
+  box-shadow: var(--anime-glow-purple);
+}
+
+[data-theme="anime"] .title-bar {
+  background: var(--anime-bg-secondary);
+  border-bottom: 2px solid var(--anime-pink);
+  box-shadow: var(--anime-glow-pink);
+}
+
+[data-theme="anime"] .status-bar {
+  background: var(--anime-bg-tertiary);
+  border-top: 2px solid var(--anime-cyan);
+  box-shadow: var(--anime-glow-cyan);
+  color: var(--anime-text-secondary);
+  font-weight: 600;
+}
+
+/* Editor */
+[data-theme="anime"] .editor-container {
+  background: var(--anime-bg-primary);
+  border: 2px solid transparent;
+  border-image: var(--anime-gradient-4) 1;
+  border-radius: 8px;
+  box-shadow: inset 0 0 20px rgba(157, 0, 255, 0.2);
+}
+
+/* Buttons - Neon Style */
+[data-theme="anime"] button,
+[data-theme="anime"] .btn {
+  background: var(--anime-bg-tertiary);
+  color: var(--anime-text-primary);
+  border: 2px solid var(--anime-cyan);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--anime-transition-normal);
+  box-shadow: var(--anime-glow-cyan);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="anime"] button::before,
+[data-theme="anime"] .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.5s;
+}
+
+[data-theme="anime"] button:hover::before,
+[data-theme="anime"] .btn:hover::before {
+  left: 100%;
+}
+
+[data-theme="anime"] button:hover,
+[data-theme="anime"] .btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 0 50px rgba(0, 229, 255, 0.4);
+  border-color: var(--anime-pink);
+  animation: anime-glow-pulse 2s infinite;
+}
+
+[data-theme="anime"] button:active,
+[data-theme="anime"] .btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Primary Button - Gradient */
+[data-theme="anime"] button.primary,
+[data-theme="anime"] .btn.primary {
+  background: var(--anime-gradient-1);
+  border: 2px solid var(--anime-pink);
+  box-shadow: var(--anime-glow-pink);
+  font-weight: 900;
+}
+
+[data-theme="anime"] button.primary:hover {
+  box-shadow: 0 0 40px rgba(255, 20, 147, 1), 0 0 60px rgba(157, 0, 255, 0.6);
+  animation: anime-glow-pulse 1.5s infinite, anime-float 2s ease-in-out infinite;
+}
+
+/* Secondary Button - Different gradient */
+[data-theme="anime"] button.secondary,
+[data-theme="anime"] .btn.secondary {
+  background: var(--anime-gradient-2);
+  border: 2px solid var(--anime-cyan);
+  box-shadow: var(--anime-glow-cyan);
+}
+
+/* Success/Warning/Error Buttons */
+[data-theme="anime"] button.success,
+[data-theme="anime"] .btn.success {
+  background: var(--anime-gradient-5);
+  border-color: var(--anime-green);
+  box-shadow: var(--anime-glow-green);
+}
+
+[data-theme="anime"] button.warning,
+[data-theme="anime"] .btn.warning {
+  background: var(--anime-gradient-3);
+  border-color: var(--anime-orange);
+  box-shadow: var(--anime-glow-orange);
+}
+
+[data-theme="anime"] button.error,
+[data-theme="anime"] .btn.error {
+  border-color: var(--anime-red);
+  box-shadow: 0 0 20px rgba(255, 0, 81, 0.6);
+}
+
+/* Input Fields - Neon */
+[data-theme="anime"] input,
+[data-theme="anime"] select,
+[data-theme="anime"] textarea {
+  background: var(--anime-bg-tertiary);
+  border: 2px solid var(--anime-purple);
+  border-radius: 8px;
+  color: var(--anime-text-primary);
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all var(--anime-transition-normal);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="anime"] input:focus,
+[data-theme="anime"] select:focus,
+[data-theme="anime"] textarea:focus {
+  outline: none;
+  border-color: var(--anime-cyan);
+  box-shadow: var(--anime-glow-cyan), inset 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: var(--anime-bg-hover);
+}
+
+[data-theme="anime"] input::placeholder {
+  color: var(--anime-text-muted);
+  font-style: italic;
+}
+
+/* Cards */
+[data-theme="anime"] .card,
+[data-theme="anime"] .panel {
+  background: var(--anime-bg-secondary);
+  border: 2px solid var(--anime-purple);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--anime-glow-purple);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="anime"] .card::before,
+[data-theme="anime"] .panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--anime-gradient-1);
+}
+
+[data-theme="anime"] .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px rgba(157, 0, 255, 0.8), 0 10px 30px rgba(0, 0, 0, 0.5);
+  border-color: var(--anime-pink);
+}
+
+/* Tabs - Neon */
+[data-theme="anime"] .tab {
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 12px 24px;
+  color: var(--anime-text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all var(--anime-transition-normal);
+  position: relative;
+}
+
+[data-theme="anime"] .tab:hover {
+  color: var(--anime-text-primary);
+  background: rgba(0, 229, 255, 0.1);
+  text-shadow: var(--anime-text-glow);
+}
+
+[data-theme="anime"] .tab.active {
+  color: var(--anime-cyan);
+  border-bottom-color: var(--anime-cyan);
+  text-shadow: var(--anime-glow-cyan);
+  background: rgba(0, 229, 255, 0.15);
+}
+
+[data-theme="anime"] .tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--anime-gradient-2);
+  box-shadow: var(--anime-glow-cyan);
+}
+
+/* File Tree */
+[data-theme="anime"] .file-item {
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 4px 8px;
+  transition: all var(--anime-transition-fast);
+  border-left: 3px solid transparent;
+}
+
+[data-theme="anime"] .file-item:hover {
+  background: var(--anime-bg-hover);
+  border-left-color: var(--anime-cyan);
+  box-shadow: inset 5px 0 10px rgba(0, 229, 255, 0.2);
+  transform: translateX(5px);
+}
+
+[data-theme="anime"] .file-item.active {
+  background: var(--anime-gradient-2);
+  border-left-color: var(--anime-pink);
+  box-shadow: var(--anime-glow-cyan);
+  font-weight: 700;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Context Menu */
+[data-theme="anime"] .context-menu,
+[data-theme="anime"] .dropdown-menu {
+  background: var(--anime-bg-secondary);
+  border: 2px solid var(--anime-purple);
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(157, 0, 255, 0.8), 0 10px 40px rgba(0, 0, 0, 0.6);
+  padding: 8px 0;
+  overflow: hidden;
+}
+
+[data-theme="anime"] .context-menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--anime-gradient-1);
+}
+
+[data-theme="anime"] .context-item,
+[data-theme="anime"] .dropdown-item {
+  padding: 12px 20px;
+  color: var(--anime-text-primary);
+  transition: all var(--anime-transition-fast);
+  border-left: 3px solid transparent;
+  font-weight: 600;
+}
+
+[data-theme="anime"] .context-item:hover,
+[data-theme="anime"] .dropdown-item:hover {
+  background: var(--anime-bg-hover);
+  border-left-color: var(--anime-cyan);
+  text-shadow: var(--anime-text-glow);
+  padding-left: 30px;
+}
+
+/* Scrollbar - Neon */
+[data-theme="anime"] ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+[data-theme="anime"] ::-webkit-scrollbar-track {
+  background: var(--anime-bg-primary);
+  border-radius: 10px;
+}
+
+[data-theme="anime"] ::-webkit-scrollbar-thumb {
+  background: var(--anime-gradient-1);
+  border-radius: 10px;
+  border: 2px solid var(--anime-bg-primary);
+  box-shadow: var(--anime-glow-pink);
+}
+
+[data-theme="anime"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--anime-gradient-4);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.8);
+}
+
+/* Badges */
+[data-theme="anime"] .badge,
+[data-theme="anime"] .chip {
+  background: var(--anime-gradient-1);
+  color: var(--anime-text-primary);
+  border: 2px solid var(--anime-pink);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--anime-glow-pink);
+  display: inline-block;
+}
+
+/* Toast Notifications */
+[data-theme="anime"] .toast {
+  background: var(--anime-bg-secondary);
+  color: var(--anime-text-primary);
+  border: 2px solid var(--anime-cyan);
+  border-radius: 12px;
+  box-shadow: var(--anime-glow-cyan);
+  padding: 16px 20px;
+  border-left: 5px solid var(--anime-cyan);
+  font-weight: 600;
+}
+
+[data-theme="anime"] .toast.success {
+  border-color: var(--anime-green);
+  border-left-color: var(--anime-green);
+  box-shadow: var(--anime-glow-green);
+}
+
+[data-theme="anime"] .toast.error {
+  border-color: var(--anime-red);
+  border-left-color: var(--anime-red);
+  box-shadow: 0 0 20px rgba(255, 0, 81, 0.6);
+}
+
+[data-theme="anime"] .toast.warning {
+  border-color: var(--anime-orange);
+  border-left-color: var(--anime-orange);
+  box-shadow: var(--anime-glow-orange);
+}
+
+/* Loading Spinner - Rainbow */
+[data-theme="anime"] .spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--anime-cyan);
+  border-right-color: var(--anime-pink);
+  border-bottom-color: var(--anime-purple);
+  animation: spin 1s linear infinite, anime-rainbow 3s linear infinite;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+}
+
+/* Switch/Toggle - Neon */
+[data-theme="anime"] .switch {
+  width: 60px;
+  height: 30px;
+  background: var(--anime-bg-tertiary);
+  border: 2px solid var(--anime-purple);
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--anime-transition-normal);
+}
+
+[data-theme="anime"] .switch.checked {
+  background: var(--anime-gradient-1);
+  border-color: var(--anime-pink);
+  box-shadow: var(--anime-glow-pink);
+}
+
+[data-theme="anime"] .switch::after {
+  content: '';
+  width: 22px;
+  height: 22px;
+  background: var(--anime-text-primary);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all var(--anime-transition-normal);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="anime"] .switch.checked::after {
+  left: 32px;
+  box-shadow: 0 0 15px rgba(255, 20, 147, 0.8);
+}
+
+/* Progress Bar - Rainbow */
+[data-theme="anime"] .progress-bar {
+  height: 6px;
+  background: var(--anime-bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--anime-purple);
+}
+
+[data-theme="anime"] .progress-bar-fill {
+  height: 100%;
+  background: var(--anime-gradient-1);
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(255, 20, 147, 0.8);
+  animation: anime-rainbow 3s linear infinite;
+  transition: width 0.3s ease;
+}
+
+/* Selection */
+[data-theme="anime"] ::selection {
+  background: var(--anime-pink);
+  color: var(--anime-text-primary);
+  text-shadow: var(--anime-text-glow);
+}
+
+/* Headers with glow */
+[data-theme="anime"] h1,
+[data-theme="anime"] h2,
+[data-theme="anime"] h3 {
+  background: var(--anime-gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Dividers */
+[data-theme="anime"] .divider,
+[data-theme="anime"] hr {
+  height: 2px;
+  background: var(--anime-gradient-4);
+  border: none;
+  box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+  margin: 16px 0;
+}
+`, "",{"version":3,"sources":["webpack://./src/renderer/styles/theme-anime.css"],"names":[],"mappings":"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","sourcesContent":["/* Anime Theme - Vibrant, colorful, high-energy design inspired by anime aesthetics */\r\n\r\n:root[data-theme=\"anime\"] {\r\n  /* Vibrant Base Colors */\r\n  --anime-bg-primary: #0a0e27;\r\n  --anime-bg-secondary: #1a1f3a;\r\n  --anime-bg-tertiary: #252a48;\r\n  --anime-bg-hover: #2d3454;\r\n  --anime-bg-active: #363d5f;\r\n  \r\n  /* Neon Accent Colors */\r\n  --anime-pink: #FF1493;\r\n  --anime-cyan: #00E5FF;\r\n  --anime-purple: #9D00FF;\r\n  --anime-orange: #FF6B35;\r\n  --anime-yellow: #FFD23F;\r\n  --anime-green: #39FF14;\r\n  --anime-blue: #0080FF;\r\n  --anime-red: #FF0051;\r\n  \r\n  /* Text Colors */\r\n  --anime-text-primary: #FFFFFF;\r\n  --anime-text-secondary: #E0E0FF;\r\n  --anime-text-muted: #A0A0C0;\r\n  --anime-text-glow: 0 0 10px rgba(255, 255, 255, 0.8);\r\n  \r\n  /* Neon Glow Effects */\r\n  --anime-glow-pink: 0 0 20px rgba(255, 20, 147, 0.6), 0 0 40px rgba(255, 20, 147, 0.4);\r\n  --anime-glow-cyan: 0 0 20px rgba(0, 229, 255, 0.6), 0 0 40px rgba(0, 229, 255, 0.4);\r\n  --anime-glow-purple: 0 0 20px rgba(157, 0, 255, 0.6), 0 0 40px rgba(157, 0, 255, 0.4);\r\n  --anime-glow-orange: 0 0 20px rgba(255, 107, 53, 0.6), 0 0 40px rgba(255, 107, 53, 0.4);\r\n  --anime-glow-green: 0 0 20px rgba(57, 255, 20, 0.6), 0 0 40px rgba(57, 255, 20, 0.4);\r\n  \r\n  /* Borders */\r\n  --anime-border-neon: 2px solid var(--anime-cyan);\r\n  --anime-border-glow: 0 0 10px rgba(0, 229, 255, 0.5);\r\n  \r\n  /* Animations */\r\n  --anime-transition-fast: 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);\r\n  --anime-transition-normal: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);\r\n  --anime-transition-slow: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);\r\n}\r\n\r\n/* Keyframe Animations */\r\n@keyframes anime-pulse {\r\n  0%, 100% { opacity: 1; }\r\n  50% { opacity: 0.6; }\r\n}\r\n\r\n@keyframes anime-glow-pulse {\r\n  0%, 100% { \r\n    box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);\r\n  }\r\n  50% { \r\n    box-shadow: 0 0 40px rgba(0, 229, 255, 0.8), 0 0 60px rgba(0, 229, 255, 0.4);\r\n  }\r\n}\r\n\r\n@keyframes anime-float {\r\n  0%, 100% { transform: translateY(0px); }\r\n  50% { transform: translateY(-5px); }\r\n}\r\n\r\n@keyframes anime-rainbow {\r\n  0% { filter: hue-rotate(0deg); }\r\n  100% { filter: hue-rotate(360deg); }\r\n}\r\n\r\n@keyframes anime-scan-line {\r\n  0% { transform: translateY(-100%); }\r\n  100% { transform: translateY(100%); }\r\n}\r\n\r\n/* Base Application */\r\n[data-theme=\"anime\"] body {\r\n  background: var(--anime-bg-primary);\r\n  color: var(--anime-text-primary);\r\n  font-family: 'Poppins', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;\r\n  position: relative;\r\n}\r\n\r\n/* Animated background scan lines */\r\n[data-theme=\"anime\"] body::before {\r\n  content: '';\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  background: rgba(0, 229, 255, 0.02);\r\n  pointer-events: none;\r\n  animation: anime-scan-line 8s linear infinite;\r\n  z-index: 0;\r\n}\r\n\r\n/* Containers */\r\n[data-theme=\"anime\"] .sidebar,\r\n[data-theme=\"anime\"] .file-explorer {\r\n  background: var(--anime-bg-secondary);\r\n  border-right: 2px solid var(--anime-cyan);\r\n  box-shadow: var(--anime-glow-cyan);\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n\r\n[data-theme=\"anime\"] .sidebar::before,\r\n[data-theme=\"anime\"] .file-explorer::before {\r\n  content: '';\r\n  position: absolute;\r\n  top: -50%;\r\n  left: -50%;\r\n  width: 200%;\r\n  height: 200%;\r\n  background: rgba(0, 229, 255, 0.03);\r\n  animation: anime-rainbow 10s linear infinite;\r\n  pointer-events: none;\r\n}\r\n\r\n[data-theme=\"anime\"] .bottom-panel {\r\n  background: var(--anime-bg-secondary);\r\n  border-top: 2px solid var(--anime-purple);\r\n  box-shadow: var(--anime-glow-purple);\r\n}\r\n\r\n[data-theme=\"anime\"] .title-bar {\r\n  background: var(--anime-bg-secondary);\r\n  border-bottom: 2px solid var(--anime-pink);\r\n  box-shadow: var(--anime-glow-pink);\r\n}\r\n\r\n[data-theme=\"anime\"] .status-bar {\r\n  background: var(--anime-bg-tertiary);\r\n  border-top: 2px solid var(--anime-cyan);\r\n  box-shadow: var(--anime-glow-cyan);\r\n  color: var(--anime-text-secondary);\r\n  font-weight: 600;\r\n}\r\n\r\n/* Editor */\r\n[data-theme=\"anime\"] .editor-container {\r\n  background: var(--anime-bg-primary);\r\n  border: 2px solid transparent;\r\n  border-image: var(--anime-gradient-4) 1;\r\n  border-radius: 8px;\r\n  box-shadow: inset 0 0 20px rgba(157, 0, 255, 0.2);\r\n}\r\n\r\n/* Buttons - Neon Style */\r\n[data-theme=\"anime\"] button,\r\n[data-theme=\"anime\"] .btn {\r\n  background: var(--anime-bg-tertiary);\r\n  color: var(--anime-text-primary);\r\n  border: 2px solid var(--anime-cyan);\r\n  border-radius: 8px;\r\n  padding: 10px 20px;\r\n  font-weight: 700;\r\n  font-size: 14px;\r\n  text-transform: uppercase;\r\n  letter-spacing: 1px;\r\n  cursor: pointer;\r\n  transition: all var(--anime-transition-normal);\r\n  box-shadow: var(--anime-glow-cyan);\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n\r\n[data-theme=\"anime\"] button::before,\r\n[data-theme=\"anime\"] .btn::before {\r\n  content: '';\r\n  position: absolute;\r\n  top: 0;\r\n  left: -100%;\r\n  width: 100%;\r\n  height: 100%;\r\n  background: rgba(255, 255, 255, 0.2);\r\n  transition: left 0.5s;\r\n}\r\n\r\n[data-theme=\"anime\"] button:hover::before,\r\n[data-theme=\"anime\"] .btn:hover::before {\r\n  left: 100%;\r\n}\r\n\r\n[data-theme=\"anime\"] button:hover,\r\n[data-theme=\"anime\"] .btn:hover {\r\n  transform: translateY(-3px) scale(1.05);\r\n  box-shadow: 0 0 30px rgba(0, 229, 255, 0.8), 0 0 50px rgba(0, 229, 255, 0.4);\r\n  border-color: var(--anime-pink);\r\n  animation: anime-glow-pulse 2s infinite;\r\n}\r\n\r\n[data-theme=\"anime\"] button:active,\r\n[data-theme=\"anime\"] .btn:active {\r\n  transform: translateY(-1px) scale(1.02);\r\n}\r\n\r\n/* Primary Button - Gradient */\r\n[data-theme=\"anime\"] button.primary,\r\n[data-theme=\"anime\"] .btn.primary {\r\n  background: var(--anime-gradient-1);\r\n  border: 2px solid var(--anime-pink);\r\n  box-shadow: var(--anime-glow-pink);\r\n  font-weight: 900;\r\n}\r\n\r\n[data-theme=\"anime\"] button.primary:hover {\r\n  box-shadow: 0 0 40px rgba(255, 20, 147, 1), 0 0 60px rgba(157, 0, 255, 0.6);\r\n  animation: anime-glow-pulse 1.5s infinite, anime-float 2s ease-in-out infinite;\r\n}\r\n\r\n/* Secondary Button - Different gradient */\r\n[data-theme=\"anime\"] button.secondary,\r\n[data-theme=\"anime\"] .btn.secondary {\r\n  background: var(--anime-gradient-2);\r\n  border: 2px solid var(--anime-cyan);\r\n  box-shadow: var(--anime-glow-cyan);\r\n}\r\n\r\n/* Success/Warning/Error Buttons */\r\n[data-theme=\"anime\"] button.success,\r\n[data-theme=\"anime\"] .btn.success {\r\n  background: var(--anime-gradient-5);\r\n  border-color: var(--anime-green);\r\n  box-shadow: var(--anime-glow-green);\r\n}\r\n\r\n[data-theme=\"anime\"] button.warning,\r\n[data-theme=\"anime\"] .btn.warning {\r\n  background: var(--anime-gradient-3);\r\n  border-color: var(--anime-orange);\r\n  box-shadow: var(--anime-glow-orange);\r\n}\r\n\r\n[data-theme=\"anime\"] button.error,\r\n[data-theme=\"anime\"] .btn.error {\r\n  border-color: var(--anime-red);\r\n  box-shadow: 0 0 20px rgba(255, 0, 81, 0.6);\r\n}\r\n\r\n/* Input Fields - Neon */\r\n[data-theme=\"anime\"] input,\r\n[data-theme=\"anime\"] select,\r\n[data-theme=\"anime\"] textarea {\r\n  background: var(--anime-bg-tertiary);\r\n  border: 2px solid var(--anime-purple);\r\n  border-radius: 8px;\r\n  color: var(--anime-text-primary);\r\n  padding: 12px 16px;\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n  transition: all var(--anime-transition-normal);\r\n  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);\r\n}\r\n\r\n[data-theme=\"anime\"] input:focus,\r\n[data-theme=\"anime\"] select:focus,\r\n[data-theme=\"anime\"] textarea:focus {\r\n  outline: none;\r\n  border-color: var(--anime-cyan);\r\n  box-shadow: var(--anime-glow-cyan), inset 0 2px 8px rgba(0, 0, 0, 0.3);\r\n  background: var(--anime-bg-hover);\r\n}\r\n\r\n[data-theme=\"anime\"] input::placeholder {\r\n  color: var(--anime-text-muted);\r\n  font-style: italic;\r\n}\r\n\r\n/* Cards */\r\n[data-theme=\"anime\"] .card,\r\n[data-theme=\"anime\"] .panel {\r\n  background: var(--anime-bg-secondary);\r\n  border: 2px solid var(--anime-purple);\r\n  border-radius: 12px;\r\n  padding: 20px;\r\n  box-shadow: var(--anime-glow-purple);\r\n  position: relative;\r\n  overflow: hidden;\r\n}\r\n\r\n[data-theme=\"anime\"] .card::before,\r\n[data-theme=\"anime\"] .panel::before {\r\n  content: '';\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  height: 3px;\r\n  background: var(--anime-gradient-1);\r\n}\r\n\r\n[data-theme=\"anime\"] .card:hover {\r\n  transform: translateY(-5px);\r\n  box-shadow: 0 0 40px rgba(157, 0, 255, 0.8), 0 10px 30px rgba(0, 0, 0, 0.5);\r\n  border-color: var(--anime-pink);\r\n}\r\n\r\n/* Tabs - Neon */\r\n[data-theme=\"anime\"] .tab {\r\n  background: transparent;\r\n  border: none;\r\n  border-bottom: 3px solid transparent;\r\n  padding: 12px 24px;\r\n  color: var(--anime-text-muted);\r\n  font-weight: 700;\r\n  text-transform: uppercase;\r\n  letter-spacing: 1px;\r\n  transition: all var(--anime-transition-normal);\r\n  position: relative;\r\n}\r\n\r\n[data-theme=\"anime\"] .tab:hover {\r\n  color: var(--anime-text-primary);\r\n  background: rgba(0, 229, 255, 0.1);\r\n  text-shadow: var(--anime-text-glow);\r\n}\r\n\r\n[data-theme=\"anime\"] .tab.active {\r\n  color: var(--anime-cyan);\r\n  border-bottom-color: var(--anime-cyan);\r\n  text-shadow: var(--anime-glow-cyan);\r\n  background: rgba(0, 229, 255, 0.15);\r\n}\r\n\r\n[data-theme=\"anime\"] .tab.active::after {\r\n  content: '';\r\n  position: absolute;\r\n  bottom: -3px;\r\n  left: 0;\r\n  right: 0;\r\n  height: 3px;\r\n  background: var(--anime-gradient-2);\r\n  box-shadow: var(--anime-glow-cyan);\r\n}\r\n\r\n/* File Tree */\r\n[data-theme=\"anime\"] .file-item {\r\n  border-radius: 8px;\r\n  padding: 8px 12px;\r\n  margin: 4px 8px;\r\n  transition: all var(--anime-transition-fast);\r\n  border-left: 3px solid transparent;\r\n}\r\n\r\n[data-theme=\"anime\"] .file-item:hover {\r\n  background: var(--anime-bg-hover);\r\n  border-left-color: var(--anime-cyan);\r\n  box-shadow: inset 5px 0 10px rgba(0, 229, 255, 0.2);\r\n  transform: translateX(5px);\r\n}\r\n\r\n[data-theme=\"anime\"] .file-item.active {\r\n  background: var(--anime-gradient-2);\r\n  border-left-color: var(--anime-pink);\r\n  box-shadow: var(--anime-glow-cyan);\r\n  font-weight: 700;\r\n  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);\r\n}\r\n\r\n/* Context Menu */\r\n[data-theme=\"anime\"] .context-menu,\r\n[data-theme=\"anime\"] .dropdown-menu {\r\n  background: var(--anime-bg-secondary);\r\n  border: 2px solid var(--anime-purple);\r\n  border-radius: 12px;\r\n  box-shadow: 0 0 40px rgba(157, 0, 255, 0.8), 0 10px 40px rgba(0, 0, 0, 0.6);\r\n  padding: 8px 0;\r\n  overflow: hidden;\r\n}\r\n\r\n[data-theme=\"anime\"] .context-menu::before {\r\n  content: '';\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  height: 2px;\r\n  background: var(--anime-gradient-1);\r\n}\r\n\r\n[data-theme=\"anime\"] .context-item,\r\n[data-theme=\"anime\"] .dropdown-item {\r\n  padding: 12px 20px;\r\n  color: var(--anime-text-primary);\r\n  transition: all var(--anime-transition-fast);\r\n  border-left: 3px solid transparent;\r\n  font-weight: 600;\r\n}\r\n\r\n[data-theme=\"anime\"] .context-item:hover,\r\n[data-theme=\"anime\"] .dropdown-item:hover {\r\n  background: var(--anime-bg-hover);\r\n  border-left-color: var(--anime-cyan);\r\n  text-shadow: var(--anime-text-glow);\r\n  padding-left: 30px;\r\n}\r\n\r\n/* Scrollbar - Neon */\r\n[data-theme=\"anime\"] ::-webkit-scrollbar {\r\n  width: 12px;\r\n  height: 12px;\r\n}\r\n\r\n[data-theme=\"anime\"] ::-webkit-scrollbar-track {\r\n  background: var(--anime-bg-primary);\r\n  border-radius: 10px;\r\n}\r\n\r\n[data-theme=\"anime\"] ::-webkit-scrollbar-thumb {\r\n  background: var(--anime-gradient-1);\r\n  border-radius: 10px;\r\n  border: 2px solid var(--anime-bg-primary);\r\n  box-shadow: var(--anime-glow-pink);\r\n}\r\n\r\n[data-theme=\"anime\"] ::-webkit-scrollbar-thumb:hover {\r\n  background: var(--anime-gradient-4);\r\n  box-shadow: 0 0 20px rgba(0, 229, 255, 0.8);\r\n}\r\n\r\n/* Badges */\r\n[data-theme=\"anime\"] .badge,\r\n[data-theme=\"anime\"] .chip {\r\n  background: var(--anime-gradient-1);\r\n  color: var(--anime-text-primary);\r\n  border: 2px solid var(--anime-pink);\r\n  border-radius: 20px;\r\n  padding: 6px 16px;\r\n  font-size: 12px;\r\n  font-weight: 900;\r\n  text-transform: uppercase;\r\n  letter-spacing: 1px;\r\n  box-shadow: var(--anime-glow-pink);\r\n  display: inline-block;\r\n}\r\n\r\n/* Toast Notifications */\r\n[data-theme=\"anime\"] .toast {\r\n  background: var(--anime-bg-secondary);\r\n  color: var(--anime-text-primary);\r\n  border: 2px solid var(--anime-cyan);\r\n  border-radius: 12px;\r\n  box-shadow: var(--anime-glow-cyan);\r\n  padding: 16px 20px;\r\n  border-left: 5px solid var(--anime-cyan);\r\n  font-weight: 600;\r\n}\r\n\r\n[data-theme=\"anime\"] .toast.success {\r\n  border-color: var(--anime-green);\r\n  border-left-color: var(--anime-green);\r\n  box-shadow: var(--anime-glow-green);\r\n}\r\n\r\n[data-theme=\"anime\"] .toast.error {\r\n  border-color: var(--anime-red);\r\n  border-left-color: var(--anime-red);\r\n  box-shadow: 0 0 20px rgba(255, 0, 81, 0.6);\r\n}\r\n\r\n[data-theme=\"anime\"] .toast.warning {\r\n  border-color: var(--anime-orange);\r\n  border-left-color: var(--anime-orange);\r\n  box-shadow: var(--anime-glow-orange);\r\n}\r\n\r\n/* Loading Spinner - Rainbow */\r\n[data-theme=\"anime\"] .spinner {\r\n  border: 4px solid rgba(255, 255, 255, 0.1);\r\n  border-top-color: var(--anime-cyan);\r\n  border-right-color: var(--anime-pink);\r\n  border-bottom-color: var(--anime-purple);\r\n  animation: spin 1s linear infinite, anime-rainbow 3s linear infinite;\r\n  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);\r\n}\r\n\r\n/* Switch/Toggle - Neon */\r\n[data-theme=\"anime\"] .switch {\r\n  width: 60px;\r\n  height: 30px;\r\n  background: var(--anime-bg-tertiary);\r\n  border: 2px solid var(--anime-purple);\r\n  border-radius: 15px;\r\n  position: relative;\r\n  cursor: pointer;\r\n  transition: all var(--anime-transition-normal);\r\n}\r\n\r\n[data-theme=\"anime\"] .switch.checked {\r\n  background: var(--anime-gradient-1);\r\n  border-color: var(--anime-pink);\r\n  box-shadow: var(--anime-glow-pink);\r\n}\r\n\r\n[data-theme=\"anime\"] .switch::after {\r\n  content: '';\r\n  width: 22px;\r\n  height: 22px;\r\n  background: var(--anime-text-primary);\r\n  border-radius: 50%;\r\n  position: absolute;\r\n  top: 2px;\r\n  left: 2px;\r\n  transition: all var(--anime-transition-normal);\r\n  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);\r\n}\r\n\r\n[data-theme=\"anime\"] .switch.checked::after {\r\n  left: 32px;\r\n  box-shadow: 0 0 15px rgba(255, 20, 147, 0.8);\r\n}\r\n\r\n/* Progress Bar - Rainbow */\r\n[data-theme=\"anime\"] .progress-bar {\r\n  height: 6px;\r\n  background: var(--anime-bg-tertiary);\r\n  border-radius: 3px;\r\n  overflow: hidden;\r\n  border: 1px solid var(--anime-purple);\r\n}\r\n\r\n[data-theme=\"anime\"] .progress-bar-fill {\r\n  height: 100%;\r\n  background: var(--anime-gradient-1);\r\n  border-radius: 3px;\r\n  box-shadow: 0 0 10px rgba(255, 20, 147, 0.8);\r\n  animation: anime-rainbow 3s linear infinite;\r\n  transition: width 0.3s ease;\r\n}\r\n\r\n/* Selection */\r\n[data-theme=\"anime\"] ::selection {\r\n  background: var(--anime-pink);\r\n  color: var(--anime-text-primary);\r\n  text-shadow: var(--anime-text-glow);\r\n}\r\n\r\n/* Headers with glow */\r\n[data-theme=\"anime\"] h1,\r\n[data-theme=\"anime\"] h2,\r\n[data-theme=\"anime\"] h3 {\r\n  background: var(--anime-gradient-1);\r\n  -webkit-background-clip: text;\r\n  -webkit-text-fill-color: transparent;\r\n  background-clip: text;\r\n  font-weight: 900;\r\n  text-transform: uppercase;\r\n  letter-spacing: 2px;\r\n}\r\n\r\n/* Dividers */\r\n[data-theme=\"anime\"] .divider,\r\n[data-theme=\"anime\"] hr {\r\n  height: 2px;\r\n  background: var(--anime-gradient-4);\r\n  border: none;\r\n  box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);\r\n  margin: 16px 0;\r\n}\r\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-liquid-glass.css":
+/*!******************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-liquid-glass.css ***!
+  \******************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* Liquid Glass Theme - Glassmorphism with frosted glass effects */
+
+:root[data-theme="liquid-glass"] {
+  /* Base Colors - Translucent with blur */
+  --bg-primary: rgba(255, 255, 255, 0.05);
+  --bg-secondary: rgba(255, 255, 255, 0.08);
+  --bg-tertiary: rgba(255, 255, 255, 0.12);
+  --bg-hover: rgba(255, 255, 255, 0.15);
+  --bg-active: rgba(255, 255, 255, 0.2);
+  
+  /* Glass Effects */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --glass-backdrop: blur(12px) saturate(180%);
+  
+  /* Text Colors */
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  
+  /* Accent Colors - Vibrant with glow */
+  --accent-primary: rgba(99, 179, 237, 0.9);
+  --accent-secondary: rgba(168, 85, 247, 0.9);
+  --accent-success: rgba(52, 211, 153, 0.9);
+  --accent-warning: rgba(251, 191, 36, 0.9);
+  --accent-error: rgba(239, 68, 68, 0.9);
+  
+  /* Borders & Shadows */
+  --border-color: rgba(255, 255, 255, 0.18);
+  --border-radius: 16px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+  
+  /* Glow Effects */
+  --glow-primary: 0 0 20px rgba(99, 179, 237, 0.4);
+  --glow-secondary: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+/* Apply glassmorphism to all major containers */
+[data-theme="liquid-glass"] .sidebar,
+[data-theme="liquid-glass"] .file-explorer,
+[data-theme="liquid-glass"] .bottom-panel,
+[data-theme="liquid-glass"] .title-bar,
+[data-theme="liquid-glass"] .status-bar {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+[data-theme="liquid-glass"] .editor-container {
+  background: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Buttons with glass effect */
+[data-theme="liquid-glass"] button,
+[data-theme="liquid-glass"] .btn {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  padding: 8px 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+}
+
+[data-theme="liquid-glass"] button:hover,
+[data-theme="liquid-glass"] .btn:hover {
+  background: var(--bg-hover);
+  box-shadow: var(--glow-primary);
+  transform: translateY(-2px);
+  border-color: var(--accent-primary);
+}
+
+[data-theme="liquid-glass"] button:active,
+[data-theme="liquid-glass"] .btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Primary buttons with glow */
+[data-theme="liquid-glass"] button.primary,
+[data-theme="liquid-glass"] .btn.primary {
+  background: var(--accent-primary);
+  border: none;
+  box-shadow: var(--glow-primary);
+}
+
+[data-theme="liquid-glass"] button.primary:hover {
+  box-shadow: 0 0 30px rgba(99, 179, 237, 0.6);
+  transform: translateY(-3px);
+}
+
+/* Input fields */
+[data-theme="liquid-glass"] input,
+[data-theme="liquid-glass"] select,
+[data-theme="liquid-glass"] textarea {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: var(--text-primary);
+  padding: 10px 14px;
+  transition: all 0.3s ease;
+}
+
+[data-theme="liquid-glass"] input:focus,
+[data-theme="liquid-glass"] select:focus,
+[data-theme="liquid-glass"] textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: var(--glow-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Cards and panels */
+[data-theme="liquid-glass"] .card,
+[data-theme="liquid-glass"] .panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--glass-shadow);
+  padding: 20px;
+}
+
+/* Tabs with glass effect */
+[data-theme="liquid-glass"] .tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+[data-theme="liquid-glass"] .tab.active {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom-color: var(--accent-primary);
+  box-shadow: var(--glow-primary);
+}
+
+[data-theme="liquid-glass"] .tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Context menus */
+[data-theme="liquid-glass"] .context-menu,
+[data-theme="liquid-glass"] .dropdown-menu {
+  background: rgba(30, 30, 46, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+[data-theme="liquid-glass"] .context-item,
+[data-theme="liquid-glass"] .dropdown-item {
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+[data-theme="liquid-glass"] .context-item:hover,
+[data-theme="liquid-glass"] .dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Scrollbars */
+[data-theme="liquid-glass"] ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+[data-theme="liquid-glass"] ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+[data-theme="liquid-glass"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+[data-theme="liquid-glass"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+  background-clip: padding-box;
+}
+
+/* File tree items */
+[data-theme="liquid-glass"] .file-item {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+[data-theme="liquid-glass"] .file-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+[data-theme="liquid-glass"] .file-item.active {
+  background: rgba(99, 179, 237, 0.2);
+  border-left: 3px solid var(--accent-primary);
+  box-shadow: var(--glow-primary);
+}
+
+/* Toast notifications */
+[data-theme="liquid-glass"] .toast {
+  background: rgba(30, 30, 46, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Success/Error states with glow */
+[data-theme="liquid-glass"] .toast.success {
+  border-left: 4px solid var(--accent-success);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
+}
+
+[data-theme="liquid-glass"] .toast.error {
+  border-left: 4px solid var(--accent-error);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="liquid-glass"] .toast.warning {
+  border-left: 4px solid var(--accent-warning);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+/* Loading spinner with glass effect */
+[data-theme="liquid-glass"] .spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--accent-primary);
+  filter: drop-shadow(var(--glow-primary));
+}
+
+/* Badges */
+[data-theme="liquid-glass"] .badge {
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Monaco Editor integration */
+[data-theme="liquid-glass"] .monaco-editor {
+  background: rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="liquid-glass"] .monaco-editor .margin {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Add subtle animations */
+[data-theme="liquid-glass"] * {
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Selection highlight */
+[data-theme="liquid-glass"] ::selection {
+  background: rgba(99, 179, 237, 0.3);
+  color: var(--text-primary);
+}
+`, "",{"version":3,"sources":["webpack://./src/renderer/styles/theme-liquid-glass.css"],"names":[],"mappings":"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","sourcesContent":["/* Liquid Glass Theme - Glassmorphism with frosted glass effects */\r\n\r\n:root[data-theme=\"liquid-glass\"] {\r\n  /* Base Colors - Translucent with blur */\r\n  --bg-primary: rgba(255, 255, 255, 0.05);\r\n  --bg-secondary: rgba(255, 255, 255, 0.08);\r\n  --bg-tertiary: rgba(255, 255, 255, 0.12);\r\n  --bg-hover: rgba(255, 255, 255, 0.15);\r\n  --bg-active: rgba(255, 255, 255, 0.2);\r\n  \r\n  /* Glass Effects */\r\n  --glass-bg: rgba(255, 255, 255, 0.1);\r\n  --glass-border: rgba(255, 255, 255, 0.2);\r\n  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);\r\n  --glass-backdrop: blur(12px) saturate(180%);\r\n  \r\n  /* Text Colors */\r\n  --text-primary: rgba(255, 255, 255, 0.95);\r\n  --text-secondary: rgba(255, 255, 255, 0.7);\r\n  --text-muted: rgba(255, 255, 255, 0.5);\r\n  \r\n  /* Accent Colors - Vibrant with glow */\r\n  --accent-primary: rgba(99, 179, 237, 0.9);\r\n  --accent-secondary: rgba(168, 85, 247, 0.9);\r\n  --accent-success: rgba(52, 211, 153, 0.9);\r\n  --accent-warning: rgba(251, 191, 36, 0.9);\r\n  --accent-error: rgba(239, 68, 68, 0.9);\r\n  \r\n  /* Borders & Shadows */\r\n  --border-color: rgba(255, 255, 255, 0.18);\r\n  --border-radius: 16px;\r\n  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);\r\n  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);\r\n  \r\n  /* Glow Effects */\r\n  --glow-primary: 0 0 20px rgba(99, 179, 237, 0.4);\r\n  --glow-secondary: 0 0 20px rgba(168, 85, 247, 0.4);\r\n}\r\n\r\n/* Apply glassmorphism to all major containers */\r\n[data-theme=\"liquid-glass\"] .sidebar,\r\n[data-theme=\"liquid-glass\"] .file-explorer,\r\n[data-theme=\"liquid-glass\"] .bottom-panel,\r\n[data-theme=\"liquid-glass\"] .title-bar,\r\n[data-theme=\"liquid-glass\"] .status-bar {\r\n  background: var(--glass-bg) !important;\r\n  backdrop-filter: var(--glass-backdrop);\r\n  -webkit-backdrop-filter: var(--glass-backdrop);\r\n  border: 1px solid var(--glass-border);\r\n  box-shadow: var(--glass-shadow);\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .editor-container {\r\n  background: rgba(0, 0, 0, 0.3) !important;\r\n  backdrop-filter: blur(8px);\r\n  -webkit-backdrop-filter: blur(8px);\r\n  border: 1px solid var(--glass-border);\r\n  border-radius: 12px;\r\n  overflow: hidden;\r\n}\r\n\r\n/* Buttons with glass effect */\r\n[data-theme=\"liquid-glass\"] button,\r\n[data-theme=\"liquid-glass\"] .btn {\r\n  background: var(--glass-bg);\r\n  backdrop-filter: blur(10px);\r\n  -webkit-backdrop-filter: blur(10px);\r\n  border: 1px solid var(--glass-border);\r\n  border-radius: 12px;\r\n  color: var(--text-primary);\r\n  padding: 8px 16px;\r\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\r\n  font-weight: 500;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] button:hover,\r\n[data-theme=\"liquid-glass\"] .btn:hover {\r\n  background: var(--bg-hover);\r\n  box-shadow: var(--glow-primary);\r\n  transform: translateY(-2px);\r\n  border-color: var(--accent-primary);\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] button:active,\r\n[data-theme=\"liquid-glass\"] .btn:active {\r\n  transform: translateY(0);\r\n  box-shadow: var(--shadow-sm);\r\n}\r\n\r\n/* Primary buttons with glow */\r\n[data-theme=\"liquid-glass\"] button.primary,\r\n[data-theme=\"liquid-glass\"] .btn.primary {\r\n  background: var(--accent-primary);\r\n  border: none;\r\n  box-shadow: var(--glow-primary);\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] button.primary:hover {\r\n  box-shadow: 0 0 30px rgba(99, 179, 237, 0.6);\r\n  transform: translateY(-3px);\r\n}\r\n\r\n/* Input fields */\r\n[data-theme=\"liquid-glass\"] input,\r\n[data-theme=\"liquid-glass\"] select,\r\n[data-theme=\"liquid-glass\"] textarea {\r\n  background: rgba(255, 255, 255, 0.05);\r\n  backdrop-filter: blur(8px);\r\n  -webkit-backdrop-filter: blur(8px);\r\n  border: 1px solid var(--glass-border);\r\n  border-radius: 10px;\r\n  color: var(--text-primary);\r\n  padding: 10px 14px;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] input:focus,\r\n[data-theme=\"liquid-glass\"] select:focus,\r\n[data-theme=\"liquid-glass\"] textarea:focus {\r\n  outline: none;\r\n  border-color: var(--accent-primary);\r\n  box-shadow: var(--glow-primary);\r\n  background: rgba(255, 255, 255, 0.08);\r\n}\r\n\r\n/* Cards and panels */\r\n[data-theme=\"liquid-glass\"] .card,\r\n[data-theme=\"liquid-glass\"] .panel {\r\n  background: var(--glass-bg);\r\n  backdrop-filter: var(--glass-backdrop);\r\n  -webkit-backdrop-filter: var(--glass-backdrop);\r\n  border: 1px solid var(--glass-border);\r\n  border-radius: var(--border-radius);\r\n  box-shadow: var(--glass-shadow);\r\n  padding: 20px;\r\n}\r\n\r\n/* Tabs with glass effect */\r\n[data-theme=\"liquid-glass\"] .tab {\r\n  background: transparent;\r\n  border: none;\r\n  border-bottom: 2px solid transparent;\r\n  transition: all 0.3s ease;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .tab.active {\r\n  background: var(--glass-bg);\r\n  backdrop-filter: blur(10px);\r\n  -webkit-backdrop-filter: blur(10px);\r\n  border-bottom-color: var(--accent-primary);\r\n  box-shadow: var(--glow-primary);\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .tab:hover {\r\n  background: rgba(255, 255, 255, 0.05);\r\n  backdrop-filter: blur(8px);\r\n  -webkit-backdrop-filter: blur(8px);\r\n}\r\n\r\n/* Context menus */\r\n[data-theme=\"liquid-glass\"] .context-menu,\r\n[data-theme=\"liquid-glass\"] .dropdown-menu {\r\n  background: rgba(30, 30, 46, 0.9);\r\n  backdrop-filter: blur(20px);\r\n  -webkit-backdrop-filter: blur(20px);\r\n  border: 1px solid var(--glass-border);\r\n  border-radius: 12px;\r\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\r\n  overflow: hidden;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .context-item,\r\n[data-theme=\"liquid-glass\"] .dropdown-item {\r\n  background: transparent;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .context-item:hover,\r\n[data-theme=\"liquid-glass\"] .dropdown-item:hover {\r\n  background: rgba(255, 255, 255, 0.1);\r\n  backdrop-filter: blur(10px);\r\n  -webkit-backdrop-filter: blur(10px);\r\n}\r\n\r\n/* Scrollbars */\r\n[data-theme=\"liquid-glass\"] ::-webkit-scrollbar {\r\n  width: 10px;\r\n  height: 10px;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] ::-webkit-scrollbar-track {\r\n  background: rgba(255, 255, 255, 0.05);\r\n  border-radius: 10px;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] ::-webkit-scrollbar-thumb {\r\n  background: rgba(255, 255, 255, 0.2);\r\n  border-radius: 10px;\r\n  border: 2px solid transparent;\r\n  background-clip: padding-box;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] ::-webkit-scrollbar-thumb:hover {\r\n  background: rgba(255, 255, 255, 0.3);\r\n  background-clip: padding-box;\r\n}\r\n\r\n/* File tree items */\r\n[data-theme=\"liquid-glass\"] .file-item {\r\n  border-radius: 8px;\r\n  transition: all 0.2s ease;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .file-item:hover {\r\n  background: rgba(255, 255, 255, 0.08);\r\n  backdrop-filter: blur(8px);\r\n  -webkit-backdrop-filter: blur(8px);\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .file-item.active {\r\n  background: rgba(99, 179, 237, 0.2);\r\n  border-left: 3px solid var(--accent-primary);\r\n  box-shadow: var(--glow-primary);\r\n}\r\n\r\n/* Toast notifications */\r\n[data-theme=\"liquid-glass\"] .toast {\r\n  background: rgba(30, 30, 46, 0.95);\r\n  backdrop-filter: blur(20px);\r\n  -webkit-backdrop-filter: blur(20px);\r\n  border: 1px solid var(--glass-border);\r\n  border-radius: 12px;\r\n  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);\r\n}\r\n\r\n/* Success/Error states with glow */\r\n[data-theme=\"liquid-glass\"] .toast.success {\r\n  border-left: 4px solid var(--accent-success);\r\n  box-shadow: 0 0 20px rgba(52, 211, 153, 0.3);\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .toast.error {\r\n  border-left: 4px solid var(--accent-error);\r\n  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .toast.warning {\r\n  border-left: 4px solid var(--accent-warning);\r\n  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);\r\n}\r\n\r\n/* Loading spinner with glass effect */\r\n[data-theme=\"liquid-glass\"] .spinner {\r\n  border: 3px solid rgba(255, 255, 255, 0.1);\r\n  border-top-color: var(--accent-primary);\r\n  filter: drop-shadow(var(--glow-primary));\r\n}\r\n\r\n/* Badges */\r\n[data-theme=\"liquid-glass\"] .badge {\r\n  background: var(--glass-bg);\r\n  backdrop-filter: blur(8px);\r\n  -webkit-backdrop-filter: blur(8px);\r\n  border: 1px solid var(--glass-border);\r\n  border-radius: 20px;\r\n  padding: 4px 12px;\r\n  font-size: 0.75rem;\r\n  font-weight: 600;\r\n}\r\n\r\n/* Monaco Editor integration */\r\n[data-theme=\"liquid-glass\"] .monaco-editor {\r\n  background: rgba(0, 0, 0, 0.4) !important;\r\n}\r\n\r\n[data-theme=\"liquid-glass\"] .monaco-editor .margin {\r\n  background: rgba(0, 0, 0, 0.2) !important;\r\n}\r\n\r\n/* Add subtle animations */\r\n[data-theme=\"liquid-glass\"] * {\r\n  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n/* Selection highlight */\r\n[data-theme=\"liquid-glass\"] ::selection {\r\n  background: rgba(99, 179, 237, 0.3);\r\n  color: var(--text-primary);\r\n}\r\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-material.css":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-material.css ***!
+  \**************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* Material Design Theme - Google Material Design 3 inspired */
+
+:root[data-theme="material"] {
+  /* Material Colors - Based on Material Design 3 */
+  --md-primary: #6750A4;
+  --md-primary-container: #EADDFF;
+  --md-on-primary: #FFFFFF;
+  --md-on-primary-container: #21005E;
+  
+  --md-secondary: #625B71;
+  --md-secondary-container: #E8DEF8;
+  --md-on-secondary: #FFFFFF;
+  --md-on-secondary-container: #1E192B;
+  
+  --md-tertiary: #7D5260;
+  --md-tertiary-container: #FFD8E4;
+  --md-on-tertiary: #FFFFFF;
+  --md-on-tertiary-container: #370B1E;
+  
+  --md-error: #B3261E;
+  --md-error-container: #F9DEDC;
+  --md-on-error: #FFFFFF;
+  --md-on-error-container: #410E0B;
+  
+  --md-success: #2E7D32;
+  --md-success-container: #C8E6C9;
+  --md-warning: #F57C00;
+  --md-warning-container: #FFE0B2;
+  
+  /* Surface Colors */
+  --md-surface: #1C1B1F;
+  --md-surface-variant: #49454E;
+  --md-surface-container-lowest: #0F0D13;
+  --md-surface-container-low: #1C1B1F;
+  --md-surface-container: #201F26;
+  --md-surface-container-high: #2B2930;
+  --md-surface-container-highest: #36343B;
+  
+  --md-on-surface: #E6E1E5;
+  --md-on-surface-variant: #CAC4CF;
+  
+  /* Outline */
+  --md-outline: #948F99;
+  --md-outline-variant: #49454E;
+  
+  /* Elevation Shadows */
+  --md-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-elevation-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --md-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.3);
+  --md-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.3);
+  
+  /* Animation Curves */
+  --md-easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --md-easing-emphasized: cubic-bezier(0.2, 0.0, 0, 1);
+  --md-duration-short: 200ms;
+  --md-duration-medium: 300ms;
+  --md-duration-long: 400ms;
+}
+
+/* Base Application */
+[data-theme="material"] body {
+  background: var(--md-surface);
+  color: var(--md-on-surface);
+  font-family: 'Roboto', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Containers with elevation */
+[data-theme="material"] .sidebar,
+[data-theme="material"] .file-explorer {
+  background: var(--md-surface-container);
+  box-shadow: var(--md-elevation-1);
+  border-right: 1px solid var(--md-outline-variant);
+}
+
+[data-theme="material"] .bottom-panel {
+  background: var(--md-surface-container);
+  box-shadow: var(--md-elevation-2);
+  border-top: 1px solid var(--md-outline-variant);
+}
+
+[data-theme="material"] .title-bar {
+  background: var(--md-surface-container);
+  border-bottom: 1px solid var(--md-outline-variant);
+}
+
+[data-theme="material"] .status-bar {
+  background: var(--md-surface-container-high);
+  border-top: 1px solid var(--md-outline-variant);
+  color: var(--md-on-surface-variant);
+}
+
+/* Editor */
+[data-theme="material"] .editor-container {
+  background: var(--md-surface-container-lowest);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Material Buttons */
+[data-theme="material"] button,
+[data-theme="material"] .btn {
+  background: var(--md-surface-container-high);
+  color: var(--md-on-surface);
+  border: none;
+  border-radius: 20px;
+  padding: 10px 24px;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  cursor: pointer;
+  transition: all var(--md-duration-short) var(--md-easing-standard);
+  box-shadow: var(--md-elevation-1);
+  text-transform: none;
+  min-height: 40px;
+}
+
+[data-theme="material"] button:hover,
+[data-theme="material"] .btn:hover {
+  background: var(--md-surface-container-highest);
+  box-shadow: var(--md-elevation-2);
+}
+
+[data-theme="material"] button:active,
+[data-theme="material"] .btn:active {
+  box-shadow: var(--md-elevation-1);
+  transform: scale(0.98);
+}
+
+/* Filled buttons (Primary) */
+[data-theme="material"] button.primary,
+[data-theme="material"] .btn.primary,
+[data-theme="material"] .md-filled-button {
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  box-shadow: var(--md-elevation-2);
+}
+
+[data-theme="material"] button.primary:hover,
+[data-theme="material"] .btn.primary:hover,
+[data-theme="material"] .md-filled-button:hover {
+  background: #7965AF;
+  box-shadow: var(--md-elevation-3);
+}
+
+/* Filled Tonal Buttons */
+[data-theme="material"] .md-filled-tonal-button {
+  background: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+
+[data-theme="material"] .md-filled-tonal-button:hover {
+  background: #D5CAE3;
+  box-shadow: var(--md-elevation-2);
+}
+
+/* Outlined Buttons */
+[data-theme="material"] .md-outlined-button {
+  background: transparent;
+  border: 1px solid var(--md-outline);
+  color: var(--md-primary);
+}
+
+[data-theme="material"] .md-outlined-button:hover {
+  background: rgba(103, 80, 164, 0.08);
+  border-color: var(--md-primary);
+}
+
+/* Text Buttons */
+[data-theme="material"] .md-text-button {
+  background: transparent;
+  box-shadow: none;
+  color: var(--md-primary);
+  padding: 10px 12px;
+}
+
+[data-theme="material"] .md-text-button:hover {
+  background: rgba(103, 80, 164, 0.08);
+}
+
+/* FAB (Floating Action Button) */
+[data-theme="material"] .fab {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--md-elevation-3);
+  border: none;
+  min-width: 56px;
+  min-height: 56px;
+}
+
+[data-theme="material"] .fab:hover {
+  box-shadow: var(--md-elevation-4);
+}
+
+[data-theme="material"] .fab.extended {
+  border-radius: 16px;
+  padding: 16px 20px;
+  min-width: auto;
+}
+
+/* Input Fields */
+[data-theme="material"] input,
+[data-theme="material"] select,
+[data-theme="material"] textarea {
+  background: var(--md-surface-container-highest);
+  border: none;
+  border-bottom: 1px solid var(--md-outline-variant);
+  border-radius: 4px 4px 0 0;
+  color: var(--md-on-surface);
+  padding: 16px 16px 8px;
+  font-size: 16px;
+  transition: all var(--md-duration-short) var(--md-easing-standard);
+}
+
+[data-theme="material"] input:focus,
+[data-theme="material"] select:focus,
+[data-theme="material"] textarea:focus {
+  outline: none;
+  border-bottom: 2px solid var(--md-primary);
+  background: var(--md-surface-container-high);
+}
+
+/* Outlined Input Variant */
+[data-theme="material"] .md-outlined-input {
+  background: transparent;
+  border: 1px solid var(--md-outline);
+  border-radius: 4px;
+  padding: 16px;
+}
+
+[data-theme="material"] .md-outlined-input:focus {
+  border: 2px solid var(--md-primary);
+  border-bottom: 2px solid var(--md-primary);
+}
+
+/* Cards */
+[data-theme="material"] .card,
+[data-theme="material"] .panel {
+  background: var(--md-surface-container);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--md-elevation-1);
+  transition: box-shadow var(--md-duration-medium) var(--md-easing-standard);
+}
+
+[data-theme="material"] .card:hover {
+  box-shadow: var(--md-elevation-2);
+}
+
+[data-theme="material"] .card.elevated {
+  box-shadow: var(--md-elevation-2);
+}
+
+[data-theme="material"] .card.elevated:hover {
+  box-shadow: var(--md-elevation-3);
+}
+
+/* Tabs - Material 3 Style */
+[data-theme="material"] .tab {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 12px 24px;
+  color: var(--md-on-surface-variant);
+  position: relative;
+  transition: all var(--md-duration-short) var(--md-easing-standard);
+}
+
+[data-theme="material"] .tab:hover {
+  background: rgba(103, 80, 164, 0.08);
+  color: var(--md-on-surface);
+}
+
+[data-theme="material"] .tab.active {
+  color: var(--md-primary);
+}
+
+[data-theme="material"] .tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--md-primary);
+  border-radius: 3px 3px 0 0;
+}
+
+/* Lists */
+[data-theme="material"] .list-item {
+  background: transparent;
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: background var(--md-duration-short) var(--md-easing-standard);
+}
+
+[data-theme="material"] .list-item:hover {
+  background: var(--md-surface-container-highest);
+}
+
+[data-theme="material"] .list-item.active {
+  background: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+
+/* File Tree */
+[data-theme="material"] .file-item {
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 2px 8px;
+  transition: all var(--md-duration-short) var(--md-easing-standard);
+}
+
+[data-theme="material"] .file-item:hover {
+  background: var(--md-surface-container-highest);
+}
+
+[data-theme="material"] .file-item.active {
+  background: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+
+/* Context Menu */
+[data-theme="material"] .context-menu,
+[data-theme="material"] .dropdown-menu {
+  background: var(--md-surface-container-high);
+  border-radius: 8px;
+  box-shadow: var(--md-elevation-3);
+  padding: 8px 0;
+  border: none;
+  min-width: 200px;
+}
+
+[data-theme="material"] .context-item,
+[data-theme="material"] .dropdown-item {
+  padding: 12px 16px;
+  color: var(--md-on-surface);
+  transition: background var(--md-duration-short) var(--md-easing-standard);
+}
+
+[data-theme="material"] .context-item:hover,
+[data-theme="material"] .dropdown-item:hover {
+  background: var(--md-surface-container-highest);
+}
+
+/* Divider */
+[data-theme="material"] .divider,
+[data-theme="material"] .context-separator {
+  height: 1px;
+  background: var(--md-outline-variant);
+  margin: 8px 0;
+  border: none;
+}
+
+/* Chips */
+[data-theme="material"] .chip,
+[data-theme="material"] .badge {
+  background: var(--md-surface-container-highest);
+  color: var(--md-on-surface);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+[data-theme="material"] .chip.primary {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+
+/* Scrollbar - Material Style */
+[data-theme="material"] ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+[data-theme="material"] ::-webkit-scrollbar-track {
+  background: var(--md-surface);
+}
+
+[data-theme="material"] ::-webkit-scrollbar-thumb {
+  background: var(--md-outline-variant);
+  border-radius: 6px;
+  border: 2px solid var(--md-surface);
+}
+
+[data-theme="material"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--md-outline);
+}
+
+/* Toast Notifications */
+[data-theme="material"] .toast {
+  background: var(--md-surface-container-highest);
+  color: var(--md-on-surface);
+  border-radius: 8px;
+  box-shadow: var(--md-elevation-3);
+  padding: 14px 16px;
+  border-left: 4px solid var(--md-primary);
+}
+
+[data-theme="material"] .toast.success {
+  border-left-color: var(--md-success);
+  background: var(--md-success-container);
+  color: var(--md-on-surface);
+}
+
+[data-theme="material"] .toast.error {
+  border-left-color: var(--md-error);
+  background: var(--md-error-container);
+}
+
+[data-theme="material"] .toast.warning {
+  border-left-color: var(--md-warning);
+  background: var(--md-warning-container);
+}
+
+/* Switch (Toggle) */
+[data-theme="material"] .switch {
+  width: 52px;
+  height: 32px;
+  background: var(--md-surface-container-highest);
+  border: 2px solid var(--md-outline);
+  border-radius: 16px;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--md-duration-medium) var(--md-easing-emphasized);
+}
+
+[data-theme="material"] .switch.checked {
+  background: var(--md-primary);
+  border-color: var(--md-primary);
+}
+
+[data-theme="material"] .switch::after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  background: var(--md-outline);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all var(--md-duration-medium) var(--md-easing-emphasized);
+  box-shadow: var(--md-elevation-1);
+}
+
+[data-theme="material"] .switch.checked::after {
+  background: var(--md-on-primary);
+  left: 22px;
+}
+
+/* Ripple Effect (simplified) */
+[data-theme="material"] button::before,
+[data-theme="material"] .btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+[data-theme="material"] button:active::before,
+[data-theme="material"] .btn:active::before {
+  width: 200px;
+  height: 200px;
+}
+
+/* Progress Indicator */
+[data-theme="material"] .progress-bar {
+  height: 4px;
+  background: var(--md-surface-container-highest);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+[data-theme="material"] .progress-bar-fill {
+  height: 100%;
+  background: var(--md-primary);
+  border-radius: 2px;
+  transition: width var(--md-duration-medium) var(--md-easing-emphasized);
+}
+
+/* Selection */
+[data-theme="material"] ::selection {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+`, "",{"version":3,"sources":["webpack://./src/renderer/styles/theme-material.css"],"names":[],"mappings":"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","sourcesContent":["/* Material Design Theme - Google Material Design 3 inspired */\r\n\r\n:root[data-theme=\"material\"] {\r\n  /* Material Colors - Based on Material Design 3 */\r\n  --md-primary: #6750A4;\r\n  --md-primary-container: #EADDFF;\r\n  --md-on-primary: #FFFFFF;\r\n  --md-on-primary-container: #21005E;\r\n  \r\n  --md-secondary: #625B71;\r\n  --md-secondary-container: #E8DEF8;\r\n  --md-on-secondary: #FFFFFF;\r\n  --md-on-secondary-container: #1E192B;\r\n  \r\n  --md-tertiary: #7D5260;\r\n  --md-tertiary-container: #FFD8E4;\r\n  --md-on-tertiary: #FFFFFF;\r\n  --md-on-tertiary-container: #370B1E;\r\n  \r\n  --md-error: #B3261E;\r\n  --md-error-container: #F9DEDC;\r\n  --md-on-error: #FFFFFF;\r\n  --md-on-error-container: #410E0B;\r\n  \r\n  --md-success: #2E7D32;\r\n  --md-success-container: #C8E6C9;\r\n  --md-warning: #F57C00;\r\n  --md-warning-container: #FFE0B2;\r\n  \r\n  /* Surface Colors */\r\n  --md-surface: #1C1B1F;\r\n  --md-surface-variant: #49454E;\r\n  --md-surface-container-lowest: #0F0D13;\r\n  --md-surface-container-low: #1C1B1F;\r\n  --md-surface-container: #201F26;\r\n  --md-surface-container-high: #2B2930;\r\n  --md-surface-container-highest: #36343B;\r\n  \r\n  --md-on-surface: #E6E1E5;\r\n  --md-on-surface-variant: #CAC4CF;\r\n  \r\n  /* Outline */\r\n  --md-outline: #948F99;\r\n  --md-outline-variant: #49454E;\r\n  \r\n  /* Elevation Shadows */\r\n  --md-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);\r\n  --md-elevation-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);\r\n  --md-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);\r\n  --md-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.3);\r\n  --md-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.3);\r\n  \r\n  /* Animation Curves */\r\n  --md-easing-standard: cubic-bezier(0.4, 0.0, 0.2, 1);\r\n  --md-easing-emphasized: cubic-bezier(0.2, 0.0, 0, 1);\r\n  --md-duration-short: 200ms;\r\n  --md-duration-medium: 300ms;\r\n  --md-duration-long: 400ms;\r\n}\r\n\r\n/* Base Application */\r\n[data-theme=\"material\"] body {\r\n  background: var(--md-surface);\r\n  color: var(--md-on-surface);\r\n  font-family: 'Roboto', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;\r\n}\r\n\r\n/* Containers with elevation */\r\n[data-theme=\"material\"] .sidebar,\r\n[data-theme=\"material\"] .file-explorer {\r\n  background: var(--md-surface-container);\r\n  box-shadow: var(--md-elevation-1);\r\n  border-right: 1px solid var(--md-outline-variant);\r\n}\r\n\r\n[data-theme=\"material\"] .bottom-panel {\r\n  background: var(--md-surface-container);\r\n  box-shadow: var(--md-elevation-2);\r\n  border-top: 1px solid var(--md-outline-variant);\r\n}\r\n\r\n[data-theme=\"material\"] .title-bar {\r\n  background: var(--md-surface-container);\r\n  border-bottom: 1px solid var(--md-outline-variant);\r\n}\r\n\r\n[data-theme=\"material\"] .status-bar {\r\n  background: var(--md-surface-container-high);\r\n  border-top: 1px solid var(--md-outline-variant);\r\n  color: var(--md-on-surface-variant);\r\n}\r\n\r\n/* Editor */\r\n[data-theme=\"material\"] .editor-container {\r\n  background: var(--md-surface-container-lowest);\r\n  border-radius: 12px;\r\n  overflow: hidden;\r\n}\r\n\r\n/* Material Buttons */\r\n[data-theme=\"material\"] button,\r\n[data-theme=\"material\"] .btn {\r\n  background: var(--md-surface-container-high);\r\n  color: var(--md-on-surface);\r\n  border: none;\r\n  border-radius: 20px;\r\n  padding: 10px 24px;\r\n  font-weight: 500;\r\n  font-size: 14px;\r\n  letter-spacing: 0.1px;\r\n  cursor: pointer;\r\n  transition: all var(--md-duration-short) var(--md-easing-standard);\r\n  box-shadow: var(--md-elevation-1);\r\n  text-transform: none;\r\n  min-height: 40px;\r\n}\r\n\r\n[data-theme=\"material\"] button:hover,\r\n[data-theme=\"material\"] .btn:hover {\r\n  background: var(--md-surface-container-highest);\r\n  box-shadow: var(--md-elevation-2);\r\n}\r\n\r\n[data-theme=\"material\"] button:active,\r\n[data-theme=\"material\"] .btn:active {\r\n  box-shadow: var(--md-elevation-1);\r\n  transform: scale(0.98);\r\n}\r\n\r\n/* Filled buttons (Primary) */\r\n[data-theme=\"material\"] button.primary,\r\n[data-theme=\"material\"] .btn.primary,\r\n[data-theme=\"material\"] .md-filled-button {\r\n  background: var(--md-primary);\r\n  color: var(--md-on-primary);\r\n  box-shadow: var(--md-elevation-2);\r\n}\r\n\r\n[data-theme=\"material\"] button.primary:hover,\r\n[data-theme=\"material\"] .btn.primary:hover,\r\n[data-theme=\"material\"] .md-filled-button:hover {\r\n  background: #7965AF;\r\n  box-shadow: var(--md-elevation-3);\r\n}\r\n\r\n/* Filled Tonal Buttons */\r\n[data-theme=\"material\"] .md-filled-tonal-button {\r\n  background: var(--md-secondary-container);\r\n  color: var(--md-on-secondary-container);\r\n}\r\n\r\n[data-theme=\"material\"] .md-filled-tonal-button:hover {\r\n  background: #D5CAE3;\r\n  box-shadow: var(--md-elevation-2);\r\n}\r\n\r\n/* Outlined Buttons */\r\n[data-theme=\"material\"] .md-outlined-button {\r\n  background: transparent;\r\n  border: 1px solid var(--md-outline);\r\n  color: var(--md-primary);\r\n}\r\n\r\n[data-theme=\"material\"] .md-outlined-button:hover {\r\n  background: rgba(103, 80, 164, 0.08);\r\n  border-color: var(--md-primary);\r\n}\r\n\r\n/* Text Buttons */\r\n[data-theme=\"material\"] .md-text-button {\r\n  background: transparent;\r\n  box-shadow: none;\r\n  color: var(--md-primary);\r\n  padding: 10px 12px;\r\n}\r\n\r\n[data-theme=\"material\"] .md-text-button:hover {\r\n  background: rgba(103, 80, 164, 0.08);\r\n}\r\n\r\n/* FAB (Floating Action Button) */\r\n[data-theme=\"material\"] .fab {\r\n  background: var(--md-primary-container);\r\n  color: var(--md-on-primary-container);\r\n  border-radius: 16px;\r\n  padding: 16px;\r\n  box-shadow: var(--md-elevation-3);\r\n  border: none;\r\n  min-width: 56px;\r\n  min-height: 56px;\r\n}\r\n\r\n[data-theme=\"material\"] .fab:hover {\r\n  box-shadow: var(--md-elevation-4);\r\n}\r\n\r\n[data-theme=\"material\"] .fab.extended {\r\n  border-radius: 16px;\r\n  padding: 16px 20px;\r\n  min-width: auto;\r\n}\r\n\r\n/* Input Fields */\r\n[data-theme=\"material\"] input,\r\n[data-theme=\"material\"] select,\r\n[data-theme=\"material\"] textarea {\r\n  background: var(--md-surface-container-highest);\r\n  border: none;\r\n  border-bottom: 1px solid var(--md-outline-variant);\r\n  border-radius: 4px 4px 0 0;\r\n  color: var(--md-on-surface);\r\n  padding: 16px 16px 8px;\r\n  font-size: 16px;\r\n  transition: all var(--md-duration-short) var(--md-easing-standard);\r\n}\r\n\r\n[data-theme=\"material\"] input:focus,\r\n[data-theme=\"material\"] select:focus,\r\n[data-theme=\"material\"] textarea:focus {\r\n  outline: none;\r\n  border-bottom: 2px solid var(--md-primary);\r\n  background: var(--md-surface-container-high);\r\n}\r\n\r\n/* Outlined Input Variant */\r\n[data-theme=\"material\"] .md-outlined-input {\r\n  background: transparent;\r\n  border: 1px solid var(--md-outline);\r\n  border-radius: 4px;\r\n  padding: 16px;\r\n}\r\n\r\n[data-theme=\"material\"] .md-outlined-input:focus {\r\n  border: 2px solid var(--md-primary);\r\n  border-bottom: 2px solid var(--md-primary);\r\n}\r\n\r\n/* Cards */\r\n[data-theme=\"material\"] .card,\r\n[data-theme=\"material\"] .panel {\r\n  background: var(--md-surface-container);\r\n  border-radius: 12px;\r\n  padding: 16px;\r\n  box-shadow: var(--md-elevation-1);\r\n  transition: box-shadow var(--md-duration-medium) var(--md-easing-standard);\r\n}\r\n\r\n[data-theme=\"material\"] .card:hover {\r\n  box-shadow: var(--md-elevation-2);\r\n}\r\n\r\n[data-theme=\"material\"] .card.elevated {\r\n  box-shadow: var(--md-elevation-2);\r\n}\r\n\r\n[data-theme=\"material\"] .card.elevated:hover {\r\n  box-shadow: var(--md-elevation-3);\r\n}\r\n\r\n/* Tabs - Material 3 Style */\r\n[data-theme=\"material\"] .tab {\r\n  background: transparent;\r\n  border: none;\r\n  border-radius: 0;\r\n  padding: 12px 24px;\r\n  color: var(--md-on-surface-variant);\r\n  position: relative;\r\n  transition: all var(--md-duration-short) var(--md-easing-standard);\r\n}\r\n\r\n[data-theme=\"material\"] .tab:hover {\r\n  background: rgba(103, 80, 164, 0.08);\r\n  color: var(--md-on-surface);\r\n}\r\n\r\n[data-theme=\"material\"] .tab.active {\r\n  color: var(--md-primary);\r\n}\r\n\r\n[data-theme=\"material\"] .tab.active::after {\r\n  content: '';\r\n  position: absolute;\r\n  bottom: 0;\r\n  left: 0;\r\n  right: 0;\r\n  height: 3px;\r\n  background: var(--md-primary);\r\n  border-radius: 3px 3px 0 0;\r\n}\r\n\r\n/* Lists */\r\n[data-theme=\"material\"] .list-item {\r\n  background: transparent;\r\n  border-radius: 8px;\r\n  padding: 12px 16px;\r\n  transition: background var(--md-duration-short) var(--md-easing-standard);\r\n}\r\n\r\n[data-theme=\"material\"] .list-item:hover {\r\n  background: var(--md-surface-container-highest);\r\n}\r\n\r\n[data-theme=\"material\"] .list-item.active {\r\n  background: var(--md-secondary-container);\r\n  color: var(--md-on-secondary-container);\r\n}\r\n\r\n/* File Tree */\r\n[data-theme=\"material\"] .file-item {\r\n  border-radius: 8px;\r\n  padding: 8px 12px;\r\n  margin: 2px 8px;\r\n  transition: all var(--md-duration-short) var(--md-easing-standard);\r\n}\r\n\r\n[data-theme=\"material\"] .file-item:hover {\r\n  background: var(--md-surface-container-highest);\r\n}\r\n\r\n[data-theme=\"material\"] .file-item.active {\r\n  background: var(--md-secondary-container);\r\n  color: var(--md-on-secondary-container);\r\n}\r\n\r\n/* Context Menu */\r\n[data-theme=\"material\"] .context-menu,\r\n[data-theme=\"material\"] .dropdown-menu {\r\n  background: var(--md-surface-container-high);\r\n  border-radius: 8px;\r\n  box-shadow: var(--md-elevation-3);\r\n  padding: 8px 0;\r\n  border: none;\r\n  min-width: 200px;\r\n}\r\n\r\n[data-theme=\"material\"] .context-item,\r\n[data-theme=\"material\"] .dropdown-item {\r\n  padding: 12px 16px;\r\n  color: var(--md-on-surface);\r\n  transition: background var(--md-duration-short) var(--md-easing-standard);\r\n}\r\n\r\n[data-theme=\"material\"] .context-item:hover,\r\n[data-theme=\"material\"] .dropdown-item:hover {\r\n  background: var(--md-surface-container-highest);\r\n}\r\n\r\n/* Divider */\r\n[data-theme=\"material\"] .divider,\r\n[data-theme=\"material\"] .context-separator {\r\n  height: 1px;\r\n  background: var(--md-outline-variant);\r\n  margin: 8px 0;\r\n  border: none;\r\n}\r\n\r\n/* Chips */\r\n[data-theme=\"material\"] .chip,\r\n[data-theme=\"material\"] .badge {\r\n  background: var(--md-surface-container-highest);\r\n  color: var(--md-on-surface);\r\n  border-radius: 8px;\r\n  padding: 6px 12px;\r\n  font-size: 14px;\r\n  font-weight: 500;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  gap: 8px;\r\n}\r\n\r\n[data-theme=\"material\"] .chip.primary {\r\n  background: var(--md-primary-container);\r\n  color: var(--md-on-primary-container);\r\n}\r\n\r\n/* Scrollbar - Material Style */\r\n[data-theme=\"material\"] ::-webkit-scrollbar {\r\n  width: 12px;\r\n  height: 12px;\r\n}\r\n\r\n[data-theme=\"material\"] ::-webkit-scrollbar-track {\r\n  background: var(--md-surface);\r\n}\r\n\r\n[data-theme=\"material\"] ::-webkit-scrollbar-thumb {\r\n  background: var(--md-outline-variant);\r\n  border-radius: 6px;\r\n  border: 2px solid var(--md-surface);\r\n}\r\n\r\n[data-theme=\"material\"] ::-webkit-scrollbar-thumb:hover {\r\n  background: var(--md-outline);\r\n}\r\n\r\n/* Toast Notifications */\r\n[data-theme=\"material\"] .toast {\r\n  background: var(--md-surface-container-highest);\r\n  color: var(--md-on-surface);\r\n  border-radius: 8px;\r\n  box-shadow: var(--md-elevation-3);\r\n  padding: 14px 16px;\r\n  border-left: 4px solid var(--md-primary);\r\n}\r\n\r\n[data-theme=\"material\"] .toast.success {\r\n  border-left-color: var(--md-success);\r\n  background: var(--md-success-container);\r\n  color: var(--md-on-surface);\r\n}\r\n\r\n[data-theme=\"material\"] .toast.error {\r\n  border-left-color: var(--md-error);\r\n  background: var(--md-error-container);\r\n}\r\n\r\n[data-theme=\"material\"] .toast.warning {\r\n  border-left-color: var(--md-warning);\r\n  background: var(--md-warning-container);\r\n}\r\n\r\n/* Switch (Toggle) */\r\n[data-theme=\"material\"] .switch {\r\n  width: 52px;\r\n  height: 32px;\r\n  background: var(--md-surface-container-highest);\r\n  border: 2px solid var(--md-outline);\r\n  border-radius: 16px;\r\n  position: relative;\r\n  cursor: pointer;\r\n  transition: all var(--md-duration-medium) var(--md-easing-emphasized);\r\n}\r\n\r\n[data-theme=\"material\"] .switch.checked {\r\n  background: var(--md-primary);\r\n  border-color: var(--md-primary);\r\n}\r\n\r\n[data-theme=\"material\"] .switch::after {\r\n  content: '';\r\n  width: 24px;\r\n  height: 24px;\r\n  background: var(--md-outline);\r\n  border-radius: 50%;\r\n  position: absolute;\r\n  top: 2px;\r\n  left: 2px;\r\n  transition: all var(--md-duration-medium) var(--md-easing-emphasized);\r\n  box-shadow: var(--md-elevation-1);\r\n}\r\n\r\n[data-theme=\"material\"] .switch.checked::after {\r\n  background: var(--md-on-primary);\r\n  left: 22px;\r\n}\r\n\r\n/* Ripple Effect (simplified) */\r\n[data-theme=\"material\"] button::before,\r\n[data-theme=\"material\"] .btn::before {\r\n  content: '';\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  width: 0;\r\n  height: 0;\r\n  border-radius: 50%;\r\n  background: rgba(255, 255, 255, 0.3);\r\n  transform: translate(-50%, -50%);\r\n  transition: width 0.6s, height 0.6s;\r\n}\r\n\r\n[data-theme=\"material\"] button:active::before,\r\n[data-theme=\"material\"] .btn:active::before {\r\n  width: 200px;\r\n  height: 200px;\r\n}\r\n\r\n/* Progress Indicator */\r\n[data-theme=\"material\"] .progress-bar {\r\n  height: 4px;\r\n  background: var(--md-surface-container-highest);\r\n  border-radius: 2px;\r\n  overflow: hidden;\r\n}\r\n\r\n[data-theme=\"material\"] .progress-bar-fill {\r\n  height: 100%;\r\n  background: var(--md-primary);\r\n  border-radius: 2px;\r\n  transition: width var(--md-duration-medium) var(--md-easing-emphasized);\r\n}\r\n\r\n/* Selection */\r\n[data-theme=\"material\"] ::selection {\r\n  background: var(--md-primary-container);\r\n  color: var(--md-on-primary-container);\r\n}\r\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/z-index.css":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/z-index.css ***!
+  \*******************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* Z-Index Hierarchy - グローバル定義 */
+:root {
+  --z-base: 0;
+  --z-background: 0;
+  --z-content: 1;
+  --z-sidebar: 10;
+  --z-bottom-panel: 10;
+  --z-resizer: 15;
+  --z-titlebar: 100;
+  --z-context-menu: 1000;
+  --z-modal-backdrop: 5000;
+  --z-modal: 5001;
+  --z-progress: 9000;
+  --z-toast: 10000;
+}
+
+/* 適用 */
+.sidebar { z-index: var(--z-sidebar) !important; }
+.bottom-panel { z-index: var(--z-bottom-panel) !important; }
+.title-bar { z-index: var(--z-titlebar) !important; }
+.context-menu { z-index: var(--z-context-menu) !important; }
+.modal-overlay { z-index: var(--z-modal-backdrop) !important; }
+.modal-content { z-index: var(--z-modal) !important; }
+.progress-indicator { z-index: var(--z-progress) !important; }
+.toast-container { z-index: var(--z-toast) !important; }
+
+/* Animeテーマの背景エフェクトは最背面 */
+[data-theme="anime"]::before,
+[data-theme="anime"]::after,
+[data-theme="anime"] .sidebar::before,
+[data-theme="anime"] .file-explorer::before {
+  z-index: var(--z-background) !important;
+}
+`, "",{"version":3,"sources":["webpack://./src/renderer/styles/z-index.css"],"names":[],"mappings":"AAAA,gCAAgC;AAChC;EACE,WAAW;EACX,iBAAiB;EACjB,cAAc;EACd,eAAe;EACf,oBAAoB;EACpB,eAAe;EACf,iBAAiB;EACjB,sBAAsB;EACtB,wBAAwB;EACxB,eAAe;EACf,kBAAkB;EAClB,gBAAgB;AAClB;;AAEA,OAAO;AACP,WAAW,oCAAoC,EAAE;AACjD,gBAAgB,yCAAyC,EAAE;AAC3D,aAAa,qCAAqC,EAAE;AACpD,gBAAgB,yCAAyC,EAAE;AAC3D,iBAAiB,2CAA2C,EAAE;AAC9D,iBAAiB,kCAAkC,EAAE;AACrD,sBAAsB,qCAAqC,EAAE;AAC7D,mBAAmB,kCAAkC,EAAE;;AAEvD,yBAAyB;AACzB;;;;EAIE,uCAAuC;AACzC","sourcesContent":["/* Z-Index Hierarchy - グローバル定義 */\r\n:root {\r\n  --z-base: 0;\r\n  --z-background: 0;\r\n  --z-content: 1;\r\n  --z-sidebar: 10;\r\n  --z-bottom-panel: 10;\r\n  --z-resizer: 15;\r\n  --z-titlebar: 100;\r\n  --z-context-menu: 1000;\r\n  --z-modal-backdrop: 5000;\r\n  --z-modal: 5001;\r\n  --z-progress: 9000;\r\n  --z-toast: 10000;\r\n}\r\n\r\n/* 適用 */\r\n.sidebar { z-index: var(--z-sidebar) !important; }\r\n.bottom-panel { z-index: var(--z-bottom-panel) !important; }\r\n.title-bar { z-index: var(--z-titlebar) !important; }\r\n.context-menu { z-index: var(--z-context-menu) !important; }\r\n.modal-overlay { z-index: var(--z-modal-backdrop) !important; }\r\n.modal-content { z-index: var(--z-modal) !important; }\r\n.progress-indicator { z-index: var(--z-progress) !important; }\r\n.toast-container { z-index: var(--z-toast) !important; }\r\n\r\n/* Animeテーマの背景エフェクトは最背面 */\r\n[data-theme=\"anime\"]::before,\r\n[data-theme=\"anime\"]::after,\r\n[data-theme=\"anime\"] .sidebar::before,\r\n[data-theme=\"anime\"] .file-explorer::before {\r\n  z-index: var(--z-background) !important;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47817,6 +49899,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _contexts_ThemeContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./contexts/ThemeContext */ "./src/renderer/contexts/ThemeContext.tsx");
 /* harmony import */ var _contexts_AppContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./contexts/AppContext */ "./src/renderer/contexts/AppContext.tsx");
 /* harmony import */ var _styles_App_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./styles/App.css */ "./src/renderer/styles/App.css");
+/* harmony import */ var _styles_z_index_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./styles/z-index.css */ "./src/renderer/styles/z-index.css");
+/* harmony import */ var _styles_theme_liquid_glass_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./styles/theme-liquid-glass.css */ "./src/renderer/styles/theme-liquid-glass.css");
+/* harmony import */ var _styles_theme_material_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./styles/theme-material.css */ "./src/renderer/styles/theme-material.css");
+/* harmony import */ var _styles_theme_anime_css__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./styles/theme-anime.css */ "./src/renderer/styles/theme-anime.css");
+
+
+
+
 
 
 
@@ -48765,46 +50855,72 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _contexts_AppContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../contexts/AppContext */ "./src/renderer/contexts/AppContext.tsx");
-/* harmony import */ var _FileExplorer_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FileExplorer.css */ "./src/renderer/components/FileExplorer/FileExplorer.css");
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/logger */ "./src/renderer/utils/logger.ts");
+/* harmony import */ var _FileExplorer_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FileExplorer.css */ "./src/renderer/components/FileExplorer/FileExplorer.css");
+
 
 
 
 
 const FileExplorer = ({ rootPath }) => {
-    const { openFile, state } = (0,_contexts_AppContext__WEBPACK_IMPORTED_MODULE_2__.useApp)();
+    const { openFile, state, updateFileContent } = (0,_contexts_AppContext__WEBPACK_IMPORTED_MODULE_2__.useApp)();
     const [fileTree, setFileTree] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+    const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    const [refreshKey, setRefreshKey] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
     const [contextMenu, setContextMenu] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({ visible: false, x: 0, y: 0, node: null });
-    const loadDirectory = async (path) => {
+    const loadDirectory = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(async (path) => {
         const targetPath = path || state.currentProject?.path;
         if (!targetPath) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('No project path, clearing file tree');
             setFileTree([]);
             return;
         }
+        setLoading(true);
+        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('Loading directory', { path: targetPath });
         try {
+            // Check if electronAPI is available
+            if (!window.electronAPI?.fs) {
+                throw new Error('Electron API not available');
+            }
             const exists = await window.electronAPI.fs.exists(targetPath);
             if (!exists) {
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Directory does not exist', { path: targetPath });
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('ディレクトリが見つかりません', targetPath);
                 setFileTree([]);
+                setLoading(false);
                 return;
             }
             const stat = await window.electronAPI.fs.stat(targetPath);
-            if (!stat.isDirectory()) {
+            if (!stat.isDirectory) {
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Path is not a directory', { path: targetPath });
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('パスはディレクトリではありません', targetPath);
                 setFileTree([]);
+                setLoading(false);
                 return;
             }
             const files = await window.electronAPI.fs.readdir(targetPath);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('Directory contents loaded', { count: files.length });
             const nodes = [];
             for (const file of files) {
-                if (file.startsWith('.'))
-                    continue; // Skip hidden files
-                const filePath = targetPath + '/' + file;
-                const fileStat = await window.electronAPI.fs.stat(filePath);
-                nodes.push({
-                    name: file,
-                    path: filePath,
-                    type: fileStat.isDirectory() ? 'folder' : 'file',
-                    children: fileStat.isDirectory() ? [] : undefined,
-                    expanded: false
-                });
+                // Skip hidden files and common build artifacts
+                if (file.startsWith('.') || file === 'node_modules' || file === 'build' || file === 'dist') {
+                    continue;
+                }
+                const filePath = `${targetPath}/${file}`;
+                try {
+                    const fileStat = await window.electronAPI.fs.stat(filePath);
+                    nodes.push({
+                        name: file,
+                        path: filePath,
+                        type: fileStat.isDirectory ? 'folder' : 'file',
+                        children: fileStat.isDirectory ? [] : undefined,
+                        expanded: false
+                    });
+                }
+                catch (err) {
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to stat file', { file, error: err });
+                    // Continue with other files
+                }
             }
             // Sort: folders first, then files
             nodes.sort((a, b) => {
@@ -48813,36 +50929,52 @@ const FileExplorer = ({ rootPath }) => {
                 }
                 return a.name.localeCompare(b.name);
             });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('File tree loaded', { nodes: nodes.length });
             setFileTree(nodes);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('プロジェクトを読み込みました', `${nodes.length}個のファイル/フォルダ`);
         }
         catch (error) {
-            console.error('Failed to load directory:', error);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to load directory', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('ディレクトリの読み込みに失敗', String(error));
             setFileTree([]);
         }
-    };
+        finally {
+            setLoading(false);
+        }
+    }, [state.currentProject?.path]);
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('FileExplorer: Project changed, reloading', {
+            path: state.currentProject?.path,
+            name: state.currentProject?.name
+        });
         loadDirectory();
-    }, [state.currentProject]);
+    }, [state.currentProject?.path, refreshKey]);
     const toggleFolder = async (node) => {
         if (node.type !== 'folder')
             return;
+        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('Toggling folder', { name: node.name, expanded: node.expanded });
         // フォルダが未展開の場合、子要素をロード
         if (!node.expanded) {
             try {
                 const files = await window.electronAPI.fs.readdir(node.path);
                 const children = [];
                 for (const file of files) {
-                    if (file.startsWith('.'))
+                    if (file.startsWith('.') || file === 'node_modules')
                         continue;
                     const filePath = `${node.path}/${file}`;
-                    const fileStat = await window.electronAPI.fs.stat(filePath);
-                    children.push({
-                        name: file,
-                        path: filePath,
-                        type: fileStat.isDirectory() ? 'folder' : 'file',
-                        children: fileStat.isDirectory() ? [] : undefined,
-                        expanded: false
-                    });
+                    try {
+                        const fileStat = await window.electronAPI.fs.stat(filePath);
+                        children.push({
+                            name: file,
+                            path: filePath,
+                            type: fileStat.isDirectory ? 'folder' : 'file',
+                            children: fileStat.isDirectory ? [] : undefined,
+                            expanded: false
+                        });
+                    }
+                    catch (err) {
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to stat file in folder', { file, error: err });
+                    }
                 }
                 // Sort: folders first, then files
                 children.sort((a, b) => {
@@ -48852,9 +50984,11 @@ const FileExplorer = ({ rootPath }) => {
                     return a.name.localeCompare(b.name);
                 });
                 node.children = children;
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('Folder contents loaded', { count: children.length });
             }
             catch (error) {
-                console.error('Failed to load folder:', error);
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to load folder', { error });
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('フォルダの読み込みに失敗', node.name);
                 return;
             }
         }
@@ -48874,9 +51008,14 @@ const FileExplorer = ({ rootPath }) => {
     };
     const handleFileClick = async (node) => {
         if (node.type === 'file') {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('Opening file', { name: node.name, path: node.path });
             try {
                 // ファイルの内容を読み込む
                 const content = await window.electronAPI.fs.readFile(node.path);
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('File content loaded', {
+                    name: node.name,
+                    size: content.length
+                });
                 const fileTab = {
                     id: node.path,
                     name: node.name,
@@ -48885,18 +51024,11 @@ const FileExplorer = ({ rootPath }) => {
                     isDirty: false
                 };
                 openFile(fileTab);
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('ファイルを開きました', node.name);
             }
             catch (error) {
-                console.error('Failed to read file:', error);
-                // エラーでも空のファイルとして開く
-                const fileTab = {
-                    id: node.path,
-                    name: node.name,
-                    path: node.path,
-                    content: '',
-                    isDirty: false
-                };
-                openFile(fileTab);
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to read file', { error, path: node.path });
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('ファイルの読み込みに失敗', node.name);
             }
         }
         else {
@@ -48916,17 +51048,20 @@ const FileExplorer = ({ rootPath }) => {
         setContextMenu({ visible: false, x: 0, y: 0, node: null });
     };
     const handleContextAction = async (action) => {
-        if (!contextMenu.node)
+        if (!contextMenu.node && action !== 'newFile' && action !== 'newFolder')
             return;
         const node = contextMenu.node;
-        switch (action) {
-            case 'open':
-                if (node.type === 'file') {
-                    await handleFileClick(node);
-                }
-                break;
-            case 'rename':
-                try {
+        const basePath = state.currentProject?.path || '';
+        try {
+            switch (action) {
+                case 'open':
+                    if (node && node.type === 'file') {
+                        await handleFileClick(node);
+                    }
+                    break;
+                case 'rename':
+                    if (!node)
+                        break;
                     const result = await window.electronAPI.dialog.showInputBox({
                         title: '名前を変更',
                         message: '新しい名前を入力してください:',
@@ -48935,82 +51070,68 @@ const FileExplorer = ({ rootPath }) => {
                     if (result && result !== node.name) {
                         const newPath = node.path.replace(node.name, result);
                         await window.electronAPI.fs.rename(node.path, newPath);
-                        // ファイルツリーを再読み込み
-                        window.location.reload();
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('File renamed', { from: node.name, to: result });
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('名前を変更しました', `${node.name} → ${result}`);
+                        setRefreshKey(k => k + 1);
                     }
-                }
-                catch (error) {
-                    console.error('Failed to rename:', error);
-                    alert('名前の変更に失敗しました: ' + error);
-                }
-                break;
-            case 'delete':
-                if (confirm(`"${node.name}" を削除してもよろしいですか？`)) {
-                    try {
+                    break;
+                case 'delete':
+                    if (!node)
+                        break;
+                    if (confirm(`"${node.name}" を削除してもよろしいですか？`)) {
                         if (node.type === 'folder') {
                             await window.electronAPI.fs.rmdir(node.path);
                         }
                         else {
                             await window.electronAPI.fs.unlink(node.path);
                         }
-                        // ファイルツリーを再読み込み
-                        window.location.reload();
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('File deleted', { name: node.name });
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('削除しました', node.name);
+                        setRefreshKey(k => k + 1);
                     }
-                    catch (error) {
-                        console.error('Failed to delete:', error);
-                        alert('削除に失敗しました: ' + error);
-                    }
-                }
-                break;
-            case 'copy':
-                try {
+                    break;
+                case 'copy':
+                    if (!node)
+                        break;
                     await navigator.clipboard.writeText(node.path);
-                    console.log('Path copied to clipboard:', node.path);
-                }
-                catch (error) {
-                    console.error('Failed to copy path:', error);
-                }
-                break;
-            case 'newFile':
-                try {
-                    const parentPath = node.type === 'folder' ? node.path : node.path.substring(0, node.path.lastIndexOf('/'));
-                    const result = await window.electronAPI.dialog.showInputBox({
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('Path copied to clipboard', { path: node.path });
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.info('パスをコピーしました', node.path);
+                    break;
+                case 'newFile':
+                    const fileResult = await window.electronAPI.dialog.showInputBox({
                         title: '新規ファイル',
                         message: 'ファイル名を入力してください:',
-                        defaultValue: 'newfile.cpp'
+                        defaultValue: 'newfile.ino'
                     });
-                    if (result) {
-                        const newFilePath = `${parentPath}/${result}`;
-                        await window.electronAPI.fs.writeFile(newFilePath, '');
-                        // ファイルツリーを再読み込み
-                        window.location.reload();
+                    if (fileResult) {
+                        const parentPath = node?.type === 'folder' ? node.path : basePath;
+                        const newFilePath = `${parentPath}/${fileResult}`;
+                        await window.electronAPI.fs.writeFile(newFilePath, '// New file\n');
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('File created', { path: newFilePath });
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('ファイルを作成しました', fileResult);
+                        setRefreshKey(k => k + 1);
                     }
-                }
-                catch (error) {
-                    console.error('Failed to create file:', error);
-                    alert('ファイルの作成に失敗しました: ' + error);
-                }
-                break;
-            case 'newFolder':
-                try {
-                    const parentPath = node.type === 'folder' ? node.path : node.path.substring(0, node.path.lastIndexOf('/'));
-                    const result = await window.electronAPI.dialog.showInputBox({
+                    break;
+                case 'newFolder':
+                    const folderResult = await window.electronAPI.dialog.showInputBox({
                         title: '新規フォルダ',
                         message: 'フォルダ名を入力してください:',
                         defaultValue: 'newfolder'
                     });
-                    if (result) {
-                        const newFolderPath = `${parentPath}/${result}`;
+                    if (folderResult) {
+                        const parentPath = node?.type === 'folder' ? node.path : basePath;
+                        const newFolderPath = `${parentPath}/${folderResult}`;
                         await window.electronAPI.fs.mkdir(newFolderPath);
-                        // ファイルツリーを再読み込み
-                        window.location.reload();
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('Folder created', { path: newFolderPath });
+                        _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('フォルダを作成しました', folderResult);
+                        setRefreshKey(k => k + 1);
                     }
-                }
-                catch (error) {
-                    console.error('Failed to create folder:', error);
-                    alert('フォルダの作成に失敗しました: ' + error);
-                }
-                break;
+                    break;
+            }
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Context action failed', { action, error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('操作に失敗しました', String(error));
         }
         closeContextMenu();
     };
@@ -49042,12 +51163,12 @@ const FileExplorer = ({ rootPath }) => {
         document.addEventListener('click', handleClick);
         return () => document.removeEventListener('click', handleClick);
     }, []);
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-explorer", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "explorer-header", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "section-title", children: "\u30A8\u30AF\u30B9\u30D7\u30ED\u30FC\u30E9\u30FC" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "explorer-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "action-btn", title: "\u65B0\u898F\u30D5\u30A1\u30A4\u30EB", onClick: () => handleContextAction('newFile'), children: "+F" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "action-btn", title: "\u65B0\u898F\u30D5\u30A9\u30EB\u30C0", onClick: () => handleContextAction('newFolder'), children: "+D" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "action-btn", title: "\u66F4\u65B0", onClick: () => loadDirectory(), children: "R" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "file-tree", children: fileTree.map(node => renderFileNode(node)) }), contextMenu.visible && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "context-menu", style: {
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-explorer", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "explorer-header", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "section-title", children: "Files" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "explorer-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "action-btn", title: "\u65B0\u898F\u30D5\u30A1\u30A4\u30EB", onClick: () => handleContextAction('newFile'), disabled: !state.currentProject, children: "+F" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "action-btn", title: "\u65B0\u898F\u30D5\u30A9\u30EB\u30C0", onClick: () => handleContextAction('newFolder'), disabled: !state.currentProject, children: "+D" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "action-btn", title: "\u66F4\u65B0", onClick: () => setRefreshKey(k => k + 1), disabled: !state.currentProject || loading, children: "R" })] })] }), loading && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "explorer-loading", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "loading-spinner" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "\u8AAD\u307F\u8FBC\u307F\u4E2D..." })] })), !loading && !state.currentProject && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "explorer-empty", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "\u30D7\u30ED\u30B8\u30A7\u30AF\u30C8\u304C\u958B\u304B\u308C\u3066\u3044\u307E\u305B\u3093" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { className: "hint", children: "\u30D7\u30ED\u30B8\u30A7\u30AF\u30C8\u3092\u958B\u3044\u3066\u304F\u3060\u3055\u3044" })] })), !loading && state.currentProject && fileTree.length === 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "explorer-empty", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "\u30D5\u30A9\u30EB\u30C0\u306F\u7A7A\u3067\u3059" }) })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "file-tree", children: fileTree.map(node => renderFileNode(node)) }), contextMenu.visible && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "context-menu", style: {
                     left: contextMenu.x,
                     top: contextMenu.y,
                     position: 'fixed',
-                    zIndex: 1000
-                }, children: [contextMenu.node?.type === 'file' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('open'), children: "\u958B\u304F" })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('rename'), children: "\u540D\u524D\u3092\u5909\u66F4" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('copy'), children: "\u30B3\u30D4\u30FC" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-separator" }), contextMenu.node?.type === 'folder' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('newFile'), children: "\u65B0\u898F\u30D5\u30A1\u30A4\u30EB" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('newFolder'), children: "\u65B0\u898F\u30D5\u30A9\u30EB\u30C0" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-separator" })] })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item delete", onClick: () => handleContextAction('delete'), children: "\u524A\u9664" })] }))] }));
+                    zIndex: 10000
+                }, onClick: (e) => e.stopPropagation(), children: [contextMenu.node?.type === 'file' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('open'), children: "Open" })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('rename'), children: "Rename" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('copy'), children: "Copy Path" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-separator" }), contextMenu.node?.type === 'folder' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('newFile'), children: "New File" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item", onClick: () => handleContextAction('newFolder'), children: "New Folder" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-separator" })] })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "context-item delete", onClick: () => handleContextAction('delete'), children: "Delete" })] }))] }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FileExplorer);
 
@@ -49121,122 +51242,329 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _GitPanel_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./GitPanel.css */ "./src/renderer/components/GitPanel/GitPanel.css");
+/* harmony import */ var _contexts_AppContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../contexts/AppContext */ "./src/renderer/contexts/AppContext.tsx");
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/logger */ "./src/renderer/utils/logger.ts");
+/* harmony import */ var _GitPanel_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./GitPanel.css */ "./src/renderer/components/GitPanel/GitPanel.css");
+
+
 
 
 
 const GitPanel = () => {
-    const [gitStatus, setGitStatus] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
-    const [isLoading, setIsLoading] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    const { state } = (0,_contexts_AppContext__WEBPACK_IMPORTED_MODULE_2__.useApp)();
+    const [gitStatus, setGitStatus] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+        isRepo: false,
+        branch: 'main',
+        ahead: 0,
+        behind: 0,
+        changes: [],
+        staged: [],
+        commits: []
+    });
     const [commitMessage, setCommitMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-    const refreshGitStatus = async () => {
-        setIsLoading(true);
+    const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    const [showCommitHistory, setShowCommitHistory] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    const [remoteUrl, setRemoteUrl] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+    const [showRemoteDialog, setShowRemoteDialog] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        if (state.currentProject?.path) {
+            loadGitStatus();
+        }
+    }, [state.currentProject]);
+    const executeGitCommand = async (args) => {
         try {
-            const result = await window.electronAPI.process.exec('git', ['status', '--porcelain', '--branch'], { cwd: process.cwd() });
-            if (result.exitCode === 0) {
-                // Parse git status output
-                const lines = result.stdout.split('\n').filter(line => line.trim());
-                const branchLine = lines.find(line => line.startsWith('##'));
-                const branch = branchLine ? branchLine.replace('##', '').split('...')[0].trim() : 'main';
-                const staged = [];
-                const modified = [];
-                const untracked = [];
-                lines.forEach(line => {
-                    if (line.startsWith('??')) {
-                        untracked.push(line.substring(3));
-                    }
-                    else if (line.startsWith('M ')) {
-                        staged.push(line.substring(3));
-                    }
-                    else if (line.startsWith(' M')) {
-                        modified.push(line.substring(3));
-                    }
-                    else if (line.startsWith('A ')) {
-                        staged.push(line.substring(3));
-                    }
-                });
-                setGitStatus({
-                    branch,
-                    staged,
-                    modified,
-                    untracked,
-                    ahead: 0,
-                    behind: 0
-                });
+            const result = await window.electronAPI.process.exec('git', args, {
+                cwd: state.currentProject?.path || ''
+            });
+            if (result.exitCode !== 0 && result.stderr) {
+                throw new Error(result.stderr);
             }
+            return result.stdout;
         }
         catch (error) {
-            console.error('Git status error:', error);
-            setGitStatus(null);
-        }
-        setIsLoading(false);
-    };
-    const handleStageFile = async (file) => {
-        try {
-            await window.electronAPI.process.exec('git', ['add', file], { cwd: process.cwd() });
-            refreshGitStatus();
-        }
-        catch (error) {
-            console.error('Git add error:', error);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Git command failed', { args, error });
+            throw error;
         }
     };
-    const handleUnstageFile = async (file) => {
+    const loadGitStatus = async () => {
+        if (!state.currentProject?.path)
+            return;
+        setLoading(true);
         try {
-            await window.electronAPI.process.exec('git', ['reset', 'HEAD', file], { cwd: process.cwd() });
-            refreshGitStatus();
+            // Check if it's a git repo
+            try {
+                await executeGitCommand(['rev-parse', '--git-dir']);
+            }
+            catch {
+                setGitStatus({ ...gitStatus, isRepo: false });
+                setLoading(false);
+                return;
+            }
+            // Get current branch
+            const branch = (await executeGitCommand(['rev-parse', '--abbrev-ref', 'HEAD'])).trim();
+            // Get status
+            const statusOutput = await executeGitCommand(['status', '--porcelain']);
+            const changes = [];
+            const staged = [];
+            statusOutput.split('\n').filter(line => line.trim()).forEach(line => {
+                const status = line.substring(0, 2);
+                const path = line.substring(3);
+                let changeStatus = 'modified';
+                if (status.includes('A'))
+                    changeStatus = 'added';
+                else if (status.includes('D'))
+                    changeStatus = 'deleted';
+                else if (status.includes('??'))
+                    changeStatus = 'untracked';
+                const change = {
+                    path,
+                    status: changeStatus,
+                    staged: status[0] !== ' ' && status[0] !== '?'
+                };
+                if (change.staged) {
+                    staged.push(change);
+                }
+                else {
+                    changes.push(change);
+                }
+            });
+            // Get commit count ahead/behind
+            let ahead = 0;
+            let behind = 0;
+            try {
+                const aheadBehind = await executeGitCommand(['rev-list', '--left-right', '--count', 'HEAD...@{u}']);
+                const parts = aheadBehind.trim().split('\t');
+                ahead = parseInt(parts[0]) || 0;
+                behind = parseInt(parts[1]) || 0;
+            }
+            catch {
+                // No remote tracking branch
+            }
+            // Get recent commits
+            const logOutput = await executeGitCommand(['log', '--pretty=format:%H|%an|%ad|%s', '--date=short', '-10']);
+            const commits = logOutput.split('\n').filter(line => line.trim()).map(line => {
+                const [hash, author, date, message] = line.split('|');
+                return { hash, author, date, message };
+            });
+            setGitStatus({
+                isRepo: true,
+                branch,
+                ahead,
+                behind,
+                changes,
+                staged,
+                commits
+            });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('Git status loaded', { branch, changes: changes.length, staged: staged.length });
         }
         catch (error) {
-            console.error('Git reset error:', error);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to load git status', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('Git status読み込みエラー', String(error));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    const handleInitRepo = async () => {
+        if (!state.currentProject?.path)
+            return;
+        setLoading(true);
+        try {
+            await executeGitCommand(['init']);
+            await executeGitCommand(['config', 'user.name', 'TOVA IDE User']);
+            await executeGitCommand(['config', 'user.email', 'user@tova-ide.local']);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('Git repository initialized');
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('Gitリポジトリを初期化しました', state.currentProject.path);
+            await loadGitStatus();
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to initialize git', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('Git初期化エラー', String(error));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    const handleStageFile = async (path) => {
+        setLoading(true);
+        try {
+            await executeGitCommand(['add', path]);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info(`File staged: ${path}`);
+            await loadGitStatus();
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to stage file', { path, error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('ステージングエラー', String(error));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    const handleUnstageFile = async (path) => {
+        setLoading(true);
+        try {
+            await executeGitCommand(['reset', 'HEAD', path]);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info(`File unstaged: ${path}`);
+            await loadGitStatus();
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to unstage file', { path, error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('アンステージエラー', String(error));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    const handleStageAll = async () => {
+        setLoading(true);
+        try {
+            await executeGitCommand(['add', '-A']);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('All files staged');
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('すべての変更をステージしました');
+            await loadGitStatus();
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to stage all', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('ステージングエラー', String(error));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    const handleUnstageAll = async () => {
+        setLoading(true);
+        try {
+            await executeGitCommand(['reset', 'HEAD']);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info('All files unstaged');
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('すべての変更をアンステージしました');
+            await loadGitStatus();
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to unstage all', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('アンステージエラー', String(error));
+        }
+        finally {
+            setLoading(false);
         }
     };
     const handleCommit = async () => {
-        if (!commitMessage.trim())
+        if (!commitMessage.trim()) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.warning('コミットメッセージを入力してください');
             return;
+        }
+        if (gitStatus.staged.length === 0) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.warning('ステージされた変更がありません');
+            return;
+        }
+        setLoading(true);
         try {
-            await window.electronAPI.process.exec('git', ['commit', '-m', commitMessage], { cwd: process.cwd() });
+            await executeGitCommand(['commit', '-m', commitMessage]);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success(`Committed: ${commitMessage}`);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('コミットしました', commitMessage);
             setCommitMessage('');
-            refreshGitStatus();
+            await loadGitStatus();
         }
         catch (error) {
-            console.error('Git commit error:', error);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to commit', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('コミットエラー', String(error));
+        }
+        finally {
+            setLoading(false);
         }
     };
     const handlePush = async () => {
+        setLoading(true);
         try {
-            await window.electronAPI.process.exec('git', ['push'], { cwd: process.cwd() });
-            refreshGitStatus();
+            const output = await executeGitCommand(['push']);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('Pushed to remote');
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('リモートにプッシュしました', output);
+            await loadGitStatus();
         }
         catch (error) {
-            console.error('Git push error:', error);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to push', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('プッシュエラー', String(error));
+        }
+        finally {
+            setLoading(false);
         }
     };
     const handlePull = async () => {
+        setLoading(true);
         try {
-            await window.electronAPI.process.exec('git', ['pull'], { cwd: process.cwd() });
-            refreshGitStatus();
+            const output = await executeGitCommand(['pull']);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('Pulled from remote');
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('リモートからプルしました', output);
+            await loadGitStatus();
         }
         catch (error) {
-            console.error('Git pull error:', error);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to pull', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('プルエラー', String(error));
+        }
+        finally {
+            setLoading(false);
         }
     };
-    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-        refreshGitStatus();
-    }, []);
-    if (isLoading) {
-        return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "git-panel loading", children: "Loading Git status..." });
+    const handleAddRemote = async () => {
+        if (!remoteUrl.trim()) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.warning('リモートURLを入力してください');
+            return;
+        }
+        setLoading(true);
+        try {
+            // Remove existing origin if exists
+            try {
+                await executeGitCommand(['remote', 'remove', 'origin']);
+            }
+            catch {
+                // Ignore if origin doesn't exist
+            }
+            await executeGitCommand(['remote', 'add', 'origin', remoteUrl]);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success(`Remote added: ${remoteUrl}`);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('リモートを追加しました', remoteUrl);
+            setShowRemoteDialog(false);
+            setRemoteUrl('');
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to add remote', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('リモート追加エラー', String(error));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    const handleViewDiff = async (path) => {
+        try {
+            const diff = await executeGitCommand(['diff', 'HEAD', path]);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.info(`Diff for ${path}:\n${diff}`);
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.info('差分表示', `${path}の差分をコンソールに出力しました`);
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to get diff', { path, error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('差分取得エラー', String(error));
+        }
+    };
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'modified': return '✏️';
+            case 'added': return '➕';
+            case 'deleted': return '🗑️';
+            case 'untracked': return '❓';
+            default: return '📄';
+        }
+    };
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'modified': return '#FFA500';
+            case 'added': return '#00FF00';
+            case 'deleted': return '#FF0000';
+            case 'untracked': return '#888888';
+            default: return '#FFFFFF';
+        }
+    };
+    if (!gitStatus.isRepo) {
+        return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-panel", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "git-header", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\uD83D\uDD27 Git" }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "git-init-container", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-init-message", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "\u3053\u306E\u30D7\u30ED\u30B8\u30A7\u30AF\u30C8\u306FGit\u30EA\u30DD\u30B8\u30C8\u30EA\u3067\u306F\u3042\u308A\u307E\u305B\u3093" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleInitRepo, className: "btn primary", disabled: loading, children: loading ? '初期化中...' : '📦 Gitリポジトリを初期化' })] }) })] }));
     }
-    if (!gitStatus) {
-        return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-panel no-git", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "No Git repository detected" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "git-init-btn", onClick: async () => {
-                        try {
-                            await window.electronAPI.process.exec('git', ['init'], { cwd: process.cwd() });
-                            refreshGitStatus();
-                        }
-                        catch (error) {
-                            console.error('Git init error:', error);
-                        }
-                    }, children: "Initialize Repository" })] }));
-    }
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-panel", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-header", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-branch", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "branch-icon", children: "\uD83C\uDF3F" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "branch-name", children: gitStatus.branch })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "git-btn", onClick: handlePull, title: "Pull", children: "\u2B07\uFE0F" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "git-btn", onClick: handlePush, title: "Push", children: "\u2B06\uFE0F" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "git-btn", onClick: refreshGitStatus, title: "Refresh", children: "\uD83D\uDD04" })] })] }), gitStatus.staged.length > 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "Staged Changes" }), gitStatus.staged.map(file => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-file staged", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "file-name", children: file }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "unstage-btn", onClick: () => handleUnstageFile(file), children: "-" })] }, file)))] })), gitStatus.modified.length > 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "Modified" }), gitStatus.modified.map(file => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-file modified", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "file-name", children: file }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "stage-btn", onClick: () => handleStageFile(file), children: "+" })] }, file)))] })), gitStatus.untracked.length > 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "Untracked" }), gitStatus.untracked.map(file => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-file untracked", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "file-name", children: file }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "stage-btn", onClick: () => handleStageFile(file), children: "+" })] }, file)))] })), gitStatus.staged.length > 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "commit-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("textarea", { className: "commit-message", placeholder: "Commit message...", value: commitMessage, onChange: (e) => setCommitMessage(e.target.value), rows: 3 }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "commit-btn", onClick: handleCommit, disabled: !commitMessage.trim(), children: "Commit" })] }))] }));
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-panel", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-header", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\uD83D\uDD27 Git" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: loadGitStatus, className: "refresh-btn", disabled: loading, children: "\uD83D\uDD04" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-branch-info", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "branch-name", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "branch-icon", children: "\uD83C\uDF3F" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("strong", { children: gitStatus.branch })] }), (gitStatus.ahead > 0 || gitStatus.behind > 0) && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "sync-status", children: [gitStatus.ahead > 0 && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("span", { className: "ahead", children: ["\u2191", gitStatus.ahead] }), gitStatus.behind > 0 && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("span", { className: "behind", children: ["\u2193", gitStatus.behind] })] }))] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handlePull, className: "btn secondary", disabled: loading, children: "\u2B07\uFE0F Pull" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handlePush, className: "btn secondary", disabled: loading, children: "\u2B06\uFE0F Push" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => setShowRemoteDialog(true), className: "btn secondary", children: "\uD83D\uDD17 Remote" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => setShowCommitHistory(!showCommitHistory), className: "btn secondary", children: "\uFFFD History" })] }), showCommitHistory && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "commit-history", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "\u30B3\u30DF\u30C3\u30C8\u5C65\u6B74" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "commit-list", children: gitStatus.commits.map(commit => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "commit-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "commit-hash", children: commit.hash.substring(0, 7) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "commit-info", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "commit-message", children: commit.message }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "commit-meta", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "commit-author", children: commit.author }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "commit-date", children: commit.date })] })] })] }, commit.hash))) })] })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-staging", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "staging-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "section-header", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("h4", { children: ["\uD83D\uDCDD \u5909\u66F4 (", gitStatus.changes.length, ")"] }), gitStatus.changes.length > 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleStageAll, className: "stage-all-btn", children: "\u3059\u3079\u3066\u30B9\u30C6\u30FC\u30B8" }))] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-list", children: [gitStatus.changes.map(change => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "file-status", style: { color: getStatusColor(change.status) }, children: getStatusIcon(change.status) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "file-path", title: change.path, children: change.path }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => handleViewDiff(change.path), className: "action-btn", title: "\u5DEE\u5206\u3092\u8868\u793A", children: "\uD83D\uDC41\uFE0F" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => handleStageFile(change.path), className: "action-btn", title: "\u30B9\u30C6\u30FC\u30B8", children: "\u2795" })] })] }, change.path))), gitStatus.changes.length === 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "empty-state", children: "\u5909\u66F4\u306A\u3057" }))] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "staging-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "section-header", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("h4", { children: ["\u2705 \u30B9\u30C6\u30FC\u30B8\u6E08\u307F (", gitStatus.staged.length, ")"] }), gitStatus.staged.length > 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleUnstageAll, className: "unstage-all-btn", children: "\u3059\u3079\u3066\u30A2\u30F3\u30B9\u30C6\u30FC\u30B8" }))] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-list", children: [gitStatus.staged.map(change => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-item staged", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "file-status", style: { color: getStatusColor(change.status) }, children: getStatusIcon(change.status) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "file-path", title: change.path, children: change.path }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => handleViewDiff(change.path), className: "action-btn", title: "\u5DEE\u5206\u3092\u8868\u793A", children: "\uD83D\uDC41\uFE0F" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => handleUnstageFile(change.path), className: "action-btn", title: "\u30A2\u30F3\u30B9\u30C6\u30FC\u30B8", children: "\u2796" })] })] }, change.path))), gitStatus.staged.length === 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "empty-state", children: "\u30B9\u30C6\u30FC\u30B8\u3055\u308C\u305F\u5909\u66F4\u306A\u3057" }))] })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "git-commit", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("textarea", { placeholder: "\u30B3\u30DF\u30C3\u30C8\u30E1\u30C3\u30BB\u30FC\u30B8\u3092\u5165\u529B...", value: commitMessage, onChange: (e) => setCommitMessage(e.target.value), rows: 3, disabled: loading }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleCommit, className: "btn primary commit-btn", disabled: loading || gitStatus.staged.length === 0 || !commitMessage.trim(), children: "\uD83D\uDCBE \u30B3\u30DF\u30C3\u30C8" })] }), showRemoteDialog && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "modal-overlay", onClick: () => setShowRemoteDialog(false), children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "modal-content", onClick: (e) => e.stopPropagation(), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u30EA\u30E2\u30FC\u30C8\u30EA\u30DD\u30B8\u30C8\u30EA\u306E\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "form-group", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30EA\u30E2\u30FC\u30C8URL (origin)" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", value: remoteUrl, onChange: (e) => setRemoteUrl(e.target.value), placeholder: "https://github.com/user/repo.git" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "modal-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleAddRemote, className: "btn primary", disabled: loading, children: "\u8FFD\u52A0" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => setShowRemoteDialog(false), className: "btn secondary", children: "\u30AD\u30E3\u30F3\u30BB\u30EB" })] })] }) }))] }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GitPanel);
 
@@ -49347,168 +51675,6 @@ const MainWorkspace = () => {
     return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "main-workspace", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_TitleBar_TitleBar__WEBPACK_IMPORTED_MODULE_2__["default"], { mode: mode, onNewProject: () => setShowProjectManager(true) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "workspace-content", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_3__["default"], { width: sidebarWidth, onResize: setSidebarWidth }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "main-area", children: showProjectManager ? ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ProjectManager_ProjectManager__WEBPACK_IMPORTED_MODULE_7__["default"], { onClose: () => setShowProjectManager(false) })) : ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_EditorArea_EditorArea__WEBPACK_IMPORTED_MODULE_4__["default"], {}), isBottomPanelVisible && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_BottomPanel_BottomPanel__WEBPACK_IMPORTED_MODULE_5__["default"], { height: bottomPanelHeight, onResize: setBottomPanelHeight, onToggle: () => setIsBottomPanelVisible(false) }))] })) })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_StatusBar_StatusBar__WEBPACK_IMPORTED_MODULE_6__["default"], { mode: mode, onToggleBottomPanel: () => setIsBottomPanelVisible(!isBottomPanelVisible) })] }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MainWorkspace);
-
-
-/***/ }),
-
-/***/ "./src/renderer/components/PinPanel/PinPanel.css":
-/*!*******************************************************!*\
-  !*** ./src/renderer/components/PinPanel/PinPanel.css ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_PinPanel_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js!./PinPanel.css */ "./node_modules/css-loader/dist/cjs.js!./src/renderer/components/PinPanel/PinPanel.css");
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-var options = {};
-
-options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
-options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
-
-      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
-options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
-options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
-
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_PinPanel_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
-
-
-
-
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_PinPanel_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_PinPanel_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_PinPanel_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
-
-
-/***/ }),
-
-/***/ "./src/renderer/components/PinPanel/PinPanel.tsx":
-/*!*******************************************************!*\
-  !*** ./src/renderer/components/PinPanel/PinPanel.tsx ***!
-  \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _PinPanel_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PinPanel.css */ "./src/renderer/components/PinPanel/PinPanel.css");
-
-
-
-const PinPanel = () => {
-    const [pinnedItems, setPinnedItems] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
-    const [isAddingItem, setIsAddingItem] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
-    const [newItem, setNewItem] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-        name: '',
-        type: 'file',
-        path: '',
-        icon: '📄'
-    });
-    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-        loadPinnedItems();
-    }, []);
-    const loadPinnedItems = async () => {
-        try {
-            const items = await window.electronAPI.store.get('pinnedItems') || [];
-            setPinnedItems(items);
-        }
-        catch (error) {
-            console.error('Failed to load pinned items:', error);
-        }
-    };
-    const savePinnedItems = async (items) => {
-        try {
-            await window.electronAPI.store.set('pinnedItems', items);
-            setPinnedItems(items);
-        }
-        catch (error) {
-            console.error('Failed to save pinned items:', error);
-        }
-    };
-    const addPinnedItem = () => {
-        if (!newItem.name || !newItem.path)
-            return;
-        const item = {
-            id: Date.now().toString(),
-            name: newItem.name,
-            type: newItem.type,
-            path: newItem.path,
-            icon: newItem.icon || getDefaultIcon(newItem.type),
-            description: newItem.description
-        };
-        const updatedItems = [...pinnedItems, item];
-        savePinnedItems(updatedItems);
-        setNewItem({ name: '', type: 'file', path: '', icon: '📄' });
-        setIsAddingItem(false);
-    };
-    const removePinnedItem = (id) => {
-        const updatedItems = pinnedItems.filter(item => item.id !== id);
-        savePinnedItems(updatedItems);
-    };
-    const openPinnedItem = async (item) => {
-        try {
-            switch (item.type) {
-                case 'file':
-                    // Open file in editor
-                    break;
-                case 'folder':
-                    await window.electronAPI.showItemInFolder(item.path);
-                    break;
-                case 'url':
-                    await window.electronAPI.openExternal(item.path);
-                    break;
-                case 'command':
-                    // Execute command
-                    await window.electronAPI.process.exec(item.path, [], {});
-                    break;
-            }
-        }
-        catch (error) {
-            console.error('Failed to open pinned item:', error);
-        }
-    };
-    const getDefaultIcon = (type) => {
-        switch (type) {
-            case 'file': return '📄';
-            case 'folder': return '📁';
-            case 'command': return '⚡';
-            case 'url': return '🌐';
-            default: return '📌';
-        }
-    };
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "pin-panel", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "pin-header", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "Pinned Items" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "add-pin-btn", onClick: () => setIsAddingItem(true), title: "Add Pin", children: "+" })] }), isAddingItem && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "add-pin-form", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", placeholder: "Name", value: newItem.name || '', onChange: (e) => setNewItem({ ...newItem, name: e.target.value }), className: "pin-input" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: newItem.type || 'file', onChange: (e) => setNewItem({ ...newItem, type: e.target.value }), className: "pin-select", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "file", children: "File" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "folder", children: "Folder" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "command", children: "Command" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "url", children: "URL" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", placeholder: "Path/URL/Command", value: newItem.path || '', onChange: (e) => setNewItem({ ...newItem, path: e.target.value }), className: "pin-input" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", placeholder: "Icon (emoji)", value: newItem.icon || '', onChange: (e) => setNewItem({ ...newItem, icon: e.target.value }), className: "pin-input" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "pin-form-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "pin-save-btn", onClick: addPinnedItem, children: "Save" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "pin-cancel-btn", onClick: () => setIsAddingItem(false), children: "Cancel" })] })] })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "pin-list", children: pinnedItems.length === 0 ? ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "pin-empty", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "No pinned items" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "Click + to add frequently used files, folders, or commands" })] })) : (pinnedItems.map(item => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "pin-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "pin-content", onClick: () => openPinnedItem(item), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "pin-icon", children: item.icon }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "pin-details", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "pin-name", children: item.name }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "pin-type", children: item.type }), item.description && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "pin-description", children: item.description }))] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "pin-remove-btn", onClick: (e) => {
-                                e.stopPropagation();
-                                removePinnedItem(item.id);
-                            }, title: "Remove Pin", children: "\u00D7" })] }, item.id)))) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "pin-quick-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h5", { children: "Quick Actions" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "quick-action-grid", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "quick-action-btn", onClick: () => setNewItem({ ...newItem, name: 'Arduino CLI', type: 'command', path: 'arduino-cli', icon: '🔧' }), children: "\uD83D\uDD27 Arduino CLI" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "quick-action-btn", onClick: () => setNewItem({ ...newItem, name: 'PlatformIO', type: 'command', path: 'pio', icon: '⚙️' }), children: "\u2699\uFE0F PlatformIO" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "quick-action-btn", onClick: () => setNewItem({ ...newItem, name: 'Serial Monitor', type: 'command', path: 'arduino-cli monitor', icon: '📡' }), children: "\uD83D\uDCE1 Serial Mon" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "quick-action-btn", onClick: () => setNewItem({ ...newItem, name: 'Project Docs', type: 'folder', path: './docs', icon: '📚' }), children: "\uD83D\uDCDA Docs" })] })] })] }));
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PinPanel);
 
 
 /***/ }),
@@ -49808,6 +51974,40 @@ const ProjectManager = ({ onClose }) => {
             console.error('Failed to select path:', error);
         }
     };
+    const handleOpenRecentProject = async (project) => {
+        _utils_logger__WEBPACK_IMPORTED_MODULE_5__.logger.info(`最近のプロジェクトを開く: ${project.name}`, { path: project.path });
+        setProgressMessage('プロジェクトを開いています...');
+        setProgressDetails(project.path);
+        try {
+            // プロジェクトの存在確認
+            const exists = await window.electronAPI.fs.exists(project.path);
+            if (!exists) {
+                _utils_logger__WEBPACK_IMPORTED_MODULE_5__.toast.error('プロジェクトが見つかりません', project.path);
+                _utils_logger__WEBPACK_IMPORTED_MODULE_5__.logger.error('Project path not found', { path: project.path });
+                setProgressMessage('');
+                return;
+            }
+            // プロジェクトを設定
+            await setCurrentProject({
+                name: project.name,
+                path: project.path,
+                type: project.type,
+                lastOpened: new Date()
+            });
+            setProgressMessage('');
+            _utils_logger__WEBPACK_IMPORTED_MODULE_5__.logger.success('プロジェクトを開きました', { name: project.name });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_5__.toast.success('プロジェクトを開きました', project.name);
+            // マネージャーを閉じる
+            if (onClose) {
+                onClose();
+            }
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_5__.logger.error('プロジェクトを開けませんでした', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_5__.toast.error('プロジェクトを開けませんでした', String(error));
+            setProgressMessage('');
+        }
+    };
     const handleCreateProject = async () => {
         if (!projectName || !selectedTemplate || !projectPath || !selectedBoard) {
             _utils_logger__WEBPACK_IMPORTED_MODULE_5__.toast.warning('すべての項目を入力してください', '必須項目が未入力です');
@@ -49952,11 +52152,6 @@ const ProjectManager = ({ onClose }) => {
                                         const platform = 'platform' in board ? board.platform : board.core;
                                         return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("option", { value: boardId, children: [board.name, " (", platform, ")"] }, boardId));
                                     })] })] })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "form-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "Project Location" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "path-selector", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", value: projectPath, placeholder: "Select project location...", readOnly: true, className: "form-input path-input" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { type: "button", onClick: handleSelectPath, className: "path-btn", children: "\uD83D\uDCC1 Browse" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "form-actions", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleCreateProject, disabled: !projectName || !selectedTemplate || !projectPath || !selectedBoard || isCreating, className: "create-btn", children: isCreating ? 'Creating...' : '✨ Create Project' }) })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "project-divider", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "or" }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "open-project-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h2", { children: "\uD83D\uDCC2 Open Existing Project" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "Open an existing Arduino or PlatformIO project folder" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleOpenProject, className: "open-btn", children: "\uD83D\uDCC1 Open Project Folder" }), recentProjects.length > 0 && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "recent-projects-list", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "Recent Projects" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "recent-items", children: recentProjects.map((project, index) => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "recent-project-item", onClick: () => handleOpenRecentProject(project), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "project-info", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "project-name", children: project.name }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "project-path", children: project.path })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: `project-type ${project.type}`, children: project.type === 'arduino' ? 'Arduino' : 'PlatformIO' })] }, index))) })] }))] }), onClose && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "close-manager-btn", onClick: onClose, children: "\u2715 Close" })), progressMessage && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_ProgressIndicator_ProgressIndicator__WEBPACK_IMPORTED_MODULE_6__["default"], { visible: !!progressMessage, message: progressMessage, details: progressDetails, progress: progressPercent }))] }));
-};
-const handleOpenRecentProject = (project) => {
-    _utils_logger__WEBPACK_IMPORTED_MODULE_5__.logger.info(`最近のプロジェクトを開く: ${project.name}`, { path: project.path });
-    _utils_logger__WEBPACK_IMPORTED_MODULE_5__.toast.info('プロジェクトを開いています...', project.name);
-    // TODO: プロジェクトを開く処理を実装
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ProjectManager);
 
@@ -50406,12 +52601,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const SettingsPanel = () => {
-    const { theme, setTheme } = (0,_contexts_ThemeContext__WEBPACK_IMPORTED_MODULE_2__.useTheme)();
+    const { theme, setTheme, wallpaper, setWallpaper } = (0,_contexts_ThemeContext__WEBPACK_IMPORTED_MODULE_2__.useTheme)();
     const { mode, settings, updateSettings } = (0,_contexts_AppContext__WEBPACK_IMPORTED_MODULE_3__.useApp)();
     const [activeTab, setActiveTab] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('general');
     const tabs = [
         { id: 'general', name: '一般', icon: 'G' },
         { id: 'theme', name: 'テーマ', icon: 'T' },
+        { id: 'wallpaper', name: '壁紙', icon: 'W' },
         { id: 'editor', name: 'エディタ', icon: 'E' },
         { id: 'build', name: 'ビルド', icon: 'B' },
         { id: 'keybinds', name: 'キーバインド', icon: 'K' },
@@ -50426,9 +52622,67 @@ const SettingsPanel = () => {
         updateSettings(category, key, value);
     };
     const renderGeneralSettings = () => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u4E00\u822C\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u81EA\u52D5\u4FDD\u5B58" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: settings.general?.autoSave || 'off', onChange: (e) => handleSettingChange('general', 'autoSave', e.target.value), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "off", children: "\u30AA\u30D5" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "afterDelay", children: "\u9045\u5EF6\u5F8C" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "onFocusChange", children: "\u30D5\u30A9\u30FC\u30AB\u30B9\u5909\u66F4\u6642" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30D7\u30ED\u30B8\u30A7\u30AF\u30C8\u5FA9\u5143" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: settings.general?.restoreProject || false, onChange: (e) => handleSettingChange('general', 'restoreProject', e.target.checked) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "\u8D77\u52D5\u6642\u306B\u524D\u56DE\u306E\u30D7\u30ED\u30B8\u30A7\u30AF\u30C8\u3092\u5FA9\u5143" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30DF\u30CB\u30DE\u30C3\u30D7\u8868\u793A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: settings.general?.showMinimap || true, onChange: (e) => handleSettingChange('general', 'showMinimap', e.target.checked) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "\u30A8\u30C7\u30A3\u30BF\u306B\u30DF\u30CB\u30DE\u30C3\u30D7\u3092\u8868\u793A" })] })] }));
-    const renderThemeSettings = () => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u30C6\u30FC\u30DE\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "theme-selector", children: ['dark', 'light', 'modern-blue'].map((themeOption) => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: `theme-option ${theme === themeOption ? 'active' : ''}`, onClick: () => handleThemeChange(themeOption), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: `theme-preview theme-preview-${themeOption}`, children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "preview-header" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "preview-sidebar" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "preview-content" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "theme-name", children: themeOption === 'dark' ? 'ダーク' :
-                                themeOption === 'light' ? 'ライト' :
-                                    'モダンブルー' })] }, themeOption))) })] }));
+    const renderThemeSettings = () => {
+        const themeNames = {
+            'dark': 'ダーク',
+            'light': 'ライト',
+            'modern-blue': 'モダンブルー',
+            'liquid-glass': 'リキッドグラス',
+            'material': 'マテリアル',
+            'anime': 'アニメ'
+        };
+        return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u30C6\u30FC\u30DE\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "theme-selector", children: ['dark', 'light', 'modern-blue', 'liquid-glass', 'material', 'anime'].map((themeOption) => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: `theme-option ${theme === themeOption ? 'active' : ''}`, onClick: () => setTheme(themeOption), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: `theme-preview theme-preview-${themeOption}`, children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "preview-header" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "preview-sidebar" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "preview-content" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "theme-name", children: themeNames[themeOption] })] }, themeOption))) })] }));
+    };
+    const renderWallpaperSettings = () => {
+        const handleSelectWallpaper = async () => {
+            try {
+                const result = await window.electronAPI?.dialog.showOpenDialog({
+                    title: '壁紙画像を選択',
+                    properties: ['openFile'],
+                    filters: [
+                        { name: '画像ファイル', extensions: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'] }
+                    ]
+                });
+                if (result && !result.canceled && result.filePaths.length > 0) {
+                    setWallpaper({
+                        ...wallpaper,
+                        imagePath: result.filePaths[0],
+                        enabled: true
+                    });
+                }
+            }
+            catch (error) {
+                console.error('Failed to select wallpaper:', error);
+            }
+        };
+        const handleOpacityChange = (value) => {
+            setWallpaper({
+                ...wallpaper,
+                opacity: value
+            });
+        };
+        const handleToggleWallpaper = (enabled) => {
+            setWallpaper({
+                ...wallpaper,
+                enabled
+            });
+        };
+        const handleClearWallpaper = () => {
+            setWallpaper({
+                enabled: false,
+                imagePath: undefined,
+                opacity: 30
+            });
+        };
+        return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u58C1\u7D19\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "wallpaper-preview-container", children: wallpaper.imagePath ? ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "wallpaper-preview", style: {
+                            backgroundImage: `url('file:///${wallpaper.imagePath}')`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            opacity: wallpaper.enabled ? (wallpaper.opacity / 100) : 0.3
+                        }, children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "preview-overlay", style: {
+                                backgroundColor: 'rgba(0, 0, 0, ' + (1 - wallpaper.opacity / 100) + ')'
+                            } }) })) : ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "wallpaper-preview empty", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "\u58C1\u7D19\u304C\u9078\u629E\u3055\u308C\u3066\u3044\u307E\u305B\u3093" }) })) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u58C1\u7D19\u3092\u6709\u52B9\u306B\u3059\u308B" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: `switch ${wallpaper.enabled ? 'checked' : ''}`, onClick: () => handleToggleWallpaper(!wallpaper.enabled) })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u58C1\u7D19\u753B\u50CF" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "file-selector", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", value: wallpaper.imagePath || '', readOnly: true, placeholder: "\u753B\u50CF\u30D5\u30A1\u30A4\u30EB\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleSelectWallpaper, className: "btn primary", children: "\uD83D\uDCC1 \u9078\u629E" })] })] }), wallpaper.imagePath && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("label", { children: ["\u4E0D\u900F\u660E\u5EA6: ", wallpaper.opacity, "%"] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "range", min: "0", max: "100", value: wallpaper.opacity, onChange: (e) => handleOpacityChange(parseInt(e.target.value)), className: "opacity-slider" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "opacity-labels", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "\u900F\u660E" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "\u4E0D\u900F\u660E" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "setting-item", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleClearWallpaper, className: "btn secondary", children: "\uD83D\uDDD1\uFE0F \u58C1\u7D19\u3092\u30AF\u30EA\u30A2" }) })] })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "wallpaper-tips", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "\uD83D\uDCA1 \u30D2\u30F3\u30C8" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("ul", { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "\u63A8\u5968\u753B\u50CF\u30B5\u30A4\u30BA: 1920x1080\u4EE5\u4E0A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "\u6697\u3081\u306E\u753B\u50CF\u3092\u4F7F\u7528\u3059\u308B\u3068\u3001\u30C6\u30AD\u30B9\u30C8\u304C\u8AAD\u307F\u3084\u3059\u304F\u306A\u308A\u307E\u3059" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "\u4E0D\u900F\u660E\u5EA6\u3092\u8ABF\u6574\u3057\u3066\u3001\u30B3\u30FC\u30C9\u3068\u306E\u30B3\u30F3\u30C8\u30E9\u30B9\u30C8\u3092\u8ABF\u6574\u3067\u304D\u307E\u3059" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "Liquid Glass\u30C6\u30FC\u30DE\u3068Material\u30C6\u30FC\u30DE\u306F\u58C1\u7D19\u3068\u306E\u76F8\u6027\u304C\u826F\u3044\u3067\u3059" })] })] })] }));
+    };
     const renderEditorSettings = () => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u30A8\u30C7\u30A3\u30BF\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30D5\u30A9\u30F3\u30C8\u30B5\u30A4\u30BA" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "number", min: "8", max: "36", value: settings.editor?.fontSize || 14, onChange: (e) => handleSettingChange('editor', 'fontSize', parseInt(e.target.value)) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "px" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30D5\u30A9\u30F3\u30C8\u30D5\u30A1\u30DF\u30EA\u30FC" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: settings.editor?.fontFamily || 'Consolas', onChange: (e) => handleSettingChange('editor', 'fontFamily', e.target.value), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "Consolas", children: "Consolas" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "Monaco", children: "Monaco" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "Menlo", children: "Menlo" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "DejaVu Sans Mono", children: "DejaVu Sans Mono" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30BF\u30D6\u30B5\u30A4\u30BA" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: settings.editor?.tabSize || 4, onChange: (e) => handleSettingChange('editor', 'tabSize', parseInt(e.target.value)), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 2, children: "2" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 4, children: "4" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 8, children: "8" })] })] })] }));
     const renderBuildSettings = () => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u30D3\u30EB\u30C9\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u4E26\u5217\u30D3\u30EB\u30C9" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: settings.build?.parallelBuild || false, onChange: (e) => handleSettingChange('build', 'parallelBuild', e.target.checked) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "\u53EF\u80FD\u306A\u5834\u5408\u306F\u4E26\u5217\u30D3\u30EB\u30C9\u3092\u4F7F\u7528" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u8A73\u7D30\u51FA\u529B" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", checked: settings.build?.verboseOutput || false, onChange: (e) => handleSettingChange('build', 'verboseOutput', e.target.checked) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "\u30D3\u30EB\u30C9\u6642\u306B\u8A73\u7D30\u306A\u51FA\u529B\u3092\u8868\u793A" })] }), mode === 'arduino' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "Arduino CLI \u30D1\u30B9" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", value: settings.build?.arduinoCliPath || '', onChange: (e) => handleSettingChange('build', 'arduinoCliPath', e.target.value), placeholder: "arduino-cli\u5B9F\u884C\u30D5\u30A1\u30A4\u30EB\u306E\u30D1\u30B9" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30DC\u30FC\u30C9URL" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("textarea", { value: settings.build?.boardUrls || '', onChange: (e) => handleSettingChange('build', 'boardUrls', e.target.value), placeholder: "\u8FFD\u52A0\u30DC\u30FC\u30C9\u30DE\u30CD\u30FC\u30B8\u30E3\u30FCURL\uFF081\u884C\u306B1\u3064\uFF09", rows: 3 })] })] })), mode === 'platformio' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "PlatformIO Core \u30D1\u30B9" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", value: settings.build?.platformioPath || '', onChange: (e) => handleSettingChange('build', 'platformioPath', e.target.value), placeholder: "pio\u5B9F\u884C\u30D5\u30A1\u30A4\u30EB\u306E\u30D1\u30B9" })] }))] }));
     const renderKeybindSettings = () => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "keybind-list", children: Object.entries(settings.keybinds || {}).map(([action, binding]) => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "keybind-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: "action-name", children: action }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "text", value: binding, onChange: (e) => handleSettingChange('keybinds', action, e.target.value), placeholder: "\u30AD\u30FC\u306E\u7D44\u307F\u5408\u308F\u305B" })] }, action))) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { className: "add-keybind-btn", onClick: () => handleSettingChange('keybinds', 'newAction', 'Ctrl+N'), children: "\u65B0\u3057\u3044\u30AD\u30FC\u30D0\u30A4\u30F3\u30C9\u3092\u8FFD\u52A0" })] }));
@@ -50443,6 +52697,7 @@ const SettingsPanel = () => {
         switch (activeTab) {
             case 'general': return renderGeneralSettings();
             case 'theme': return renderThemeSettings();
+            case 'wallpaper': return renderWallpaperSettings();
             case 'editor': return renderEditorSettings();
             case 'build': return renderBuildSettings();
             case 'keybinds': return renderKeybindSettings();
@@ -50531,8 +52786,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BuildManager_BuildManager__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../BuildManager/BuildManager */ "./src/renderer/components/BuildManager/BuildManager.tsx");
 /* harmony import */ var _SettingsPanel_SettingsPanel__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../SettingsPanel/SettingsPanel */ "./src/renderer/components/SettingsPanel/SettingsPanel.tsx");
 /* harmony import */ var _GitPanel_GitPanel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../GitPanel/GitPanel */ "./src/renderer/components/GitPanel/GitPanel.tsx");
-/* harmony import */ var _PinPanel_PinPanel__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../PinPanel/PinPanel */ "./src/renderer/components/PinPanel/PinPanel.tsx");
-/* harmony import */ var _BoardLibraryManager_BoardLibraryManager__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../BoardLibraryManager/BoardLibraryManager */ "./src/renderer/components/BoardLibraryManager/BoardLibraryManager.tsx");
+/* harmony import */ var _BoardLibraryManager_BoardLibraryManager__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../BoardLibraryManager/BoardLibraryManager */ "./src/renderer/components/BoardLibraryManager/BoardLibraryManager.tsx");
+/* harmony import */ var _UploadSettingsPanel_UploadSettingsPanel__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../UploadSettingsPanel/UploadSettingsPanel */ "./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.tsx");
 /* harmony import */ var _Sidebar_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Sidebar.css */ "./src/renderer/components/Sidebar/Sidebar.css");
 
 
@@ -50552,9 +52807,9 @@ const Sidebar = ({ width }) => {
         { id: 'search', name: 'Search', icon: 'S', component: _SearchPanel_SearchPanel__WEBPACK_IMPORTED_MODULE_3__["default"] },
         { id: 'git', name: 'Git', icon: 'G', component: _GitPanel_GitPanel__WEBPACK_IMPORTED_MODULE_6__["default"] },
         { id: 'build', name: 'Build', icon: 'B', component: _BuildManager_BuildManager__WEBPACK_IMPORTED_MODULE_4__["default"] },
-        { id: 'boards', name: 'Boards', icon: 'H', component: _BoardLibraryManager_BoardLibraryManager__WEBPACK_IMPORTED_MODULE_8__["default"], props: { type: 'board' } },
-        { id: 'libraries', name: 'Libraries', icon: 'L', component: _BoardLibraryManager_BoardLibraryManager__WEBPACK_IMPORTED_MODULE_8__["default"], props: { type: 'library' } },
-        { id: 'pin', name: 'Pins', icon: 'P', component: _PinPanel_PinPanel__WEBPACK_IMPORTED_MODULE_7__["default"] },
+        { id: 'boards', name: 'Boards', icon: 'H', component: _BoardLibraryManager_BoardLibraryManager__WEBPACK_IMPORTED_MODULE_7__["default"], props: { type: 'board' } },
+        { id: 'libraries', name: 'Libraries', icon: 'L', component: _BoardLibraryManager_BoardLibraryManager__WEBPACK_IMPORTED_MODULE_7__["default"], props: { type: 'library' } },
+        { id: 'upload', name: 'Upload', icon: 'U', component: _UploadSettingsPanel_UploadSettingsPanel__WEBPACK_IMPORTED_MODULE_8__["default"] },
         { id: 'settings', name: 'Settings', icon: 'C', component: _SettingsPanel_SettingsPanel__WEBPACK_IMPORTED_MODULE_5__["default"] },
     ];
     const handleTabClick = (tabId) => {
@@ -50863,6 +53118,260 @@ const ToastContainer = () => {
 
 /***/ }),
 
+/***/ "./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.css":
+/*!*****************************************************************************!*\
+  !*** ./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.css ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_UploadSettingsPanel_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js!./UploadSettingsPanel.css */ "./node_modules/css-loader/dist/cjs.js!./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_UploadSettingsPanel_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_UploadSettingsPanel_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_UploadSettingsPanel_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_UploadSettingsPanel_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.tsx":
+/*!*****************************************************************************!*\
+  !*** ./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.tsx ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _contexts_AppContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../contexts/AppContext */ "./src/renderer/contexts/AppContext.tsx");
+/* harmony import */ var _utils_logger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/logger */ "./src/renderer/utils/logger.ts");
+/* harmony import */ var _services_ArduinoService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/ArduinoService */ "./src/renderer/services/ArduinoService.ts");
+/* harmony import */ var _services_PlatformIOService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/PlatformIOService */ "./src/renderer/services/PlatformIOService.ts");
+/* harmony import */ var _UploadSettingsPanel_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./UploadSettingsPanel.css */ "./src/renderer/components/UploadSettingsPanel/UploadSettingsPanel.css");
+
+
+
+
+
+
+
+const UploadSettingsPanel = () => {
+    const { state, settings, updateSettings } = (0,_contexts_AppContext__WEBPACK_IMPORTED_MODULE_2__.useApp)();
+    const [boards, setBoards] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+    const [ports, setPorts] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+    const [environments, setEnvironments] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
+    const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+    const arduinoService = _services_ArduinoService__WEBPACK_IMPORTED_MODULE_4__["default"];
+    const platformioService = _services_PlatformIOService__WEBPACK_IMPORTED_MODULE_5__["default"];
+    const [arduinoSettings, setArduinoSettings] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+        board: settings.arduino?.board || '',
+        port: settings.arduino?.port || '',
+        programmer: settings.arduino?.programmer || 'arduino',
+        baudrate: settings.arduino?.baudrate || 115200,
+        verifyAfterUpload: settings.arduino?.verifyAfterUpload !== false
+    });
+    const [pioSettings, setPioSettings] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+        environment: settings.platformio?.environment || 'default',
+        port: settings.platformio?.port || '',
+        uploadProtocol: settings.platformio?.uploadProtocol || 'serial',
+        uploadSpeed: settings.platformio?.uploadSpeed || 921600,
+        uploadFlags: settings.platformio?.uploadFlags || []
+    });
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        loadSettings();
+    }, [state.mode]);
+    const loadSettings = async () => {
+        setLoading(true);
+        try {
+            if (state.mode === 'arduino') {
+                // Load Arduino boards
+                const boardList = await arduinoService.listBoards();
+                setBoards(boardList);
+                // Load serial ports
+                const portList = await loadSerialPorts();
+                setPorts(portList);
+            }
+            else if (state.mode === 'platformio') {
+                // Load PlatformIO boards
+                const boardList = await platformioService.listAllBoards();
+                setBoards(boardList);
+                // Load serial ports
+                const portList = await loadSerialPorts();
+                setPorts(portList);
+                // Load environments from platformio.ini
+                if (state.currentProject?.path) {
+                    const envList = await loadPlatformIOEnvironments(state.currentProject.path);
+                    setEnvironments(envList);
+                }
+            }
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to load upload settings', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('設定の読み込みに失敗', String(error));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    const loadSerialPorts = async () => {
+        try {
+            if (state.mode === 'arduino') {
+                const ports = await arduinoService.listPorts();
+                return ports.map((p) => p.port);
+            }
+            else {
+                const devices = await platformioService.listDevices();
+                return devices.map((d) => d.port);
+            }
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to load serial ports', { error });
+            return [];
+        }
+    };
+    const loadPlatformIOEnvironments = async (projectPath) => {
+        try {
+            const iniPath = `${projectPath}/platformio.ini`;
+            const content = await window.electronAPI.fs.readFile(iniPath);
+            const lines = content.split('\n');
+            const envs = [];
+            lines.forEach(line => {
+                const match = line.match(/\[env:(\w+)\]/);
+                if (match) {
+                    envs.push(match[1]);
+                }
+            });
+            return envs;
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to load platformio.ini', { error });
+            return ['default'];
+        }
+    };
+    const handleArduinoSettingChange = (key, value) => {
+        const newSettings = { ...arduinoSettings, [key]: value };
+        setArduinoSettings(newSettings);
+        updateSettings('arduino', key, value);
+    };
+    const handlePioSettingChange = (key, value) => {
+        const newSettings = { ...pioSettings, [key]: value };
+        setPioSettings(newSettings);
+        updateSettings('platformio', key, value);
+    };
+    const handleSaveSettings = async () => {
+        try {
+            if (state.mode === 'arduino') {
+                await window.electronAPI.store.set('arduino', arduinoSettings);
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('Arduino settings saved');
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('Arduino設定を保存しました');
+            }
+            else {
+                await window.electronAPI.store.set('platformio', pioSettings);
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.success('PlatformIO settings saved');
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('PlatformIO設定を保存しました');
+            }
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Failed to save settings', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('設定の保存に失敗', String(error));
+        }
+    };
+    const handleTestUpload = async () => {
+        if (!state.currentProject?.path) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.warning('プロジェクトが開かれていません');
+            return;
+        }
+        setLoading(true);
+        try {
+            if (state.mode === 'arduino') {
+                if (!arduinoSettings.board || !arduinoSettings.port) {
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.warning('ボードとポートを選択してください');
+                    return;
+                }
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.info('アップロードをテスト中...', 'コンパイルとアップロードを実行します');
+                const result = await arduinoService.compile(state.currentProject.path, arduinoSettings.board);
+                if (result.success) {
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('アップロードテスト成功', '設定は正しく動作します');
+                }
+                else {
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('アップロードテスト失敗', result.errors.join('\n'));
+                }
+            }
+            else {
+                if (!pioSettings.port) {
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.warning('ポートを選択してください');
+                    return;
+                }
+                _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.info('アップロードをテスト中...', 'ビルドとアップロードを実行します');
+                const result = await platformioService.buildAndUpload(state.currentProject.path, pioSettings.port);
+                if (result.success) {
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.success('アップロードテスト成功', '設定は正しく動作します');
+                }
+                else {
+                    _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('アップロードテスト失敗', result.errors.join('\n'));
+                }
+            }
+        }
+        catch (error) {
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.logger.error('Upload test failed', { error });
+            _utils_logger__WEBPACK_IMPORTED_MODULE_3__.toast.error('テストに失敗', String(error));
+        }
+        finally {
+            setLoading(false);
+        }
+    };
+    if (loading && boards.length === 0) {
+        return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "upload-settings-panel", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "loading-state", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "spinner" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", { children: "\u8A2D\u5B9A\u3092\u8AAD\u307F\u8FBC\u307F\u4E2D..." })] }) }));
+    }
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "upload-settings-panel", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "panel-header", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h3", { children: "\u26A1 \u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: loadSettings, className: "refresh-btn", disabled: loading, children: "\uD83D\uDD04" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: "mode-indicator", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { className: `mode-badge ${state.mode}`, children: state.mode === 'arduino' ? '🔷 Arduino-CLI' : '⚡ PlatformIO' }) }), state.mode === 'arduino' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section arduino-settings", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "Arduino-CLI \u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30DC\u30FC\u30C9 (FQBN)" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: arduinoSettings.board, onChange: (e) => handleArduinoSettingChange('board', e.target.value), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "", children: "\u30DC\u30FC\u30C9\u3092\u9078\u629E..." }), boards.map((board) => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("option", { value: board.fqbn, children: [board.name, " (", board.fqbn, ")"] }, board.fqbn)))] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30B7\u30EA\u30A2\u30EB\u30DD\u30FC\u30C8" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: arduinoSettings.port, onChange: (e) => handleArduinoSettingChange('port', e.target.value), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "", children: "\u30DD\u30FC\u30C8\u3092\u9078\u629E..." }), ports.map((port) => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: port, children: port }, port)))] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30D7\u30ED\u30B0\u30E9\u30DE\u30FC" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: arduinoSettings.programmer, onChange: (e) => handleArduinoSettingChange('programmer', e.target.value), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "arduino", children: "Arduino as ISP" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "usbtinyisp", children: "USBtinyISP" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "usbasp", children: "USBasp" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "avrisp", children: "AVR ISP" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "stk500v1", children: "STK500 v1" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "stk500v2", children: "STK500 v2" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30DC\u30FC\u30EC\u30FC\u30C8" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: arduinoSettings.baudrate, onChange: (e) => handleArduinoSettingChange('baudrate', parseInt(e.target.value)), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 9600, children: "9600" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 19200, children: "19200" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 38400, children: "38400" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 57600, children: "57600" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 115200, children: "115200" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 230400, children: "230400" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 460800, children: "460800" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 921600, children: "921600" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item checkbox", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", { type: "checkbox", id: "verify-upload", checked: arduinoSettings.verifyAfterUpload, onChange: (e) => handleArduinoSettingChange('verifyAfterUpload', e.target.checked) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { htmlFor: "verify-upload", children: "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u5F8C\u306B\u691C\u8A3C" })] })] })), state.mode === 'platformio' && ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-section pio-settings", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "PlatformIO \u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u74B0\u5883 (Environment)" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("select", { value: pioSettings.environment, onChange: (e) => handlePioSettingChange('environment', e.target.value), children: environments.map((env) => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: env, children: env }, env))) })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30B7\u30EA\u30A2\u30EB\u30DD\u30FC\u30C8" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: pioSettings.port, onChange: (e) => handlePioSettingChange('port', e.target.value), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "", children: "\u30DD\u30FC\u30C8\u3092\u9078\u629E..." }), ports.map((port) => ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: port, children: port }, port)))] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u30D7\u30ED\u30C8\u30B3\u30EB" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: pioSettings.uploadProtocol, onChange: (e) => handlePioSettingChange('uploadProtocol', e.target.value), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "serial", children: "Serial (UART)" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "esptool", children: "ESP Tool" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "jlink", children: "J-Link" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "stlink", children: "ST-Link" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "dfu", children: "DFU" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "sam-ba", children: "SAM-BA" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: "blackmagic", children: "Black Magic Probe" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u901F\u5EA6 (bps)" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("select", { value: pioSettings.uploadSpeed, onChange: (e) => handlePioSettingChange('uploadSpeed', parseInt(e.target.value)), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 115200, children: "115200" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 230400, children: "230400" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 460800, children: "460800" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 921600, children: "921600" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 1500000, children: "1500000" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("option", { value: 2000000, children: "2000000" })] })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "setting-item", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("label", { children: "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u30D5\u30E9\u30B0\uFF08\u30AA\u30D7\u30B7\u30E7\u30F3\uFF09" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("textarea", { value: pioSettings.uploadFlags.join('\n'), onChange: (e) => handlePioSettingChange('uploadFlags', e.target.value.split('\n').filter(f => f.trim())), placeholder: "--erase-flash\n--verify\n--no-stub", rows: 3 }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("small", { children: "1\u884C\u306B1\u3064\u306E\u30D5\u30E9\u30B0\u3092\u5165\u529B" })] })] })), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "panel-actions", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleSaveSettings, className: "btn primary", disabled: loading, children: "\uD83D\uDCBE \u8A2D\u5B9A\u3092\u4FDD\u5B58" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: handleTestUpload, className: "btn secondary", disabled: loading, children: "\uD83E\uDDEA \u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u30C6\u30B9\u30C8" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: "settings-tips", children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", { children: "\uD83D\uDCA1 \u30D2\u30F3\u30C8" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("ul", { children: state.mode === 'arduino' ? ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "FQBN\u306F\u5B8C\u5168\u306A\u30DC\u30FC\u30C9\u8B58\u5225\u5B50\u3067\u3059 (\u4F8B: arduino:avr:uno)" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "\u6B63\u3057\u3044\u30DD\u30FC\u30C8\u3092\u9078\u629E\u3059\u308B\u3068\u3001\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u6210\u529F\u7387\u304C\u4E0A\u304C\u308A\u307E\u3059" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "\u691C\u8A3C\u3092\u6709\u52B9\u306B\u3059\u308B\u3068\u3001\u66F8\u304D\u8FBC\u307F\u30A8\u30E9\u30FC\u3092\u691C\u51FA\u3067\u304D\u307E\u3059" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "USB\u30B7\u30EA\u30A2\u30EB\u30C7\u30D0\u30A4\u30B9\u304C\u8A8D\u8B58\u3055\u308C\u306A\u3044\u5834\u5408\u3001\u30C9\u30E9\u30A4\u30D0\u30FC\u3092\u78BA\u8A8D\u3057\u3066\u304F\u3060\u3055\u3044" })] })) : ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "platformio.ini\u3067\u8907\u6570\u306E\u74B0\u5883\u3092\u5B9A\u7FA9\u3067\u304D\u307E\u3059" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "ESP32/ESP8266\u306Fesptool\u30D7\u30ED\u30C8\u30B3\u30EB\u3092\u4F7F\u7528\u3057\u307E\u3059" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u901F\u5EA6\u304C\u9AD8\u3044\u307B\u3069\u66F8\u304D\u8FBC\u307F\u304C\u901F\u304F\u306A\u308A\u307E\u3059\u304C\u3001\u30A8\u30E9\u30FC\u304C\u767A\u751F\u3059\u308B\u53EF\u80FD\u6027\u304C\u3042\u308A\u307E\u3059" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("li", { children: "\u30A2\u30C3\u30D7\u30ED\u30FC\u30C9\u30D5\u30E9\u30B0\u3067ESP32\u306E\u30D5\u30E9\u30C3\u30B7\u30E5\u6D88\u53BB\u306A\u3069\u3092\u5236\u5FA1\u3067\u304D\u307E\u3059" })] })) })] })] }));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UploadSettingsPanel);
+
+
+/***/ }),
+
 /***/ "./src/renderer/contexts/AppContext.tsx":
 /*!**********************************************!*\
   !*** ./src/renderer/contexts/AppContext.tsx ***!
@@ -50923,16 +53432,91 @@ const AppProvider = ({ children }) => {
             },
             api: {
                 githubToken: '',
-                libraryIndexUrl: 'https://downloads.arduino.cc/libraries/library_index.json',
-                platformioRegistryUrl: 'https://registry.platformio.org',
+                libraryIndexUrl: '',
+                platformioRegistryUrl: '',
+            },
+            arduino: {
+                board: '',
+                port: '',
+                programmer: 'arduino',
+                baudrate: 115200,
+                verifyAfterUpload: true,
+            },
+            platformio: {
+                environment: 'default',
+                port: '',
+                uploadProtocol: 'serial',
+                uploadSpeed: 921600,
+                uploadFlags: [],
             },
         },
     });
+    // Load settings from electron store on mount
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        const loadSettings = async () => {
+            if (window.electronAPI) {
+                try {
+                    const savedSettings = await window.electronAPI.store.get('appSettings');
+                    if (savedSettings) {
+                        setState(prev => ({
+                            ...prev,
+                            settings: { ...prev.settings, ...savedSettings }
+                        }));
+                    }
+                    const savedMode = await window.electronAPI.store.get('devMode');
+                    if (savedMode) {
+                        setState(prev => ({ ...prev, mode: savedMode }));
+                    }
+                }
+                catch (error) {
+                    console.error('Failed to load settings:', error);
+                }
+            }
+        };
+        loadSettings();
+    }, []);
+    // Save settings to electron store whenever they change
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        if (window.electronAPI) {
+            window.electronAPI.store.set('appSettings', state.settings);
+        }
+    }, [state.settings]);
+    // Save mode whenever it changes
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        if (window.electronAPI && state.mode) {
+            window.electronAPI.store.set('devMode', state.mode);
+        }
+    }, [state.mode]);
     const setMode = (mode) => {
         setState(prev => ({ ...prev, mode }));
     };
-    const setCurrentProject = (project) => {
-        setState(prev => ({ ...prev, currentProject: project }));
+    const setCurrentProject = async (project) => {
+        if (project) {
+            // プロジェクトタイプを自動判定
+            try {
+                const platformioIni = `${project.path}/platformio.ini`;
+                const hasPlatformioIni = await window.electronAPI.fs.exists(platformioIni);
+                if (hasPlatformioIni) {
+                    project.type = 'platformio';
+                }
+                else {
+                    // .ino ファイルを検索
+                    const files = await window.electronAPI.fs.readdir(project.path);
+                    const hasInoFile = files.some((f) => f.endsWith('.ino'));
+                    project.type = hasInoFile ? 'arduino' : 'platformio';
+                }
+            }
+            catch (error) {
+                console.error('Failed to detect project type:', error);
+                // デフォルトはArduino
+                project.type = 'arduino';
+            }
+        }
+        setState(prev => ({
+            ...prev,
+            currentProject: project,
+            mode: project?.type || null
+        }));
         // プロジェクトが設定されたときに最近のプロジェクトに追加
         if (project) {
             // 最近のプロジェクトを更新（非同期で実行）
@@ -51041,22 +53625,30 @@ __webpack_require__.r(__webpack_exports__);
 const ThemeContext = (0,react__WEBPACK_IMPORTED_MODULE_1__.createContext)(undefined);
 const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('dark');
+    const [wallpaper, setWallpaper] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+        enabled: false,
+        opacity: 30
+    });
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-        // Load theme from electron store
-        const loadTheme = async () => {
+        // Load theme and wallpaper from electron store
+        const loadSettings = async () => {
             try {
                 if (window.electronAPI) {
                     const savedTheme = await window.electronAPI.store.get('theme');
                     if (savedTheme) {
                         setTheme(savedTheme);
                     }
+                    const savedWallpaper = await window.electronAPI.store.get('wallpaper');
+                    if (savedWallpaper) {
+                        setWallpaper(savedWallpaper);
+                    }
                 }
             }
             catch (error) {
-                console.error('Failed to load theme:', error);
+                console.error('Failed to load settings:', error);
             }
         };
-        loadTheme();
+        loadSettings();
     }, []);
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
         // Apply theme to document
@@ -51066,13 +53658,55 @@ const ThemeProvider = ({ children }) => {
             window.electronAPI.store.set('theme', theme);
         }
     }, [theme]);
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+        // Apply wallpaper
+        if (wallpaper.enabled && wallpaper.imagePath) {
+            // Convert Windows path to file:// URL
+            const normalizedPath = wallpaper.imagePath.replace(/\\/g, '/');
+            const fileUrl = normalizedPath.startsWith('file://')
+                ? normalizedPath
+                : `file:///${normalizedPath}`;
+            document.body.style.backgroundImage = `url("${fileUrl}")`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundAttachment = 'fixed';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            // Create overlay if it doesn't exist
+            let overlay = document.querySelector('.wallpaper-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'wallpaper-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.right = '0';
+                overlay.style.bottom = '0';
+                overlay.style.backgroundColor = 'var(--bg-primary)';
+                overlay.style.pointerEvents = 'none';
+                overlay.style.zIndex = '-1';
+                document.body.appendChild(overlay);
+            }
+            overlay.style.opacity = String((100 - wallpaper.opacity) / 100);
+        }
+        else {
+            document.body.style.backgroundImage = 'none';
+            const overlay = document.querySelector('.wallpaper-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+        // Save wallpaper settings
+        if (window.electronAPI) {
+            window.electronAPI.store.set('wallpaper', wallpaper);
+        }
+    }, [wallpaper]);
     const toggleTheme = () => {
-        const themes = ['dark', 'light', 'modern-blue'];
+        const themes = ['dark', 'light', 'modern-blue', 'liquid-glass', 'material', 'anime'];
         const currentIndex = themes.indexOf(theme);
         const nextIndex = (currentIndex + 1) % themes.length;
         setTheme(themes[nextIndex]);
     };
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ThemeContext.Provider, { value: { theme, setTheme, toggleTheme }, children: children }));
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ThemeContext.Provider, { value: { theme, setTheme, toggleTheme, wallpaper, setWallpaper }, children: children }));
 };
 const useTheme = () => {
     const context = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(ThemeContext);
@@ -52492,6 +55126,222 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_global_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_global_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_global_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/renderer/styles/theme-anime.css":
+/*!*********************************************!*\
+  !*** ./src/renderer/styles/theme-anime.css ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_theme_anime_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./theme-anime.css */ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-anime.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_theme_anime_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_theme_anime_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_theme_anime_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_theme_anime_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/renderer/styles/theme-liquid-glass.css":
+/*!****************************************************!*\
+  !*** ./src/renderer/styles/theme-liquid-glass.css ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_theme_liquid_glass_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./theme-liquid-glass.css */ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-liquid-glass.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_theme_liquid_glass_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_theme_liquid_glass_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_theme_liquid_glass_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_theme_liquid_glass_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/renderer/styles/theme-material.css":
+/*!************************************************!*\
+  !*** ./src/renderer/styles/theme-material.css ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_theme_material_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./theme-material.css */ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/theme-material.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_theme_material_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_theme_material_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_theme_material_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_theme_material_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/renderer/styles/z-index.css":
+/*!*****************************************!*\
+  !*** ./src/renderer/styles/z-index.css ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_z_index_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js!./z-index.css */ "./node_modules/css-loader/dist/cjs.js!./src/renderer/styles/z-index.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_z_index_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_z_index_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_z_index_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_z_index_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
 /***/ }),

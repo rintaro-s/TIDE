@@ -240,7 +240,17 @@ class TovaIDE {
 
     ipcMain.handle('fs:stat', async (_, path: string) => {
       const { stat } = await import('fs/promises');
-      return await stat(path);
+      const stats = await stat(path);
+      // Serialize stats object with methods as properties
+      return {
+        isFile: stats.isFile(),
+        isDirectory: stats.isDirectory(),
+        isSymbolicLink: stats.isSymbolicLink(),
+        size: stats.size,
+        mtime: stats.mtime,
+        ctime: stats.ctime,
+        atime: stats.atime
+      };
     });
 
     ipcMain.handle('fs:rename', async (_, oldPath: string, newPath: string) => {

@@ -4,8 +4,8 @@ import SearchPanel from '../SearchPanel/SearchPanel';
 import BuildManager from '../BuildManager/BuildManager';
 import SettingsPanel from '../SettingsPanel/SettingsPanel';
 import GitPanel from '../GitPanel/GitPanel';
-import PinPanel from '../PinPanel/PinPanel';
 import BoardLibraryManager from '../BoardLibraryManager/BoardLibraryManager';
+import UploadSettingsPanel from '../UploadSettingsPanel/UploadSettingsPanel';
 import './Sidebar.css';
 
 interface SidebarTab {
@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ width }) => {
     { id: 'build', name: 'Build', icon: 'B', component: BuildManager },
     { id: 'boards', name: 'Boards', icon: 'H', component: BoardLibraryManager, props: { type: 'board' } },
     { id: 'libraries', name: 'Libraries', icon: 'L', component: BoardLibraryManager, props: { type: 'library' } },
-    { id: 'pin', name: 'Pins', icon: 'P', component: PinPanel },
+    { id: 'upload', name: 'Upload', icon: 'U', component: UploadSettingsPanel },
     { id: 'settings', name: 'Settings', icon: 'C', component: SettingsPanel },
   ];
 

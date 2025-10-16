@@ -158,6 +158,44 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
     }
   };
 
+  const handleOpenRecentProject = async (project: any) => {
+    logger.info(`最近のプロジェクトを開く: ${project.name}`, { path: project.path });
+    setProgressMessage('プロジェクトを開いています...');
+    setProgressDetails(project.path);
+    
+    try {
+      // プロジェクトの存在確認
+      const exists = await window.electronAPI.fs.exists(project.path);
+      if (!exists) {
+        toast.error('プロジェクトが見つかりません', project.path);
+        logger.error('Project path not found', { path: project.path });
+        setProgressMessage('');
+        return;
+      }
+      
+      // プロジェクトを設定
+      await setCurrentProject({
+        name: project.name,
+        path: project.path,
+        type: project.type,
+        lastOpened: new Date()
+      });
+      
+      setProgressMessage('');
+      logger.success('プロジェクトを開きました', { name: project.name });
+      toast.success('プロジェクトを開きました', project.name);
+      
+      // マネージャーを閉じる
+      if (onClose) {
+        onClose();
+      }
+    } catch (error) {
+      logger.error('プロジェクトを開けませんでした', { error });
+      toast.error('プロジェクトを開けませんでした', String(error));
+      setProgressMessage('');
+    }
+  };
+
   const handleCreateProject = async () => {
     if (!projectName || !selectedTemplate || !projectPath || !selectedBoard) {
       toast.warning('すべての項目を入力してください', '必須項目が未入力です');
@@ -488,12 +526,6 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
       )}
     </div>
   );
-};
-
-const handleOpenRecentProject = (project: any) => {
-  logger.info(`最近のプロジェクトを開く: ${project.name}`, { path: project.path });
-  toast.info('プロジェクトを開いています...', project.name);
-  // TODO: プロジェクトを開く処理を実装
 };
 
 export default ProjectManager;
