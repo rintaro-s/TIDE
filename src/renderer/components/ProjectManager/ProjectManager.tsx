@@ -198,6 +198,11 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
         setProgressPercent(25);
         setProgressDetails('PlatformIO プロジェクトを初期化中...');
         logger.info('PlatformIO プロジェクトを作成中...', { board: selectedBoard });
+        logger.debug('selectedBoard value and type', { 
+          value: selectedBoard, 
+          type: typeof selectedBoard,
+          stringValue: String(selectedBoard)
+        });
         success = await platformioService.initProject(fullProjectPath, selectedBoard);
       }
 

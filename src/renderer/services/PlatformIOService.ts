@@ -97,15 +97,19 @@ export class PlatformIOService {
       const result = await this.executeCommand('pio', ['boards', '--json-output']);
       if (result.exitCode === 0 && result.stdout) {
         const data = JSON.parse(result.stdout);
-        return Object.entries(data).map(([id, board]: [string, any]) => ({
-          id,
-          name: board.name || '',
-          platform: board.platform || '',
-          mcu: board.mcu || '',
-          frequency: board.fcpu || '',
-          flash: board.rom || '',
-          ram: board.ram || ''
-        }));
+        
+        // PlatformIO boards --json-output returns an array of board objects
+        if (Array.isArray(data)) {
+          return data.map((board: any) => ({
+            id: board.id || '',
+            name: board.name || '',
+            platform: board.platform || '',
+            mcu: board.mcu || '',
+            frequency: board.fcpu || '',
+            flash: board.rom || '',
+            ram: board.ram || ''
+          }));
+        }
       }
       return [];
     } catch (error) {
@@ -123,15 +127,19 @@ export class PlatformIOService {
       const result = await this.executeCommand('pio', ['boards', query, '--json-output']);
       if (result.exitCode === 0 && result.stdout) {
         const data = JSON.parse(result.stdout);
-        return Object.entries(data).map(([id, board]: [string, any]) => ({
-          id,
-          name: board.name || '',
-          platform: board.platform || '',
-          mcu: board.mcu || '',
-          frequency: board.fcpu || '',
-          flash: board.rom || '',
-          ram: board.ram || ''
-        }));
+        
+        // PlatformIO boards command returns an array
+        if (Array.isArray(data)) {
+          return data.map((board: any) => ({
+            id: board.id || '',
+            name: board.name || '',
+            platform: board.platform || '',
+            mcu: board.mcu || '',
+            frequency: board.fcpu || '',
+            flash: board.rom || '',
+            ram: board.ram || ''
+          }));
+        }
       }
       return [];
     } catch (error) {
@@ -317,6 +325,12 @@ export class PlatformIOService {
    */
   async initProject(projectPath: string, boardId: string): Promise<boolean> {
     try {
+      logger.debug('initProject called with parameters', { 
+        projectPath, 
+        boardId, 
+        boardIdType: typeof boardId,
+        boardIdString: String(boardId)
+      });
       logger.info('PlatformIO プロジェクトを作成中...', `ボード: ${boardId}\nパス: ${projectPath}`, 'pio project init');
       
       // プロジェクトディレクトリを作成
