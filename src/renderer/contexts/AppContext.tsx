@@ -25,8 +25,20 @@ interface AppSettings {
   };
   editor?: {
     fontSize?: number;
+    lineHeight?: number;
     fontFamily?: string;
+    minimap?: boolean;
+    wordWrap?: 'off' | 'on' | 'wordWrapColumn' | 'bounded';
+    bracketPairColorization?: boolean;
+    cursorStyle?: 'line' | 'block' | 'underline' | 'line-thin' | 'block-outline' | 'underline-thin';
+    renderWhitespace?: 'none' | 'selection' | 'all';
     tabSize?: number;
+    insertSpaces?: boolean;
+    autoClosingBrackets?: 'always' | 'languageDefined' | 'beforeWhitespace' | 'never';
+    autoClosingQuotes?: 'always' | 'languageDefined' | 'beforeWhitespace' | 'never';
+    autoSurround?: 'languageDefined' | 'brackets' | 'never';
+    smoothScrolling?: boolean;
+    scrollBeyondLastLine?: boolean;
   };
   build?: {
     parallelBuild?: boolean;
@@ -84,6 +96,7 @@ interface AppState {
   openFiles: FileTab[];
   activeFile: string | null;
   settings: AppSettings;
+  gitSkipped?: boolean;
 }
 
 interface AppContextType {
@@ -186,6 +199,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
           const savedMode = await window.electronAPI.store.get('devMode');
           if (savedMode) {
             setState(prev => ({ ...prev, mode: savedMode }));
+          }
+
+          const gitSkipped = await window.electronAPI.store.get('gitSkipped');
+          if (gitSkipped) {
+            setState(prev => ({ ...prev, gitSkipped: true }));
           }
         } catch (error) {
           console.error('Failed to load settings:', error);

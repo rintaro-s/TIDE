@@ -1,0 +1,465 @@
+/* Modern Blue Theme for TOVA IDE */
+/* 洗練されたモダンブルーテーマ */
+
+:root[data-theme="modern-blue"] {
+  /* Primary Colors - 濃いブルー系 */
+  --primary-50: #f0f6ff;
+  --primary-100: #e0ecff;
+  --primary-200: #c7dbff;
+  --primary-300: #a5c8ff;
+  --primary-400: #7badff;
+  --primary-500: #4a8aff;
+  --primary-600: #1e5da8;
+  --primary-700: #1a4d8f;
+  --primary-800: #153d77;
+  --primary-900: #102d5f;
+
+  /* Background Colors - ダークネイビー系背景 */
+  --bg-primary: #0a0f1f;
+  --bg-secondary: #141a2e;
+  --bg-tertiary: #1f2d42;
+  --bg-hover: #252d3f;
+  --bg-active: #2a3547;
+  
+  /* Text Colors */
+  --text-primary: #e8eef8;
+  --text-secondary: #b8c5d6;
+  --text-tertiary: #889ab0;
+  --text-disabled: #667080;
+  --text-inverse: #0a0f1f;
+
+  /* Border Colors - ブルーティント */
+  --border-light: #2a3d52;
+  --border-main: #3a4d62;
+  --border-dark: #4a5d72;
+  --border-focus: #4a8aff;
+
+  /* Semantic Colors */
+  --success-light: #a7f3d0;
+  --success-main: #10b981;
+  --success-dark: #059669;
+
+  --warning-light: #fef3c7;
+  --warning-main: #f59e0b;
+  --warning-dark: #d97706;
+
+  --error-light: #fecaca;
+  --error-main: #ef4444;
+  --error-dark: #dc2626;
+
+  --info-light: #bfdbfe;
+  --info-main: #3b82f6;
+  --info-dark: #2563eb;
+
+  /* Editor Colors */
+  --editor-bg: #0a0f1f;
+  --editor-line-number: #667080;
+  --editor-selection: rgba(74, 138, 255, 0.15);
+  --editor-cursor: #4a8aff;
+  --editor-bracket: #4a8aff;
+  --editor-keyword: #60a5fa;
+  --editor-string: #34d399;
+  --editor-comment: #667080;
+  --editor-function: #60a5fa;
+  --editor-variable: #a78bfa;
+
+  /* Accent Colors */
+  --accent-blue: #4a8aff;
+  --accent-cyan: #06b6d4;
+  --accent-purple: #a78bfa;
+  --accent-pink: #f472b6;
+  --accent-green: #34d399;
+
+  /* Panel Colors */
+  --panel-bg: #0a0f1f;
+  --panel-border: #2a3d52;
+  --sidebar-bg: #0a0f1f;
+  --sidebar-border: #2a3d52;
+
+  /* Button Colors */
+  --btn-primary-bg: #4a8aff;
+  --btn-primary-hover: #5f9dff;
+  --btn-primary-active: #3a7de5;
+  --btn-primary-text: #ffffff;
+
+  --btn-secondary-bg: #1f2d42;
+  --btn-secondary-hover: #2a3d52;
+  --btn-secondary-border: #3a4d62;
+  --btn-secondary-text: #e8eef8;
+
+  /* Input Colors */
+  --input-bg: #141a2e;
+  --input-border: #3a4d62;
+  --input-border-focus: #4a8aff;
+  --input-text: #e8eef8;
+  --input-placeholder: #667080;
+
+  /* Shadows - ブルーティント */
+  --shadow-sm: 0 1px 2px 0 rgba(10, 15, 31, 0.3), 0 1px 2px -1px rgba(10, 15, 31, 0.5);
+  --shadow-base: 0 1px 3px 0 rgba(10, 15, 31, 0.4), 0 1px 2px -1px rgba(10, 15, 31, 0.6);
+  --shadow-md: 0 4px 6px -1px rgba(10, 15, 31, 0.5), 0 2px 4px -2px rgba(10, 15, 31, 0.7);
+  --shadow-lg: 0 10px 15px -3px rgba(10, 15, 31, 0.6), 0 4px 6px -4px rgba(10, 15, 31, 0.8);
+  --shadow-xl: 0 20px 25px -5px rgba(10, 15, 31, 0.7), 0 8px 10px -6px rgba(10, 15, 31, 0.9);
+  --shadow-focus: 0 0 0 3px rgba(74, 138, 255, 0.15);
+
+  /* Z-Index */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* Base Styles */
+[data-theme="modern-blue"] {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="modern-blue"] * {
+  color-scheme: dark;
+}
+
+/* Application Base */
+[data-theme="modern-blue"] .app {
+  background: linear-gradient(135deg, #0a0f1f 0%, #141a2e 50%, #0a0f1f 100%);
+  color: var(--text-primary);
+}
+
+/* Panels */
+[data-theme="modern-blue"] .main-workspace,
+[data-theme="modern-blue"] .sidebar,
+[data-theme="modern-blue"] .editor-area,
+[data-theme="modern-blue"] .bottom-panel {
+  background-color: var(--panel-bg);
+  border-color: var(--panel-border);
+}
+
+/* Title Bar */
+[data-theme="modern-blue"] .title-bar {
+  background: linear-gradient(90deg, rgba(26, 77, 143, 0.15) 0%, rgba(74, 138, 255, 0.05) 100%);
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-primary);
+}
+
+/* Status Bar */
+[data-theme="modern-blue"] .status-bar {
+  background: linear-gradient(90deg, #0a0f1f 0%, rgba(74, 138, 255, 0.05) 100%);
+  border-top: 1px solid var(--border-light);
+  color: var(--text-secondary);
+}
+
+/* Tabs */
+[data-theme="modern-blue"] .tab {
+  color: var(--text-secondary);
+  border-color: transparent;
+  background-color: transparent;
+  transition: all 0.2s ease;
+}
+
+[data-theme="modern-blue"] .tab:hover {
+  color: var(--text-primary);
+  background-color: rgba(74, 138, 255, 0.05);
+}
+
+[data-theme="modern-blue"] .tab.active {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+  background-color: rgba(74, 138, 255, 0.08);
+}
+
+/* Buttons */
+[data-theme="modern-blue"] .btn.primary {
+  background: linear-gradient(135deg, #4a8aff 0%, #3a75e5 100%);
+  color: var(--btn-primary-text);
+  border: none;
+  box-shadow: 0 4px 12px rgba(74, 138, 255, 0.3);
+  transition: all 0.2s ease;
+}
+
+[data-theme="modern-blue"] .btn.primary:hover {
+  background: linear-gradient(135deg, #5f9dff 0%, #4a85f5 100%);
+  box-shadow: 0 6px 20px rgba(74, 138, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+[data-theme="modern-blue"] .btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(74, 138, 255, 0.25);
+}
+
+[data-theme="modern-blue"] .btn.secondary {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 1px solid var(--btn-secondary-border);
+  transition: all 0.2s ease;
+}
+
+[data-theme="modern-blue"] .btn.secondary:hover {
+  background-color: var(--btn-secondary-hover);
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+[data-theme="modern-blue"] .btn.secondary:active {
+  background-color: var(--bg-active);
+}
+
+/* Input Fields */
+[data-theme="modern-blue"] input,
+[data-theme="modern-blue"] textarea,
+[data-theme="modern-blue"] select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+[data-theme="modern-blue"] input:focus,
+[data-theme="modern-blue"] textarea:focus,
+[data-theme="modern-blue"] select:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+  box-shadow: 0 0 0 3px rgba(74, 138, 255, 0.15);
+  background-color: rgba(20, 26, 46, 0.8);
+}
+
+[data-theme="modern-blue"] input::placeholder,
+[data-theme="modern-blue"] textarea::placeholder {
+  color: var(--input-placeholder);
+}
+
+/* Scrollbars */
+[data-theme="modern-blue"] ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+[data-theme="modern-blue"] ::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+[data-theme="modern-blue"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #4a8aff 0%, #3a75e5 100%);
+  border-radius: 5px;
+  border: 2px solid var(--bg-secondary);
+  transition: all 0.2s ease;
+}
+
+[data-theme="modern-blue"] ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #5f9dff 0%, #4a85f5 100%);
+}
+
+/* Editor Area */
+[data-theme="modern-blue"] .editor-container {
+  background-color: var(--editor-bg);
+}
+
+[data-theme="modern-blue"] .monaco-editor {
+  background-color: var(--editor-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="modern-blue"] .monaco-editor .line-numbers {
+  color: var(--editor-line-number) !important;
+  background-color: rgba(74, 138, 255, 0.03) !important;
+}
+
+[data-theme="modern-blue"] .monaco-editor .selected-text {
+  background-color: var(--editor-selection) !important;
+}
+
+[data-theme="modern-blue"] .monaco-editor .cursor {
+  border-left-color: var(--editor-cursor) !important;
+}
+
+/* Cards and Panels */
+[data-theme="modern-blue"] .card,
+[data-theme="modern-blue"] .panel {
+  background: linear-gradient(135deg, rgba(20, 26, 46, 0.8) 0%, rgba(15, 22, 38, 0.6) 100%);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+[data-theme="modern-blue"] .card:hover,
+[data-theme="modern-blue"] .panel:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(74, 138, 255, 0.3);
+}
+
+/* List Items */
+[data-theme="modern-blue"] .list-item {
+  background-color: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-light);
+  transition: all 0.15s ease;
+}
+
+[data-theme="modern-blue"] .list-item:hover {
+  background-color: rgba(74, 138, 255, 0.08);
+  border-color: rgba(74, 138, 255, 0.3);
+}
+
+[data-theme="modern-blue"] .list-item.selected {
+  background-color: rgba(74, 138, 255, 0.15);
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+/* Dialogs and Modals */
+[data-theme="modern-blue"] .modal {
+  background: linear-gradient(135deg, #141a2e 0%, #0f1622 100%);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="modern-blue"] .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* Code Syntax Highlighting */
+[data-theme="modern-blue"] .keyword {
+  color: var(--editor-keyword);
+  font-weight: 600;
+}
+
+[data-theme="modern-blue"] .string {
+  color: var(--editor-string);
+}
+
+[data-theme="modern-blue"] .comment {
+  color: var(--editor-comment);
+  font-style: italic;
+}
+
+[data-theme="modern-blue"] .function {
+  color: var(--editor-function);
+}
+
+[data-theme="modern-blue"] .variable {
+  color: var(--editor-variable);
+}
+
+/* Accent Elements */
+[data-theme="modern-blue"] .accent-blue {
+  color: var(--accent-blue);
+}
+
+[data-theme="modern-blue"] .accent-cyan {
+  color: var(--accent-cyan);
+}
+
+[data-theme="modern-blue"] .accent-purple {
+  color: var(--accent-purple);
+}
+
+[data-theme="modern-blue"] .accent-green {
+  color: var(--accent-green);
+}
+
+/* Notifications and Alerts */
+[data-theme="modern-blue"] .notification.success {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: var(--success-main);
+  color: var(--success-light);
+}
+
+[data-theme="modern-blue"] .notification.warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: var(--warning-main);
+  color: var(--warning-light);
+}
+
+[data-theme="modern-blue"] .notification.error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--error-main);
+  color: var(--error-light);
+}
+
+[data-theme="modern-blue"] .notification.info {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--info-main);
+  color: var(--info-light);
+}
+
+/* Links */
+[data-theme="modern-blue"] a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+[data-theme="modern-blue"] a:hover {
+  color: var(--primary-400);
+  text-decoration: underline;
+}
+
+/* Separators and Dividers */
+[data-theme="modern-blue"] hr,
+[data-theme="modern-blue"] .divider {
+  border-color: var(--border-light);
+}
+
+/* Badges */
+[data-theme="modern-blue"] .badge {
+  background: linear-gradient(135deg, rgba(74, 138, 255, 0.2) 0%, rgba(74, 138, 255, 0.1) 100%);
+  color: var(--accent-blue);
+  border: 1px solid rgba(74, 138, 255, 0.3);
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Tooltips */
+[data-theme="modern-blue"] .tooltip {
+  background: #1a1f2e;
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Loader/Spinner */
+[data-theme="modern-blue"] .spinner {
+  color: var(--accent-blue);
+}
+
+/* Gradients and Transitions */
+[data-theme="modern-blue"] .gradient-primary {
+  background: linear-gradient(135deg, #4a8aff 0%, #3a75e5 100%);
+}
+
+[data-theme="modern-blue"] .gradient-secondary {
+  background: linear-gradient(135deg, rgba(74, 138, 255, 0.15) 0%, rgba(58, 117, 229, 0.05) 100%);
+}
+
+/* Focus Visible (Accessibility) */
+[data-theme="modern-blue"] *:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  [data-theme="modern-blue"] {
+    background: white;
+    color: black;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-theme="modern-blue"] * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

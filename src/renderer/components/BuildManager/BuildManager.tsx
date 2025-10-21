@@ -1,8 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import arduinoService, { ArduinoCLIService, ArduinoBoard, ArduinoPort, CompileResult, UploadResult } from '../../services/ArduinoService';
-import platformioService, { PlatformIOService, PlatformIOBoard } from '../../services/PlatformIOService';
+import platformioService, { PlatformIOService, PlatformIOBoard, PlatformIODevice } from '../../services/PlatformIOService';
 import { useApp } from '../../contexts/AppContext';
 import './BuildManager.css';
+
+interface BuildProfile {
+  id: string;
+  name: string;
+  board: string;
+  port: string;
+  options: {
+    verbose: boolean;
+    incremental: boolean;
+    optimization: string;
+  };
+}
+
+interface BuildHistoryEntry {
+  id: string;
+  timestamp: Date;
+  projectName: string;
+  board: string;
+  success: boolean;
+  duration: number;
+  output: string;
+  errors: string[];
+  warnings: string[];
+}
+
+type DevicePort = ArduinoPort | PlatformIODevice;
 
 const BuildManager: React.FC = () => {
   const { state } = useApp();
@@ -11,9 +37,16 @@ const BuildManager: React.FC = () => {
   const [selectedBoard, setSelectedBoard] = useState<string>('');
   const [selectedPort, setSelectedPort] = useState<string>('');
   const [availableBoards, setAvailableBoards] = useState<(ArduinoBoard | PlatformIOBoard)[]>([]);
-  const [availablePorts, setAvailablePorts] = useState<ArduinoPort[]>([]);
+  const [availablePorts, setAvailablePorts] = useState<DevicePort[]>([]);
   const [isBuilding, setIsBuilding] = useState(false);
   const [output, setOutput] = useState<string[]>([]);
+  const [buildProfiles, setBuildProfiles] = useState<BuildProfile[]>([]);
+  const [selectedProfile, setSelectedProfile] = useState<string>('');
+  const [buildHistory, setBuildHistory] = useState<BuildHistoryEntry[]>([]);
+  const [verboseOutput, setVerboseOutput] = useState(false);
+  const [incrementalBuild, setIncrementalBuild] = useState(true);
+  const [currentTab, setCurrentTab] = useState<'output' | 'history' | 'profiles'>('output');
+  const [buildStartTime, setBuildStartTime] = useState<number>(0);
 
   const arduinoService = ArduinoCLIService.getInstance();
   const platformioService = PlatformIOService.getInstance();
@@ -30,7 +63,8 @@ const BuildManager: React.FC = () => {
             const installed = await arduinoService.checkInstallation();
             if (installed) {
               boards = await arduinoService.listBoards();
-              ports = await arduinoService.listPorts();
+              const arduinoPorts = await arduinoService.listPorts();
+              setAvailablePorts(arduinoPorts);
             } else {
               addOutput('Arduino CLI not found. Please install Arduino CLI first.');
             }
@@ -38,7 +72,8 @@ const BuildManager: React.FC = () => {
             const installed = await platformioService.checkInstallation();
             if (installed) {
               boards = await platformioService.listAllBoards();
-              ports = await platformioService.listDevices();
+              const platformioPorts = await platformioService.listDevices();
+              setAvailablePorts(platformioPorts);
             } else {
               addOutput('PlatformIO not found. Please install PlatformIO first.');
             }
@@ -102,7 +137,7 @@ const BuildManager: React.FC = () => {
       
       if (result.success) {
         addOutput('✅ Compile successful!');
-        addOutput(`📊 Sketch uses ${result.bytes || 'N/A'} bytes`);
+        // addOutput(`📊 Sketch uses ${result.bytes || 'N/A'} bytes`);
       } else {
         addOutput('❌ Compile failed!');
         result.errors.forEach(error => addOutput(`  ❗ ${error}`));
@@ -227,7 +262,7 @@ const BuildManager: React.FC = () => {
             <option value="">ボードを選択...</option>
             {availableBoards.map(board => {
               const boardId = 'id' in board ? board.id : board.fqbn;
-              const platform = 'platform' in board ? board.platform : board.core;
+              const platform = 'platform' in board ? board.platform : ('core' in board ? (board as any).core : 'Unknown');
               return (
                 <option key={boardId} value={boardId}>
                   {board.name} ({platform})
@@ -246,11 +281,16 @@ const BuildManager: React.FC = () => {
             className="build-select"
           >
             <option value="">ポートを選択...</option>
-            {availablePorts.map(port => (
-              <option key={port.address} value={port.address}>
-                {port.label}
-              </option>
-            ))}
+            {availablePorts.map(port => {
+              const portKey = 'address' in port ? port.address : port.port;
+              const portValue = 'address' in port ? port.address : port.port;
+              const portLabel = 'label' in port ? port.label : `${port.port} - ${port.description}`;
+              return (
+                <option key={portKey} value={portValue}>
+                  {portLabel}
+                </option>
+              );
+            })}
           </select>
           <button className="refresh-ports-btn" onClick={refreshPorts} title="ポートを更新">
             ↻
@@ -339,7 +379,7 @@ const BuildManager: React.FC = () => {
                 {'core' in board && (
                   <div className="detail-item">
                     <span className="detail-label">Core:</span>
-                    <span className="detail-value">{board.core}</span>
+                    <span className="detail-value">{(board as any).core}</span>
                   </div>
                 )}
                 {'mcu' in board && (

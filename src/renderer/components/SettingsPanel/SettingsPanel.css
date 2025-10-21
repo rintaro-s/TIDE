@@ -145,7 +145,18 @@
   border: 2px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+}
+
+.workflow-test-section {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.workflow-test-section .workflow-test-page {
+  margin: 0;
+  background: transparent;
 }
 
 .theme-option:hover {

@@ -6,16 +6,18 @@ import BottomPanel from '../BottomPanel/BottomPanel';
 import StatusBar from '../StatusBar/StatusBar';
 import ProjectManager from '../ProjectManager/ProjectManager';
 import { useApp } from '../../contexts/AppContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import './MainWorkspace.css';
 
 const MainWorkspace: React.FC = () => {
   const { mode, currentProject } = useApp();
+  const { wallpaper } = useTheme();
   const [sidebarWidth, setSidebarWidth] = useState(450);
   const [bottomPanelHeight, setBottomPanelHeight] = useState(250);
   const [isBottomPanelVisible, setIsBottomPanelVisible] = useState(true);
   const [showProjectManager, setShowProjectManager] = useState(!currentProject);
 
-  console.log('🏢 MainWorkspace rendering', { mode, currentProject, showProjectManager });
+  console.log('🏢 MainWorkspace rendering', { mode, currentProject, showProjectManager, wallpaper });
 
   useEffect(() => {
     console.log('📊 MainWorkspace useEffect:', { currentProject, showProjectManager });
@@ -32,6 +34,18 @@ const MainWorkspace: React.FC = () => {
 
   return (
     <div className="main-workspace">
+      {/* Wallpaper Layer */}
+      {wallpaper.enabled && wallpaper.imagePath && (
+        <div 
+          className="workspace-wallpaper"
+          style={{
+            backgroundImage: `url("${wallpaper.imagePath.replace(/\\/g, '/')}")`,
+            opacity: wallpaper.opacity / 100,
+            filter: `brightness(${wallpaper.brightness / 100})`
+          }}
+        />
+      )}
+      
       <TitleBar mode={mode} onNewProject={() => setShowProjectManager(true)} />
       
       <div className="workspace-content">

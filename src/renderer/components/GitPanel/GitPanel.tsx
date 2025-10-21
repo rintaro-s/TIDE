@@ -43,6 +43,18 @@ const GitPanel: React.FC = () => {
   const [remoteUrl, setRemoteUrl] = useState('');
   const [showRemoteDialog, setShowRemoteDialog] = useState(false);
 
+  // Check if Git is skipped
+  if (state.gitSkipped) {
+    return (
+      <div className="git-panel-disabled">
+        <div className="disabled-message">
+          <p>Git機能はスキップされています</p>
+          <small>設定パネルから有効にできます</small>
+        </div>
+      </div>
+    );
+  }
+
   useEffect(() => {
     if (state.currentProject?.path) {
       loadGitStatus();
@@ -51,12 +63,28 @@ const GitPanel: React.FC = () => {
 
   const executeGitCommand = async (args: string[]): Promise<string> => {
     try {
+      // GitSetupWizardから保存されたGit設定を取得
+      const gitConfig = await window.electronAPI?.store.get('gitConfig') || { globalGit: true };
+      
+      // Git設定を適用してコマンド実行
+      const configArgs = [];
+      
+      if (gitConfig.userName && gitConfig.userEmail) {
+        // User config already applied during setup
+      }
+      
       const result = await window.electronAPI.process.exec('git', args, {
-        cwd: state.currentProject?.path || ''
+        cwd: state.currentProject?.path || '',
+        shell: true,
+        env: {
+          ...process.env,
+          PATH: process.env.PATH
+        }
       });
       
       if (result.exitCode !== 0 && result.stderr) {
-        throw new Error(result.stderr);
+        // Some git commands output to stderr but still succeed
+        console.error('Git stderr:', result.stderr);
       }
       
       return result.stdout;

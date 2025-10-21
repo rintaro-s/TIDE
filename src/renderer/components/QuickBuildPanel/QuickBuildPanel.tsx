@@ -8,25 +8,27 @@ interface QuickBuildPanelProps {
   isExpanded: boolean;
 }
 
+type BuildStep = 'idle' | 'confirming' | 'building' | 'complete' | 'error';
+
 const QuickBuildPanel: React.FC<QuickBuildPanelProps> = ({ isExpanded }) => {
   const { state } = useApp();
+  const [currentStep, setCurrentStep] = useState<BuildStep>('idle');
   const [selectedBoard, setSelectedBoard] = useState<string>('');
   const [selectedPort, setSelectedPort] = useState<string>('');
   const [availableBoards, setAvailableBoards] = useState<(ArduinoBoard | PlatformIOBoard)[]>([]);
   const [availablePorts, setAvailablePorts] = useState<ArduinoPort[]>([]);
-  const [recentBoards, setRecentBoards] = useState<string[]>([]);
-  const [isBuilding, setIsBuilding] = useState(false);
-  const [buildStatus, setBuildStatus] = useState<'idle' | 'compiling' | 'uploading' | 'success' | 'error'>('idle');
   const [boardSearchTerm, setBoardSearchTerm] = useState('');
-  const [showBoardSearch, setShowBoardSearch] = useState(false);
+  const [buildError, setBuildError] = useState('');
+  const [buildOutput, setBuildOutput] = useState('');
   
   const arduinoService = ArduinoCLIService.getInstance();
   const platformioService = PlatformIOService.getInstance();
 
   useEffect(() => {
-    loadBoardsAndPorts();
-    loadRecentBoards();
-  }, [state.mode, state.currentProject]);
+    if (isExpanded && currentStep === 'idle') {
+      loadBoardsAndPorts();
+    }
+  }, [isExpanded, state.mode, state.currentProject]);
 
   const loadBoardsAndPorts = async () => {
     if (!state.mode) return;
@@ -45,14 +47,12 @@ const QuickBuildPanel: React.FC<QuickBuildPanelProps> = ({ isExpanded }) => {
         const installed = await platformioService.checkInstallation();
         if (installed) {
           boards = await platformioService.listAllBoards();
-          // ports = await platformioService.listDevices();
         }
       }
 
       setAvailableBoards(boards);
       setAvailablePorts(ports);
 
-      // Auto-select first available if none selected
       if (boards.length > 0 && !selectedBoard) {
         const boardId = 'id' in boards[0] ? boards[0].id : boards[0].fqbn;
         setSelectedBoard(boardId);
@@ -62,294 +62,207 @@ const QuickBuildPanel: React.FC<QuickBuildPanelProps> = ({ isExpanded }) => {
       }
     } catch (error) {
       console.error('Failed to load boards and ports:', error);
+      setBuildError('ボード情報の取得に失敗しました');
     }
   };
 
-  const loadRecentBoards = async () => {
-    try {
-      const recent = await window.electronAPI?.store.get('recentBoards') || [];
-      setRecentBoards(recent.slice(0, 5));
-    } catch (error) {
-      console.error('Failed to load recent boards:', error);
+  const handleStartBuild = async () => {
+    if (!state.currentProject || !selectedBoard) {
+      setBuildError('プロジェクトとボードを選択してください');
+      return;
     }
+
+    setCurrentStep('confirming');
   };
 
-  const saveRecentBoard = async (boardId: string) => {
-    try {
-      const recent = await window.electronAPI?.store.get('recentBoards') || [];
-      const updated = [boardId, ...recent.filter((id: string) => id !== boardId)].slice(0, 10);
-      await window.electronAPI?.store.set('recentBoards', updated);
-      setRecentBoards(updated.slice(0, 5));
-    } catch (error) {
-      console.error('Failed to save recent board:', error);
-    }
-  };
+  const handleConfirmBuild = async () => {
+    if (!state.currentProject) return;
 
-  const handleQuickCompile = async () => {
-    if (!state.currentProject || !selectedBoard || isBuilding) return;
+    setCurrentStep('building');
+    setBuildError('');
+    setBuildOutput('ビルドを開始しています...');
 
-    setIsBuilding(true);
-    setBuildStatus('compiling');
-    
     try {
       let success = false;
-      
+      let output = '';
+
       if (state.mode === 'arduino') {
         const result = await arduinoService.compile(state.currentProject.path, selectedBoard);
         success = result.success;
+        output = result.output;
+        
+        if (!success) {
+          setBuildError(result.errors.join('\n') || 'コンパイル失敗');
+        }
       } else {
         const result = await platformioService.compile(state.currentProject.path);
         success = result.success;
+        output = result.output;
       }
-      
-      setBuildStatus(success ? 'success' : 'error');
-      await saveRecentBoard(selectedBoard);
-      
-      // Cache compiled result for quick upload
-      if (success) {
-        await window.electronAPI?.store.set('lastCompiledProject', {
-          projectPath: state.currentProject.path,
-          board: selectedBoard,
-          timestamp: Date.now()
-        });
-      }
+
+      setBuildOutput(output);
+      setCurrentStep(success ? 'complete' : 'error');
     } catch (error) {
-      setBuildStatus('error');
-    } finally {
-      setIsBuilding(false);
-      setTimeout(() => setBuildStatus('idle'), 2000);
+      setBuildError(`ビルドエラー: ${error}`);
+      setCurrentStep('error');
     }
   };
 
-  const handleQuickUpload = async () => {
-    if (!state.currentProject || !selectedBoard || !selectedPort || isBuilding) return;
-
-    setIsBuilding(true);
-    setBuildStatus('uploading');
-    
-    try {
-      // Check if we have a cached compile for this project
-      const lastCompiled = await window.electronAPI?.store.get('lastCompiledProject');
-      const needsCompile = !lastCompiled || 
-        lastCompiled.projectPath !== state.currentProject.path ||
-        lastCompiled.board !== selectedBoard ||
-        (Date.now() - lastCompiled.timestamp) > 300000; // 5 minutes
-
-      if (needsCompile) {
-        setBuildStatus('compiling');
-        await handleQuickCompile();
-      }
-
-      setBuildStatus('uploading');
-      
-      let success = false;
-      if (state.mode === 'arduino') {
-        const result = await arduinoService.upload(state.currentProject.path, selectedBoard, selectedPort);
-        success = result.success;
-      } else {
-        const result = await platformioService.upload(state.currentProject.path);
-        success = result.success;
-      }
-      
-      setBuildStatus(success ? 'success' : 'error');
-      await saveRecentBoard(selectedBoard);
-    } catch (error) {
-      setBuildStatus('error');
-    } finally {
-      setIsBuilding(false);
-      setTimeout(() => setBuildStatus('idle'), 2000);
-    }
-  };
-
-  const refreshPorts = async () => {
-    try {
-      let ports: ArduinoPort[] = [];
-      if (state.mode === 'arduino') {
-        ports = await arduinoService.listPorts();
-      }
-      setAvailablePorts(ports);
-    } catch (error) {
-      console.error('Failed to refresh ports:', error);
-    }
+  const handleReset = () => {
+    setCurrentStep('idle');
+    setBuildError('');
+    setBuildOutput('');
   };
 
   const filteredBoards = availableBoards.filter(board => {
     const name = board.name.toLowerCase();
-    const platform = ('platform' in board ? board.platform : '').toLowerCase();
-    return name.includes(boardSearchTerm.toLowerCase()) || platform.includes(boardSearchTerm.toLowerCase());
+    return name.includes(boardSearchTerm.toLowerCase());
   });
 
-  const getStatusIcon = () => {
-    switch (buildStatus) {
-      case 'compiling': return '🔨';
-      case 'uploading': return '📤';
-      case 'success': return '✅';
-      case 'error': return '❌';
-      default: return '⚡';
-    }
-  };
-
-  const getStatusText = () => {
-    switch (buildStatus) {
-      case 'compiling': return 'Compiling...';
-      case 'uploading': return 'Uploading...';
-      case 'success': return 'Success!';
-      case 'error': return 'Failed';
-      default: return 'Ready';
-    }
-  };
-
   if (!isExpanded) {
-    // Collapsed view - show only essential buttons
     return (
       <div className="quick-build-panel collapsed">
         <div className="quick-actions">
           <button 
-            className={`quick-btn compile-btn ${buildStatus}`}
-            onClick={handleQuickCompile}
-            disabled={!state.currentProject || !selectedBoard || isBuilding}
-            title="Quick Compile (F7)"
+            className="quick-action-btn build"
+            onClick={handleStartBuild}
+            disabled={!state.currentProject || !selectedBoard || currentStep !== 'idle'}
+            title="クイックビルド開始"
           >
-            {getStatusIcon()}
-          </button>
-          <button 
-            className={`quick-btn upload-btn ${buildStatus}`}
-            onClick={handleQuickUpload}
-            disabled={!state.currentProject || !selectedBoard || !selectedPort || isBuilding}
-            title="Compile & Upload (F5)"
-          >
-            📤
+            Build
           </button>
         </div>
       </div>
     );
   }
 
-  // Expanded view - show full interface
   return (
     <div className="quick-build-panel expanded">
       <div className="panel-header">
-        <h3>⚡ Quick Build</h3>
-        <div className="status-indicator">
-          <span className={`status-dot ${buildStatus}`}></span>
-          <span className="status-text">{getStatusText()}</span>
-        </div>
+        <h3>Quick Build</h3>
       </div>
 
       {!state.currentProject ? (
-        <div className="no-project">
-          <p>📁 No project opened</p>
-          <small>Open or create a project to enable build features</small>
+        <div className="message-box info">
+          <p>プロジェクトを開いてください</p>
         </div>
-      ) : (
-        <>
-          <div className="board-selection">
-            <div className="section-header">
-              <label>🎯 Target Board</label>
-              <button 
-                className="search-toggle"
-                onClick={() => setShowBoardSearch(!showBoardSearch)}
-                title="Search boards"
-              >
-                🔍
-              </button>
-            </div>
-
-            {showBoardSearch && (
-              <input
-                type="text"
-                className="board-search"
-                placeholder="Search boards..."
-                value={boardSearchTerm}
-                onChange={(e) => setBoardSearchTerm(e.target.value)}
-              />
-            )}
-
+      ) : currentStep === 'idle' ? (
+        <div className="build-content">
+          <div className="step-section">
+            <label className="section-title">ボード選択</label>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="ボード検索..."
+              value={boardSearchTerm}
+              onChange={(e) => setBoardSearchTerm(e.target.value)}
+            />
             <select
               value={selectedBoard}
               onChange={(e) => setSelectedBoard(e.target.value)}
-              className="board-select"
+              className="select-input"
             >
-              <option value="">Select board...</option>
-              {recentBoards.length > 0 && (
-                <optgroup label="Recently Used">
-                  {recentBoards.map(boardId => {
-                    const board = availableBoards.find(b => 
-                      ('id' in b ? b.id : b.fqbn) === boardId
-                    );
-                    return board ? (
-                      <option key={boardId} value={boardId}>
-                        ⭐ {board.name}
-                      </option>
-                    ) : null;
-                  })}
-                </optgroup>
-              )}
-              <optgroup label="Available Boards">
-                {filteredBoards.map(board => {
-                  const boardId = 'id' in board ? board.id : board.fqbn;
-                  return (
-                    <option key={boardId} value={boardId}>
-                      {board.name}
-                    </option>
-                  );
-                })}
-              </optgroup>
+              <option value="">ボードを選択...</option>
+              {filteredBoards.map(board => {
+                const boardId = 'id' in board ? board.id : board.fqbn;
+                return (
+                  <option key={boardId} value={boardId}>
+                    {board.name}
+                  </option>
+                );
+              })}
             </select>
           </div>
 
-          <div className="port-selection">
-            <div className="section-header">
-              <label>🔌 Serial Port</label>
-              <button 
-                className="refresh-btn"
-                onClick={refreshPorts}
-                title="Refresh ports"
+          {state.mode === 'arduino' && availablePorts.length > 0 && (
+            <div className="step-section">
+              <label className="section-title">シリアルポート</label>
+              <select
+                value={selectedPort}
+                onChange={(e) => setSelectedPort(e.target.value)}
+                className="select-input"
               >
-                🔄
-              </button>
-            </div>
-            <select
-              value={selectedPort}
-              onChange={(e) => setSelectedPort(e.target.value)}
-              className="port-select"
-            >
-              <option value="">Select port...</option>
-              {availablePorts.map(port => (
-                <option key={port.address} value={port.address}>
-                  {port.address} ({port.label || 'Unknown'})
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="build-actions">
-            <button 
-              className={`action-btn compile-only ${buildStatus}`}
-              onClick={handleQuickCompile}
-              disabled={!selectedBoard || isBuilding}
-            >
-              🔨 Compile
-            </button>
-            
-            <button 
-              className={`action-btn compile-upload ${buildStatus}`}
-              onClick={handleQuickUpload}
-              disabled={!selectedBoard || !selectedPort || isBuilding}
-            >
-              ⚡ Compile & Upload
-            </button>
-          </div>
-
-          {isBuilding && (
-            <div className="build-progress">
-              <div className="progress-bar">
-                <div className="progress-fill animating"></div>
-              </div>
+                <option value="">ポートを選択...</option>
+                {availablePorts.map(port => (
+                  <option key={port.address} value={port.address}>
+                    {port.address}
+                  </option>
+                ))}
+              </select>
             </div>
           )}
-        </>
-      )}
+
+          <button 
+            className="btn-primary"
+            onClick={handleStartBuild}
+            disabled={!selectedBoard}
+          >
+            ビルドを開始
+          </button>
+        </div>
+      ) : currentStep === 'confirming' ? (
+        <div className="confirm-content">
+          <div className="confirm-box">
+            <h4>ビルド確認</h4>
+            <div className="confirm-item">
+              <span className="label">プロジェクト:</span>
+              <span className="value">{state.currentProject?.name}</span>
+            </div>
+            <div className="confirm-item">
+              <span className="label">ボード:</span>
+              <span className="value">{selectedBoard}</span>
+            </div>
+            {selectedPort && (
+              <div className="confirm-item">
+                <span className="label">ポート:</span>
+                <span className="value">{selectedPort}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="action-buttons">
+            <button className="btn-secondary" onClick={handleReset}>
+              キャンセル
+            </button>
+            <button className="btn-primary" onClick={handleConfirmBuild}>
+              ビルド実行
+            </button>
+          </div>
+        </div>
+      ) : currentStep === 'building' ? (
+        <div className="building-content">
+          <div className="progress">
+            <div className="progress-bar">
+              <div className="progress-fill"></div>
+            </div>
+          </div>
+          <p className="status-message">ビルド中...</p>
+          <div className="output-box">
+            <pre>{buildOutput}</pre>
+          </div>
+        </div>
+      ) : currentStep === 'complete' ? (
+        <div className="result-content success">
+          <div className="result-icon">✓</div>
+          <h4>ビルド完了</h4>
+          <p>コンパイルに成功しました</p>
+          <button className="btn-primary" onClick={handleReset}>
+            完了
+          </button>
+        </div>
+      ) : currentStep === 'error' ? (
+        <div className="result-content error">
+          <div className="result-icon">✗</div>
+          <h4>ビルド失敗</h4>
+          {buildError && <p className="error-text">{buildError}</p>}
+          <div className="output-box">
+            <pre>{buildOutput}</pre>
+          </div>
+          <button className="btn-primary" onClick={handleReset}>
+            戻る
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

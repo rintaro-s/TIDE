@@ -1,0 +1,233 @@
+.platformio-workflow-test {
+  padding: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--color-background-secondary);
+  border-radius: 12px;
+  margin: 20px;
+  max-width: 1000px;
+}
+
+.test-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ini-editor-btn {
+  background: linear-gradient(135deg, #6b73ff, #9c27b0);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ini-editor-btn:hover {
+  background: linear-gradient(135deg, #5a63e6, #8e24aa);
+  transform: translateY(-1px);
+}
+
+.test-content {
+  min-height: 400px;
+}
+
+.ini-editor-container {
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  height: 600px;
+}
+
+.test-header h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.run-test-btn {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.run-test-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e55a2b, #e0841a);
+  transform: translateY(-1px);
+}
+
+.run-test-btn:disabled {
+  background: var(--color-background-tertiary);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
+.test-results {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.test-result-item {
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.test-result-item.test-result-pending {
+  border-left: 4px solid var(--color-warning);
+}
+
+.test-result-item.test-result-running {
+  border-left: 4px solid #ff6b35;
+  animation: pulse 2s infinite;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.2);
+}
+
+.test-result-item.test-result-success {
+  border-left: 4px solid var(--color-success);
+}
+
+.test-result-item.test-result-failed {
+  border-left: 4px solid var(--color-danger);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.test-result-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.test-status-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.test-name {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.test-duration {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  background: var(--color-background-secondary);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.test-output {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  margin-left: 36px;
+  font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.current-project-info {
+  margin-top: 30px;
+  padding: 16px;
+  background: var(--color-background-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.current-project-info h3 {
+  margin: 0 0 8px 0;
+  color: var(--color-text-primary);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.current-project-info code {
+  background: var(--color-background-secondary);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 12px;
+  color: var(--color-text-primary);
+  display: block;
+  word-break: break-all;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .platformio-workflow-test {
+  background: var(--color-background-secondary);
+}
+
+/* Material theme adjustments */
+[data-theme="material"] .test-result-item.test-result-running {
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+[data-theme="material"] .test-result-item.test-result-success {
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+[data-theme="material"] .test-result-item.test-result-failed {
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
+}
+
+/* Anime theme adjustments */
+[data-theme="anime"] .platformio-workflow-test {
+  background: linear-gradient(135deg, 
+    rgba(255, 107, 53, 0.1), 
+    rgba(247, 147, 30, 0.1)
+  );
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="anime"] .test-result-item {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(5px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .platformio-workflow-test {
+    margin: 10px;
+    padding: 15px;
+  }
+  
+  .test-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .test-header h2 {
+    font-size: 20px;
+  }
+  
+  .run-test-btn {
+    width: 100%;
+  }
+}

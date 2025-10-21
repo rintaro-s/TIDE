@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useApp } from '../../contexts/AppContext';
+import EditorSettingsPanel from '../EditorSettingsPanel/EditorSettingsPanel';
+import { WorkflowTestPage } from '../TestRunner/WorkflowTestPage';
 import './SettingsPanel.css';
 
 interface SettingsTab {
@@ -20,10 +22,12 @@ const SettingsPanel: React.FC = () => {
     { id: 'wallpaper', name: '壁紙', icon: 'W' },
     { id: 'editor', name: 'エディタ', icon: 'E' },
     { id: 'build', name: 'ビルド', icon: 'B' },
-    { id: 'keybinds', name: 'キーバインド', icon: 'K' },
-    { id: 'pins', name: 'ピン設定', icon: 'P' },
     { id: 'git', name: 'Git', icon: 'G' },
-    { id: 'api', name: 'API', icon: 'A' }
+    // Removed non-functional tabs:
+    // - Keybinds: Not implemented
+    // - Pins: UI only, no functionality
+    // - API: githubToken managed separately, other fields unused
+    { id: 'workflow', name: 'ワークフロー検証', icon: '🔧' }
   ];
 
   const handleThemeChange = (newTheme: 'dark' | 'light' | 'modern-blue') => {
@@ -119,7 +123,9 @@ const SettingsPanel: React.FC = () => {
           setWallpaper({
             ...wallpaper,
             imagePath: result.filePaths[0],
-            enabled: true
+            enabled: true,
+            opacity: 70,
+            brightness: 100
           });
         }
       } catch (error) {
@@ -134,6 +140,13 @@ const SettingsPanel: React.FC = () => {
       });
     };
 
+    const handleBrightnessChange = (value: number) => {
+      setWallpaper({
+        ...wallpaper,
+        brightness: value
+      });
+    };
+
     const handleToggleWallpaper = (enabled: boolean) => {
       setWallpaper({
         ...wallpaper,
@@ -145,7 +158,8 @@ const SettingsPanel: React.FC = () => {
       setWallpaper({
         enabled: false,
         imagePath: undefined,
-        opacity: 30
+        opacity: 70,
+        brightness: 100
       });
     };
 
@@ -162,7 +176,7 @@ const SettingsPanel: React.FC = () => {
               opacity: wallpaper.enabled ? (wallpaper.opacity / 100) : 0.3
             }}>
               <div className="preview-overlay" style={{
-                backgroundColor: 'rgba(0, 0, 0, ' + (1 - wallpaper.opacity / 100) + ')'
+                backgroundColor: `rgba(0, 0, 0, ${(100 - wallpaper.brightness) / 100})`
               }}></div>
             </div>
           ) : (
@@ -189,7 +203,7 @@ const SettingsPanel: React.FC = () => {
               placeholder="画像ファイルを選択してください"
             />
             <button onClick={handleSelectWallpaper} className="btn primary">
-              📁 選択
+              選択
             </button>
           </div>
         </div>
@@ -213,20 +227,36 @@ const SettingsPanel: React.FC = () => {
             </div>
 
             <div className="setting-item">
+              <label>明るさ: {wallpaper.brightness}%</label>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={wallpaper.brightness}
+                onChange={(e) => handleBrightnessChange(parseInt(e.target.value))}
+                className="brightness-slider"
+              />
+              <div className="brightness-labels">
+                <span>暗い</span>
+                <span>明るい</span>
+              </div>
+            </div>
+
+            <div className="setting-item">
               <button onClick={handleClearWallpaper} className="btn secondary">
-                🗑️ 壁紙をクリア
+                壁紙をクリア
               </button>
             </div>
           </>
         )}
 
         <div className="wallpaper-tips">
-          <h4>💡 ヒント</h4>
+          <h4>ヒント</h4>
           <ul>
             <li>推奨画像サイズ: 1920x1080以上</li>
-            <li>暗めの画像を使用すると、テキストが読みやすくなります</li>
-            <li>不透明度を調整して、コードとのコントラストを調整できます</li>
-            <li>Liquid GlassテーマとMaterialテーマは壁紙との相性が良いです</li>
+            <li>不透明度: 壁紙の見え具合を調整（0%=見えない、100%=完全表示）</li>
+            <li>明るさ: 壁紙の上に被るオーバーレイの暗さを調整（0%=最暗、100%=透明）</li>
+            <li>暗めの画像 + 高い明るさ設定で、テキストが読みやすくなります</li>
           </ul>
         </div>
       </div>
@@ -234,43 +264,7 @@ const SettingsPanel: React.FC = () => {
   };
 
   const renderEditorSettings = () => (
-    <div className="settings-section">
-      <h3>エディタ設定</h3>
-      <div className="setting-item">
-        <label>フォントサイズ</label>
-        <input
-          type="number"
-          min="8"
-          max="36"
-          value={settings.editor?.fontSize || 14}
-          onChange={(e) => handleSettingChange('editor', 'fontSize', parseInt(e.target.value))}
-        />
-        <span>px</span>
-      </div>
-      <div className="setting-item">
-        <label>フォントファミリー</label>
-        <select
-          value={settings.editor?.fontFamily || 'Consolas'}
-          onChange={(e) => handleSettingChange('editor', 'fontFamily', e.target.value)}
-        >
-          <option value="Consolas">Consolas</option>
-          <option value="Monaco">Monaco</option>
-          <option value="Menlo">Menlo</option>
-          <option value="DejaVu Sans Mono">DejaVu Sans Mono</option>
-        </select>
-      </div>
-      <div className="setting-item">
-        <label>タブサイズ</label>
-        <select
-          value={settings.editor?.tabSize || 4}
-          onChange={(e) => handleSettingChange('editor', 'tabSize', parseInt(e.target.value))}
-        >
-          <option value={2}>2</option>
-          <option value={4}>4</option>
-          <option value={8}>8</option>
-        </select>
-      </div>
-    </div>
+    <EditorSettingsPanel />
   );
 
   const renderBuildSettings = () => (
@@ -330,75 +324,7 @@ const SettingsPanel: React.FC = () => {
     </div>
   );
 
-  const renderKeybindSettings = () => (
-    <div className="settings-section">
-      <h3>キーバインド設定</h3>
-      <div className="keybind-list">
-        {Object.entries(settings.keybinds || {}).map(([action, binding]) => (
-          <div key={action} className="keybind-item">
-            <span className="action-name">{action}</span>
-            <input
-              type="text"
-              value={binding as string}
-              onChange={(e) => handleSettingChange('keybinds', action, e.target.value)}
-              placeholder="キーの組み合わせ"
-            />
-          </div>
-        ))}
-      </div>
-      <button 
-        className="add-keybind-btn"
-        onClick={() => handleSettingChange('keybinds', 'newAction', 'Ctrl+N')}
-      >
-        新しいキーバインドを追加
-      </button>
-    </div>
-  );
-
-  const renderPinSettings = () => (
-    <div className="settings-section">
-      <h3>ピン設定</h3>
-      <div className="pin-configurator">
-        <div className="board-selector">
-          <label>ボードタイプ</label>
-          <select
-            value={settings.pins?.boardType || 'arduino-uno'}
-            onChange={(e) => handleSettingChange('pins', 'boardType', e.target.value)}
-          >
-            <option value="arduino-uno">Arduino Uno</option>
-            <option value="arduino-mega">Arduino Mega</option>
-            <option value="esp32">ESP32</option>
-            <option value="esp8266">ESP8266</option>
-          </select>
-        </div>
-        <div className="pin-assignments">
-          <h4>ピン割り当て</h4>
-          <div className="pin-grid">
-            {Array.from({ length: 14 }, (_, i) => (
-              <div key={i} className="pin-item">
-                <label>Pin {i}</label>
-                <select
-                  value={settings.pins?.assignments?.[i] || 'unused'}
-                  onChange={(e) => {
-                    const assignments = { ...settings.pins?.assignments };
-                    assignments[i] = e.target.value;
-                    handleSettingChange('pins', 'assignments', assignments);
-                  }}
-                >
-                  <option value="unused">未使用</option>
-                  <option value="digital">デジタル</option>
-                  <option value="analog">アナログ</option>
-                  <option value="pwm">PWM</option>
-                  <option value="i2c">I2C</option>
-                  <option value="spi">SPI</option>
-                </select>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  // Keybind and Pin settings removed - not implemented
 
   const renderGitSettings = () => (
     <div className="settings-section">
@@ -442,36 +368,11 @@ const SettingsPanel: React.FC = () => {
     </div>
   );
 
-  const renderApiSettings = () => (
-    <div className="settings-section">
-      <h3>API設定</h3>
-      <div className="setting-item">
-        <label>GitHub Personal Access Token</label>
-        <input
-          type="password"
-          value={settings.api?.githubToken || ''}
-          onChange={(e) => handleSettingChange('api', 'githubToken', e.target.value)}
-          placeholder="ghp_xxxxxxxxxxxxx"
-        />
-      </div>
-      <div className="setting-item">
-        <label>Arduino Library Index URL</label>
-        <input
-          type="url"
-          value={settings.api?.libraryIndexUrl || ''}
-          onChange={(e) => handleSettingChange('api', 'libraryIndexUrl', e.target.value)}
-          placeholder="https://downloads.arduino.cc/libraries/library_index.json"
-        />
-      </div>
-      <div className="setting-item">
-        <label>PlatformIO Registry API</label>
-        <input
-          type="url"
-          value={settings.api?.platformioRegistryUrl || ''}
-          onChange={(e) => handleSettingChange('api', 'platformioRegistryUrl', e.target.value)}
-          placeholder="https://registry.platformio.org"
-        />
-      </div>
+  // API settings removed - githubToken managed in GitSetupWizard, other fields unused
+
+  const renderWorkflowSettings = () => (
+    <div className="settings-section workflow-test-section">
+      <WorkflowTestPage />
     </div>
   );
 
@@ -482,10 +383,8 @@ const SettingsPanel: React.FC = () => {
       case 'wallpaper': return renderWallpaperSettings();
       case 'editor': return renderEditorSettings();
       case 'build': return renderBuildSettings();
-      case 'keybinds': return renderKeybindSettings();
-      case 'pins': return renderPinSettings();
       case 'git': return renderGitSettings();
-      case 'api': return renderApiSettings();
+      case 'workflow': return renderWorkflowSettings();
       default: return renderGeneralSettings();
     }
   };

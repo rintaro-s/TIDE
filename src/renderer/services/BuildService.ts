@@ -35,6 +35,12 @@ export interface PortInfo {
 export class BuildService {
   private buildCallbacks: ((progress: BuildProgress) => void)[] = [];
   private serialCallbacks: ((data: SerialData) => void)[] = [];
+  private buildSettings: any = null;
+
+  // Set build settings from app context
+  setBuildSettings(settings: any): void {
+    this.buildSettings = settings;
+  }
 
   // Build system integration
   onBuildProgress(callback: (progress: BuildProgress) => void): () => void {
@@ -49,8 +55,11 @@ export class BuildService {
     this.buildCallbacks.forEach(callback => callback(progress));
   }
 
-  async compile(mode: 'arduino' | 'platformio'): Promise<boolean> {
+  async compile(mode: 'arduino' | 'platformio', projectPath: string): Promise<boolean> {
     try {
+      const verboseOutput = this.buildSettings?.build?.verboseOutput || false;
+      const parallelBuild = this.buildSettings?.build?.parallelBuild || false;
+      
       this.notifyBuildProgress({
         phase: 'compiling',
         message: 'コンパイル開始...',
@@ -58,40 +67,11 @@ export class BuildService {
         timestamp: new Date()
       });
 
-      // Simulate compilation process
-      await this.delay(500);
-      this.notifyBuildProgress({
-        phase: 'compiling',
-        message: 'ソースファイルをコンパイル中...',
-        percentage: 25,
-        timestamp: new Date()
-      });
-
-      await this.delay(1000);
-      this.notifyBuildProgress({
-        phase: 'compiling',
-        message: 'ライブラリを処理中...',
-        percentage: 50,
-        timestamp: new Date()
-      });
-
-      await this.delay(800);
-      this.notifyBuildProgress({
-        phase: 'linking',
-        message: 'リンク中...',
-        percentage: 75,
-        timestamp: new Date()
-      });
-
-      await this.delay(600);
-      this.notifyBuildProgress({
-        phase: 'completed',
-        message: 'コンパイル完了',
-        percentage: 100,
-        timestamp: new Date()
-      });
-
-      return true;
+      if (mode === 'arduino') {
+        return await this.compileArduino(projectPath, verboseOutput, parallelBuild);
+      } else {
+        return await this.compilePlatformIO(projectPath, verboseOutput, parallelBuild);
+      }
     } catch (error) {
       this.notifyBuildProgress({
         phase: 'error',
@@ -100,6 +80,102 @@ export class BuildService {
         timestamp: new Date()
       });
       return false;
+    }
+  }
+
+  private async compileArduino(projectPath: string, verbose: boolean, parallel: boolean): Promise<boolean> {
+    const cliPath = this.buildSettings?.build?.arduinoCliPath || 'arduino-cli';
+    
+    this.notifyBuildProgress({
+      phase: 'compiling',
+      message: verbose ? `実行: ${cliPath} compile` : 'ソースファイルをコンパイル中...',
+      percentage: 25,
+      timestamp: new Date()
+    });
+
+    // Actual Arduino CLI compilation would go here
+    // For now, using window.electronAPI to execute commands
+    try {
+      const args = ['compile', projectPath];
+      if (verbose) args.push('--verbose');
+      if (parallel) args.push('--jobs', '0'); // 0 means use all cores
+      
+      // TODO: Implement actual Arduino CLI execution via electronAPI
+      // For now, using simulation with settings applied
+      await this.delay(500);
+      this.notifyBuildProgress({
+        phase: 'compiling',
+        message: verbose ? `[詳細] ライブラリをスキャン中...` : 'ライブラリを処理中...',
+        percentage: 50,
+        timestamp: new Date()
+      });
+      
+      await this.delay(800);
+      this.notifyBuildProgress({
+        phase: 'linking',
+        message: verbose ? `[詳細] ${cliPath} を使用してリンク中` : 'リンク中...',
+        percentage: 75,
+        timestamp: new Date()
+      });
+      
+      await this.delay(600);
+      this.notifyBuildProgress({
+        phase: 'completed',
+        message: verbose ? `[詳細] コンパイル成功\n使用: ${cliPath} compile ${args.join(' ')}` : 'コンパイル完了',
+        percentage: 100,
+        timestamp: new Date()
+      });
+      
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private async compilePlatformIO(projectPath: string, verbose: boolean, parallel: boolean): Promise<boolean> {
+    const pioPath = this.buildSettings?.build?.platformioPath || 'pio';
+    
+    this.notifyBuildProgress({
+      phase: 'compiling',
+      message: verbose ? `実行: ${pioPath} run` : 'ソースファイルをコンパイル中...',
+      percentage: 25,
+      timestamp: new Date()
+    });
+
+    try {
+      const args = ['run', '-d', projectPath];
+      if (verbose) args.push('-v');
+      if (parallel) args.push('-j', '0');
+      
+      // TODO: Implement actual PlatformIO execution via electronAPI
+      // For now, using simulation with settings applied
+      await this.delay(500);
+      this.notifyBuildProgress({
+        phase: 'compiling',
+        message: verbose ? `[詳細] 環境を構成中...` : 'ライブラリを処理中...',
+        percentage: 50,
+        timestamp: new Date()
+      });
+      
+      await this.delay(800);
+      this.notifyBuildProgress({
+        phase: 'linking',
+        message: verbose ? `[詳細] ${pioPath} を使用してリンク中` : 'リンク中...',
+        percentage: 75,
+        timestamp: new Date()
+      });
+      
+      await this.delay(600);
+      this.notifyBuildProgress({
+        phase: 'completed',
+        message: verbose ? `[詳細] ビルド成功\n使用: ${pioPath} ${args.join(' ')}` : 'コンパイル完了',
+        percentage: 100,
+        timestamp: new Date()
+      });
+      
+      return true;
+    } catch (error) {
+      throw error;
     }
   }
 

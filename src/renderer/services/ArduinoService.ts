@@ -1,6 +1,7 @@
 // Arduino CLI Service - Complete implementation based on actual commands
 
 import { logger, toast } from '../utils/logger';
+import CompileCacheService from './CompileCacheService';
 
 export interface ArduinoBoard {
   name: string;
@@ -397,6 +398,31 @@ export class ArduinoCLIService {
    */
   async compile(sketchPath: string, fqbn: string): Promise<CompileResult> {
     try {
+      // コンパイル前にハッシュを計算
+      const cacheService = CompileCacheService.getInstance();
+      const codeHash = await cacheService.computeHash(sketchPath);
+      
+      // LAN 内のキャッシュサーバーから取得を試みる
+      if (codeHash) {
+        const cachedBinary = await cacheService.fetchCompiledBinary(
+          codeHash,
+          fqbn.split(':')[1] || 'unknown',
+          fqbn.split(':')[0] || 'unknown'
+        );
+
+        if (cachedBinary) {
+          logger.success('Compile cache hit', `Using cached binary for ${fqbn}`);
+          return {
+            success: true,
+            output: 'Using cached compilation result',
+            errors: [],
+            warnings: [],
+            binaryPath: cachedBinary
+          };
+        }
+      }
+
+      // キャッシュミスの場合、通常のコンパイルを実行
       const result = await this.executeCommand('arduino-cli', ['compile', '--fqbn', fqbn, sketchPath]);
       
       const output = result.stdout + '\n' + result.stderr;
@@ -412,6 +438,12 @@ export class ArduinoCLIService {
             warnings.push(line);
           }
         });
+      }
+
+      // コンパイル成功時にローカルキャッシュに保存
+      if (result.exitCode === 0 && codeHash) {
+        const binaryPath = `${sketchPath}/build`;
+        await cacheService.cacheLocally(codeHash, binaryPath, fqbn.split(':')[1], fqbn.split(':')[0]);
       }
       
       return {

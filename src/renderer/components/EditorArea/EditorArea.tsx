@@ -8,8 +8,9 @@ interface FileContent {
 }
 
 const EditorArea: React.FC = () => {
-  const { state, closeFile, setActiveFile } = useApp();
+  const { state, closeFile, setActiveFile, settings } = useApp();
   const [fileContents, setFileContents] = useState<FileContent>({});
+  const [autoSaveTimer, setAutoSaveTimer] = useState<NodeJS.Timeout | null>(null);
 
   console.log('📝 EditorArea rendered', { openFilesCount: state.openFiles.length, activeFile: state.activeFile });
 
@@ -65,19 +66,60 @@ const EditorArea: React.FC = () => {
     }
   };
 
-  const handleFileContentChange = async (filePath: string, content: string) => {
+  const saveFileContent = async (filePath: string, content: string) => {
+    try {
+      await window.electronAPI.fs.writeFile(filePath, content);
+      console.log('File saved:', filePath);
+    } catch (error) {
+      console.error('Failed to save file:', error);
+    }
+  };
+
+  const handleFileContentChange = (filePath: string, content: string) => {
     setFileContents(prev => ({
       ...prev,
       [filePath]: content
     }));
     
-    // ファイルを保存（自動保存）
-    try {
-      await window.electronAPI.fs.writeFile(filePath, content);
-    } catch (error) {
-      console.error('Failed to save file:', error);
+    // Handle auto-save based on settings
+    const autoSaveMode = settings.general?.autoSave || 'off';
+    
+    if (autoSaveMode === 'afterDelay') {
+      // Clear existing timer
+      if (autoSaveTimer) {
+        clearTimeout(autoSaveTimer);
+      }
+      
+      // Set new timer (1 second delay)
+      const timer = setTimeout(() => {
+        saveFileContent(filePath, content);
+      }, 1000);
+      
+      setAutoSaveTimer(timer);
     }
+    // 'onFocusChange' mode is handled by window blur event
+    // 'off' mode requires manual save (Ctrl+S)
   };
+
+  // Handle save on focus change
+  useEffect(() => {
+    const handleBlur = () => {
+      if (settings.general?.autoSave === 'onFocusChange' && state.activeFile) {
+        const activeFile = state.openFiles.find(f => f.id === state.activeFile);
+        if (activeFile && fileContents[activeFile.path]) {
+          saveFileContent(activeFile.path, fileContents[activeFile.path]);
+        }
+      }
+    };
+
+    window.addEventListener('blur', handleBlur);
+    return () => {
+      window.removeEventListener('blur', handleBlur);
+      if (autoSaveTimer) {
+        clearTimeout(autoSaveTimer);
+      }
+    };
+  }, [settings.general?.autoSave, state.activeFile, state.openFiles, fileContents, autoSaveTimer]);
 
   const handleNewFile = async () => {
     try {

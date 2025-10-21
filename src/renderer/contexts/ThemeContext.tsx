@@ -2,10 +2,11 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 type Theme = 'dark' | 'light' | 'modern-blue' | 'liquid-glass' | 'material' | 'anime';
 
-interface WallpaperSettings {
+export interface WallpaperSettings {
   enabled: boolean;
   imagePath?: string;
-  opacity: number; // 0-100
+  opacity: number; // 0-100: 0=透明（見えない）, 100=完全不透明
+  brightness: number; // 0-100: 0=完全に暗い, 100=明るい
 }
 
 interface ThemeContextType {
@@ -26,7 +27,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>('dark');
   const [wallpaper, setWallpaper] = useState<WallpaperSettings>({
     enabled: false,
-    opacity: 30
+    opacity: 70,
+    brightness: 100
   });
 
   console.log('🎨 ThemeProvider initializing', { theme, wallpaper });
@@ -73,68 +75,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   useEffect(() => {
     console.log('🖼️ Applying wallpaper settings...', wallpaper);
-    
-    // Apply wallpaper using CSS custom properties for better performance
-    if (wallpaper.enabled && wallpaper.imagePath) {
-      try {
-        // Convert Windows path to file:// URL properly
-        let normalizedPath = wallpaper.imagePath;
-        
-        // Replace backslashes with forward slashes
-        normalizedPath = normalizedPath.replace(/\\/g, '/');
-        
-        // Remove any existing file:// protocol
-        normalizedPath = normalizedPath.replace(/^file:\/+/, '');
-        
-        // Build proper file URL
-        const fileUrl = `file:///${normalizedPath}`;
-        
-        console.log('📂 Original path:', wallpaper.imagePath);
-        console.log('🔗 File URL:', fileUrl);
-        
-        // Calculate opacity for the overlay (invert the wallpaper opacity)
-        // If wallpaper opacity is 30%, overlay should be 70% opaque to darken it
-        const overlayOpacity = (100 - wallpaper.opacity) / 100;
-        
-        // Apply wallpaper to CSS custom properties
-        document.documentElement.style.setProperty('--wallpaper-image', `url("${fileUrl}")`);
-        document.documentElement.style.setProperty('--wallpaper-opacity', String(overlayOpacity));
-        
-        console.log('✅ Wallpaper CSS variables set');
-        console.log('   --wallpaper-image:', `url("${fileUrl}")`);
-        console.log('   --wallpaper-opacity:', overlayOpacity);
-        
-        // Debug: Check if CSS variables are actually applied
-        const appliedImage = document.documentElement.style.getPropertyValue('--wallpaper-image');
-        const appliedOpacity = document.documentElement.style.getPropertyValue('--wallpaper-opacity');
-        console.log('🔍 CSS Variables verification:');
-        console.log('   Applied --wallpaper-image:', appliedImage);
-        console.log('   Applied --wallpaper-opacity:', appliedOpacity);
-        
-        // Add a class to body to indicate wallpaper is active
-        document.body.classList.add('wallpaper-enabled');
-        console.log('✅ Added wallpaper-enabled class to body');
-        
-        // Debug: Check if MainWorkspace element exists
-        const mainWorkspace = document.querySelector('.main-workspace');
-        if (mainWorkspace) {
-          console.log('✅ MainWorkspace element found');
-          const computedStyle = window.getComputedStyle(mainWorkspace, '::before');
-          console.log('🔍 ::before pseudo-element background-image:', computedStyle.backgroundImage);
-        } else {
-          console.warn('⚠️ MainWorkspace element not found');
-        }
-        
-      } catch (error) {
-        console.error('❌ Failed to apply wallpaper:', error);
-      }
-    } else {
-      // Remove wallpaper
-      console.log('🚫 Removing wallpaper - enabled:', wallpaper.enabled, 'imagePath:', wallpaper.imagePath);
-      document.documentElement.style.removeProperty('--wallpaper-image');
-      document.documentElement.style.removeProperty('--wallpaper-opacity');
-      document.body.classList.remove('wallpaper-enabled');
-    }
     
     // Save wallpaper settings
     if (window.electronAPI) {
