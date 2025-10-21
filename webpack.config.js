@@ -1,12 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const webpack = require('webpack');
+
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
-  mode: 'development',
+  mode: isDev ? 'development' : 'production',
   entry: './src/renderer/index.tsx',
   target: 'electron-renderer',
-  devtool: 'source-map',
+  devtool: isDev ? 'source-map' : false,
   module: {
     rules: [
       {
@@ -41,7 +44,8 @@ module.exports = {
     },
     fallback: {
       "path": false,
-      "fs": false
+      "fs": false,
+      "global": false
     }
   },
   output: {
@@ -50,6 +54,9 @@ module.exports = {
     clean: true,
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'global': 'window',
+    }),
     new HtmlWebpackPlugin({
       template: './src/renderer/index.html',
       filename: 'index.html',

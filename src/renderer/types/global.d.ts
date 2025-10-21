@@ -43,5 +43,11 @@ declare global {
   }
 }
 
+// JSON module support
+declare module '*.json' {
+  const value: any;
+  export default value;
+}
+
 // Export empty object to make this a module
 export {};

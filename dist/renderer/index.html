@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tova IDE</title>
-    <style>
-        * {
+<!doctype html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tova IDE</title><script>// グローバルオブジェクトを定義（ブラウザ環境で window として利用可能）
+        if (typeof global === 'undefined') {
+            window.global = window;
+        }</script><style>* {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -21,10 +17,4 @@
         #root {
             width: 100vw;
             height: 100vh;
-        }
-    </style>
-<script defer src="renderer.js"></script></head>
-<body>
-    <div id="root"></div>
-</body>
-</html>
+        }</style><script defer="defer" src="renderer.js"></script></head><body><div id="root"></div></body></html>

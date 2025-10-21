@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../contexts/AppContext';
-// import MonacoEditor from '../MonacoEditor/MonacoEditor';
+import AdvancedEditor from '../AdvancedEditor/AdvancedEditor';
 import './EditorArea.css';
 
 interface FileContent {
@@ -10,6 +10,8 @@ interface FileContent {
 const EditorArea: React.FC = () => {
   const { state, closeFile, setActiveFile } = useApp();
   const [fileContents, setFileContents] = useState<FileContent>({});
+
+  console.log('📝 EditorArea rendered', { openFilesCount: state.openFiles.length, activeFile: state.activeFile });
 
   // ファイルが開かれたら実際の内容をロード
   useEffect(() => {
@@ -198,19 +200,20 @@ const EditorArea: React.FC = () => {
       </div>
       
       <div className="editor-container">
-        {state.activeFile && (
-          <div className="simple-editor">
-            <div className="editor-header">
-              <span className="editing-file">{state.activeFile}</span>
-            </div>
-            <textarea
-              value={fileContents[state.activeFile] || ''}
-              onChange={(e) => handleFileContentChange(state.activeFile!, e.target.value)}
-              className="text-editor"
-              placeholder="ファイルの内容がここに表示されます..."
+        {state.activeFile && (() => {
+          const activeFile = state.openFiles.find(f => f.id === state.activeFile);
+          if (!activeFile) return null;
+          
+          return (
+            <AdvancedEditor
+              key={activeFile.id}
+              filePath={activeFile.path}
+              value={fileContents[activeFile.path] || ''}
+              onChange={(content: string) => handleFileContentChange(activeFile.path, content)}
+              language={getFileLanguage(activeFile.path)}
             />
-          </div>
-        )}
+          );
+        })()}
       </div>
     </div>
   );

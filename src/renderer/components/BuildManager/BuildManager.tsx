@@ -68,11 +68,26 @@ const BuildManager: React.FC = () => {
   };
 
   const handleCompile = async () => {
-    if (!state.mode || !state.currentProject || isBuilding || !selectedBoard) return;
+    if (!state.mode || !state.currentProject) {
+      addOutput('❌ No project opened. Please open or create a project first.');
+      return;
+    }
+    
+    if (!selectedBoard) {
+      addOutput('❌ No board selected. Please select a target board first.');
+      return;
+    }
+    
+    if (isBuilding) {
+      addOutput('⚠️ Build already in progress. Please wait...');
+      return;
+    }
     
     setIsBuilding(true);
     setCompileResult(null);
-    addOutput(`Starting compile for ${state.mode} project...`);
+    addOutput(`🔨 Starting compile for ${state.mode} project...`);
+    addOutput(`📦 Project: ${state.currentProject.name}`);
+    addOutput(`🎯 Board: ${selectedBoard}`);
     
     try {
       let result: CompileResult;
@@ -87,31 +102,59 @@ const BuildManager: React.FC = () => {
       
       if (result.success) {
         addOutput('✅ Compile successful!');
+        addOutput(`📊 Sketch uses ${result.bytes || 'N/A'} bytes`);
       } else {
         addOutput('❌ Compile failed!');
-        result.errors.forEach(error => addOutput(error));
+        result.errors.forEach(error => addOutput(`  ❗ ${error}`));
       }
       
-      result.warnings.forEach(warning => addOutput(`⚠️ ${warning}`));
+      result.warnings.forEach(warning => addOutput(`  ⚠️ ${warning}`));
       
     } catch (error) {
-      addOutput(`Compile error: ${error}`);
+      addOutput(`❌ Compile error: ${error}`);
     } finally {
       setIsBuilding(false);
     }
   };
 
   const handleUpload = async () => {
-    if (!state.mode || !state.currentProject || isBuilding || !selectedBoard || !selectedPort) return;
+    if (!state.mode || !state.currentProject) {
+      addOutput('❌ No project opened. Please open or create a project first.');
+      return;
+    }
+    
+    if (!selectedBoard) {
+      addOutput('❌ No board selected. Please select a target board first.');
+      return;
+    }
+    
+    if (!selectedPort) {
+      addOutput('❌ No port selected. Please connect your device and select a port.');
+      return;
+    }
+    
+    if (isBuilding) {
+      addOutput('⚠️ Operation already in progress. Please wait...');
+      return;
+    }
     
     setIsBuilding(true);
     setUploadResult(null);
-    addOutput(`Starting upload for ${state.mode} project...`);
+    addOutput(`📤 Starting upload for ${state.mode} project...`);
+    addOutput(`📦 Project: ${state.currentProject.name}`);
+    addOutput(`🎯 Board: ${selectedBoard}`);
+    addOutput(`🔌 Port: ${selectedPort}`);
     
     try {
       // First compile if needed
       if (!compileResult?.success) {
+        addOutput('🔨 Compiling before upload...');
         await handleCompile();
+        if (!compileResult?.success) {
+          addOutput('❌ Upload cancelled: Compilation failed');
+          setIsBuilding(false);
+          return;
+        }
       }
       
       let result: UploadResult;
@@ -126,13 +169,14 @@ const BuildManager: React.FC = () => {
       
       if (result.success) {
         addOutput('✅ Upload successful!');
+        addOutput('🎉 Your code is now running on the device!');
       } else {
         addOutput('❌ Upload failed!');
-        result.errors.forEach(error => addOutput(error));
+        result.errors.forEach(error => addOutput(`  ❗ ${error}`));
       }
       
     } catch (error) {
-      addOutput(`Upload error: ${error}`);
+      addOutput(`❌ Upload error: ${error}`);
     } finally {
       setIsBuilding(false);
     }

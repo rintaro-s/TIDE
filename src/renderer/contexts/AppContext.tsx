@@ -55,6 +55,13 @@ interface AppSettings {
     libraryIndexUrl?: string;
     platformioRegistryUrl?: string;
   };
+  copilot?: {
+    endpoint?: string;
+    model?: string;
+    apiKey?: string;
+    maxTokens?: number;
+    temperature?: number;
+  };
   arduino?: {
     board?: string;
     port?: string;
@@ -330,6 +337,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 export const useApp = (): AppContextType => {
   const context = useContext(AppContext);
   if (!context) {
+    console.error('❌ useApp must be used within an AppProvider');
     throw new Error('useApp must be used within an AppProvider');
   }
   return context;

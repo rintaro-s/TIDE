@@ -6,8 +6,16 @@ import Store from 'electron-store';
 // Store for persistent settings
 const store = new Store();
 
+// Logger setup
+const log = (prefix: string, ...args: any[]) => {
+  console.log(`[Electron Main] ${prefix}`, ...args);
+};
+
+log('🚀', 'Electron main process starting...');
+
 class TovaIDE {
   private mainWindow: BrowserWindow | null = null;
+  // isDev は webpack.config.js と同様に environment 変数で判定
   private isDev = process.env.NODE_ENV === 'development';
 
   constructor() {
@@ -15,14 +23,20 @@ class TovaIDE {
   }
 
   private init(): void {
+    log('ℹ️', 'Initializing Tova IDE...');
     // App event handlers
-    app.whenReady().then(() => this.createMainWindow());
+    app.whenReady().then(() => {
+      log('✅', 'App ready');
+      this.createMainWindow();
+    });
     app.on('window-all-closed', () => {
+      log('👋', 'All windows closed');
       if (process.platform !== 'darwin') {
         app.quit();
       }
     });
     app.on('activate', () => {
+      log('🔄', 'App activated');
       if (BrowserWindow.getAllWindows().length === 0) {
         this.createMainWindow();
       }
@@ -33,6 +47,12 @@ class TovaIDE {
   }
 
   private createMainWindow(): void {
+    log('🪟', 'Creating main window...');
+    
+    // Check if icon exists
+    const iconPath = path.join(__dirname, '../assets/icon.png');
+    const iconExists = existsSync(iconPath);
+    
     this.mainWindow = new BrowserWindow({
       width: 1400,
       height: 900,
@@ -45,19 +65,35 @@ class TovaIDE {
       },
       show: false,
       titleBarStyle: 'default',
-      icon: path.join(__dirname, '../assets/icon.png'),
+      ...(iconExists && { icon: iconPath }),
     });
+
+    log('ℹ️', 'isDev:', this.isDev);
 
     // Load the app
     if (this.isDev) {
+      log('🔗', 'Loading from localhost:3000');
       this.mainWindow.loadURL('http://localhost:3000');
       this.mainWindow.webContents.openDevTools();
     } else {
-      this.mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+      const filePath = path.join(__dirname, '../renderer/index.html');
+      log('📄', 'Loading from file:', filePath);
+      this.mainWindow.loadFile(filePath);
     }
+
+    // Capture renderer console messages
+    this.mainWindow.webContents.on('console-message', (level, message, line, sourceId) => {
+      log('🎨 RENDERER', `[${line}:${sourceId}]`, message);
+    });
+
+    // Capture renderer errors
+    this.mainWindow.webContents.on('crashed', () => {
+      log('💥', 'Renderer process crashed!');
+    });
 
     // Show window when ready
     this.mainWindow.once('ready-to-show', () => {
+      log('✨', 'Window ready to show');
       this.mainWindow?.show();
     });
 
@@ -66,6 +102,7 @@ class TovaIDE {
   }
 
   private createMenu(): void {
+    log('📋', 'Creating menu...');
     const template: Electron.MenuItemConstructorOptions[] = [
       {
         label: 'ファイル',
@@ -204,26 +241,33 @@ class TovaIDE {
   }
 
   private setupIpcHandlers(): void {
+    log('🔌', 'Setting up IPC handlers...');
+    
     // Settings management
     ipcMain.handle('store:get', (_, key: string) => {
+      log('📖', 'store:get', key);
       return store.get(key);
     });
 
     ipcMain.handle('store:set', (_, key: string, value: any) => {
+      log('💾', 'store:set', key, value);
       store.set(key, value);
     });
 
     // File operations
     ipcMain.handle('fs:exists', (_, filePath: string) => {
+      log('🔍', 'fs:exists', filePath);
       return existsSync(filePath);
     });
 
     ipcMain.handle('fs:readFile', async (_, filePath: string) => {
+      log('📄', 'fs:readFile', filePath);
       const { readFile } = await import('fs/promises');
       return await readFile(filePath, 'utf-8');
     });
 
     ipcMain.handle('fs:writeFile', async (_, filePath: string, content: string) => {
+      log('✍️', 'fs:writeFile', filePath);
       const { writeFile } = await import('fs/promises');
       await writeFile(filePath, content, 'utf-8');
     });

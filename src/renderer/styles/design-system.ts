@@ -57,12 +57,11 @@ export const colors = {
     dark: '#2563eb',
   },
   
-  // Background Colors - ほぼ白のグラデーション許可
+  // Background Colors - Solid colors only for better readability
   background: {
     primary: '#ffffff',
     secondary: '#fafafa',
     tertiary: '#f5f5f5',
-    gradient: 'linear-gradient(135deg, #ffffff 0%, #fafafa 100%)',
     hover: '#f9fafb',
     active: '#f3f4f6',
   },
@@ -343,10 +342,6 @@ export const hexToRgba = (hex: string, alpha: number): string => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
-export const createGradient = (color1: string, color2: string, angle: number = 135): string => {
-  return `linear-gradient(${angle}deg, ${color1} 0%, ${color2} 100%)`;
-};
-
 export default {
   colors,
   typography,
@@ -358,5 +353,4 @@ export default {
   components,
   layout,
   hexToRgba,
-  createGradient,
 };

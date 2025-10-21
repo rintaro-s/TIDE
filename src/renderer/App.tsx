@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MainWorkspace from './components/MainWorkspace/MainWorkspace';
 import ToastNotification from './components/ToastContainer/ToastNotification';
+import ErrorBoundary from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AppProvider, useApp } from './contexts/AppContext';
 import './styles/App.css';
@@ -13,10 +14,13 @@ const AppContent: React.FC = () => {
   const { setMode, setCurrentProject } = useApp();
 
   useEffect(() => {
+    console.log('ℹ️ AppContent mounted');
+    
     // Setup menu action listener
     if (window.electronAPI) {
+      console.log('✅ electronAPI available');
       window.electronAPI.onMenuAction(async (action: string, data?: any) => {
-        console.log('Menu action:', action, data);
+        console.log('📝 Menu action:', action, data);
         
         switch (action) {
           case 'open-folder':
@@ -34,8 +38,12 @@ const AppContent: React.FC = () => {
             break;
         }
       });
+    } else {
+      console.warn('⚠️ electronAPI not available');
     }
   }, [setCurrentProject]);
+
+  console.log('🎨 Rendering AppContent');
 
   return (
     <div className="app">
@@ -46,12 +54,15 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => {
+  console.log('🎯 App component rendering');
   return (
-    <ThemeProvider>
-      <AppProvider>
-        <AppContent />
-      </AppProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AppProvider>
+          <AppContent />
+        </AppProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 };
 

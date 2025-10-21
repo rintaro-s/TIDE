@@ -22,9 +22,8 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
   const { state, setCurrentProject, setMode } = useApp();
   const [projectName, setProjectName] = useState('');
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
-  const [selectedBoard, setSelectedBoard] = useState<string>('');
   const [projectPath, setProjectPath] = useState('');
-  const [availableBoards, setAvailableBoards] = useState<any[]>([]);
+  const [recentLocations, setRecentLocations] = useState<string[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [recentProjects, setRecentProjects] = useState<any[]>([]);
   const [progressMessage, setProgressMessage] = useState('');
@@ -64,17 +63,30 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
 
   useEffect(() => {
     loadRecentProjects();
-    
-    if (selectedTemplate) {
-      const template = projectTemplates.find(t => t.id === selectedTemplate);
-      if (template) {
-        loadBoards(template.type);
-        if (template.board) {
-          setSelectedBoard(template.board);
-        }
+    loadRecentLocations();
+  }, []);
+
+  const loadRecentLocations = async () => {
+    try {
+      const locations = await window.electronAPI?.store.get('recentProjectLocations');
+      if (locations && Array.isArray(locations)) {
+        setRecentLocations(locations.slice(0, 5));
       }
+    } catch (error) {
+      console.error('Failed to load recent locations:', error);
     }
-  }, [selectedTemplate]);
+  };
+
+  const saveRecentLocation = async (location: string) => {
+    try {
+      const locations = await window.electronAPI?.store.get('recentProjectLocations') || [];
+      const updated = [location, ...locations.filter((l: string) => l !== location)].slice(0, 10);
+      await window.electronAPI?.store.set('recentProjectLocations', updated);
+      setRecentLocations(updated.slice(0, 5));
+    } catch (error) {
+      console.error('Failed to save recent location:', error);
+    }
+  };
 
   const loadRecentProjects = async () => {
     try {
@@ -91,51 +103,9 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
   };
 
   const loadBoards = async (projectType: 'arduino' | 'platformio') => {
-    try {
-      logger.info(`${projectType === 'arduino' ? 'Arduino' : 'PlatformIO'}のボード一覧を取得中...`);
-      setProgressMessage('ボード一覧を取得中...');
-      setProgressDetails(`${projectType === 'arduino' ? 'Arduino CLI' : 'PlatformIO'} を使用してボード情報を取得しています`);
-      setProgressPercent(undefined);
-      
-      let boards: any[] = [];
-      
-      if (projectType === 'arduino') {
-        const installed = await arduinoService.checkInstallation();
-        if (installed) {
-          boards = await arduinoService.listBoards();
-        } else {
-          toast.warning('Arduino CLI がインストールされていません', 'ボード一覧を取得できませんでした');
-        }
-      } else {
-        const installed = await platformioService.checkInstallation();
-        if (installed) {
-          boards = await platformioService.listAllBoards();
-        } else {
-          toast.warning('PlatformIO がインストールされていません', 'ボード一覧を取得できませんでした');
-        }
-      }
-      
-      setAvailableBoards(boards);
-      
-      if (boards.length > 0) {
-        logger.success(`${boards.length}個のボードを検出しました`);
-        toast.success(`${boards.length}個のボードが利用可能です`);
-        if (!selectedBoard) {
-          const boardId = 'id' in boards[0] ? boards[0].id : boards[0].fqbn;
-          setSelectedBoard(boardId);
-        }
-      } else {
-        logger.warning('利用可能なボードが見つかりませんでした');
-        toast.warning('ボードが見つかりません', 'ボードをインストールしてください');
-      }
-      
-      setProgressMessage('');
-    } catch (error) {
-      logger.error('ボード一覧の取得に失敗しました', { error });
-      toast.error('ボード一覧の取得に失敗', String(error));
-      setProgressMessage('');
-      console.error('Failed to load boards:', error);
-    }
+    // Boards will be configured later in UploadSettingsPanel
+    // No need to select board during project creation
+    logger.info(`${projectType === 'arduino' ? 'Arduino' : 'PlatformIO'}プロジェクトを作成準備中...`);
   };
 
   const handleSelectPath = async () => {
@@ -197,15 +167,14 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
   };
 
   const handleCreateProject = async () => {
-    if (!projectName || !selectedTemplate || !projectPath || !selectedBoard) {
-      toast.warning('すべての項目を入力してください', '必須項目が未入力です');
+    if (!projectName || !selectedTemplate || !projectPath) {
+      toast.warning('すべての項目を入力してください', 'プロジェクト名とテンプレート、保存先を指定してください');
       return;
     }
 
     setIsCreating(true);
     logger.info(`プロジェクト "${projectName}" を作成中...`, {
       template: selectedTemplate,
-      board: selectedBoard,
       path: projectPath
     });
 
@@ -217,9 +186,12 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
 
       const fullProjectPath = `${projectPath}/${projectName}`;
       
+      // Save recent location
+      await saveRecentLocation(projectPath);
+      
       // プログレス表示開始
       setProgressMessage(`プロジェクト "${projectName}" を作成中...`);
-      setProgressDetails(`テンプレート: ${template.name}\nボード: ${selectedBoard}\n保存先: ${fullProjectPath}`);
+      setProgressDetails(`テンプレート: ${template.name}\n保存先: ${fullProjectPath}`);
       setProgressPercent(0);
 
       logger.debug(`プロジェクトパス: ${fullProjectPath}`);
@@ -227,21 +199,19 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
 
       let success = false;
       
+      // Default board for templates
+      const defaultBoard = template.board || 'arduino:avr:uno';
+      
       if (template.type === 'arduino') {
         setProgressPercent(25);
         setProgressDetails('Arduino プロジェクトを初期化中...');
-        logger.info('Arduino プロジェクトを作成中...', { board: selectedBoard });
-        success = await arduinoService.createProject(projectName, fullProjectPath, selectedBoard);
+        logger.info('Arduino プロジェクトを作成中...');
+        success = await arduinoService.createProject(projectName, fullProjectPath, defaultBoard);
       } else {
         setProgressPercent(25);
         setProgressDetails('PlatformIO プロジェクトを初期化中...');
-        logger.info('PlatformIO プロジェクトを作成中...', { board: selectedBoard });
-        logger.debug('selectedBoard value and type', { 
-          value: selectedBoard, 
-          type: typeof selectedBoard,
-          stringValue: String(selectedBoard)
-        });
-        success = await platformioService.initProject(fullProjectPath, selectedBoard);
+        logger.info('PlatformIO プロジェクトを作成中...');
+        success = await platformioService.initProject(fullProjectPath, defaultBoard);
       }
 
       if (success) {
@@ -266,7 +236,6 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
         // Reset form
         setProjectName('');
         setSelectedTemplate('');
-        setSelectedBoard('');
         setProjectPath('');
         
         setProgressPercent(100);
@@ -279,7 +248,6 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
         error,
         projectName,
         template: selectedTemplate,
-        board: selectedBoard,
         path: projectPath
       });
       toast.error('プロジェクトの作成に失敗', String(error));
@@ -417,29 +385,6 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
           </select>
         </div>
 
-        {selectedTemplate && availableBoards.length > 0 && (
-          <div className="form-section">
-            <label htmlFor="board-select">Target Board</label>
-            <select
-              id="board-select"
-              value={selectedBoard}
-              onChange={(e) => setSelectedBoard(e.target.value)}
-              className="form-select"
-            >
-              <option value="">Select a board...</option>
-              {availableBoards.map(board => {
-                const boardId = 'id' in board ? board.id : board.fqbn;
-                const platform = 'platform' in board ? board.platform : board.core;
-                return (
-                  <option key={boardId} value={boardId}>
-                    {board.name} ({platform})
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        )}
-
         <div className="form-section">
           <label>Project Location</label>
           <div className="path-selector">
@@ -458,12 +403,29 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
               📁 Browse
             </button>
           </div>
+          {recentLocations.length > 0 && (
+            <div className="recent-locations">
+              <label>Recent Locations:</label>
+              <select
+                onChange={(e) => setProjectPath(e.target.value)}
+                value=""
+                className="form-select location-select"
+              >
+                <option value="">Select recent location...</option>
+                {recentLocations.map((location, index) => (
+                  <option key={index} value={location}>
+                    {location}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
         <div className="form-actions">
           <button
             onClick={handleCreateProject}
-            disabled={!projectName || !selectedTemplate || !projectPath || !selectedBoard || isCreating}
+            disabled={!projectName || !selectedTemplate || !projectPath || isCreating}
             className="create-btn"
           >
             {isCreating ? 'Creating...' : '✨ Create Project'}

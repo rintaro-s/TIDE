@@ -1,23 +1,23 @@
 /* Liquid Glass Theme - Glassmorphism with frosted glass effects */
 
 :root[data-theme="liquid-glass"] {
-  /* Base Colors - Translucent with blur */
-  --bg-primary: rgba(255, 255, 255, 0.05);
-  --bg-secondary: rgba(255, 255, 255, 0.08);
-  --bg-tertiary: rgba(255, 255, 255, 0.12);
-  --bg-hover: rgba(255, 255, 255, 0.15);
-  --bg-active: rgba(255, 255, 255, 0.2);
+  /* Base Colors - More opaque for better readability */
+  --bg-primary: rgba(18, 24, 38, 0.85);
+  --bg-secondary: rgba(30, 41, 59, 0.9);
+  --bg-tertiary: rgba(51, 65, 85, 0.9);
+  --bg-hover: rgba(71, 85, 105, 0.8);
+  --bg-active: rgba(100, 116, 139, 0.8);
   
-  /* Glass Effects */
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  --glass-backdrop: blur(12px) saturate(180%);
+  /* Glass Effects - Reduced blur for better readability */
+  --glass-bg: rgba(30, 41, 59, 0.85);
+  --glass-border: rgba(148, 163, 184, 0.3);
+  --glass-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.25);
+  --glass-backdrop: blur(6px) saturate(150%);
   
-  /* Text Colors */
-  --text-primary: rgba(255, 255, 255, 0.95);
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted: rgba(255, 255, 255, 0.5);
+  /* Text Colors - Higher contrast */
+  --text-primary: rgba(248, 250, 252, 1);
+  --text-secondary: rgba(226, 232, 240, 0.9);
+  --text-muted: rgba(148, 163, 184, 0.8);
   
   /* Accent Colors - Vibrant with glow */
   --accent-primary: rgba(99, 179, 237, 0.9);

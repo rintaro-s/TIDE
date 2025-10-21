@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import FileExplorer from '../FileExplorer/FileExplorer';
 import SearchPanel from '../SearchPanel/SearchPanel';
 import BuildManager from '../BuildManager/BuildManager';
+import QuickBuildPanel from '../QuickBuildPanel/QuickBuildPanel';
 import SettingsPanel from '../SettingsPanel/SettingsPanel';
 import GitPanel from '../GitPanel/GitPanel';
 import BoardLibraryManager from '../BoardLibraryManager/BoardLibraryManager';
 import UploadSettingsPanel from '../UploadSettingsPanel/UploadSettingsPanel';
+import CopilotPanel from '../CopilotPanel/CopilotPanel';
 import './Sidebar.css';
 
 interface SidebarTab {
@@ -25,11 +27,15 @@ const Sidebar: React.FC<SidebarProps> = ({ width }) => {
   const [activeTab, setActiveTab] = useState<string>('explorer');
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  console.log('📍 Sidebar rendered', { activeTab, isCollapsed });
+
   const tabs: SidebarTab[] = [
     { id: 'explorer', name: 'Explorer', icon: 'F', component: FileExplorer },
     { id: 'search', name: 'Search', icon: 'S', component: SearchPanel },
+    { id: 'copilot', name: 'AI Copilot', icon: '🤖', component: CopilotPanel },
     { id: 'git', name: 'Git', icon: 'G', component: GitPanel },
-    { id: 'build', name: 'Build', icon: 'B', component: BuildManager },
+    { id: 'quickbuild', name: 'Quick Build', icon: '⚡', component: QuickBuildPanel, props: { isExpanded: true } },
+    { id: 'build', name: 'Build Manager', icon: 'B', component: BuildManager },
     { id: 'boards', name: 'Boards', icon: 'H', component: BoardLibraryManager, props: { type: 'board' } },
     { id: 'libraries', name: 'Libraries', icon: 'L', component: BoardLibraryManager, props: { type: 'library' } },
     { id: 'upload', name: 'Upload', icon: 'U', component: UploadSettingsPanel },
@@ -82,6 +88,11 @@ const Sidebar: React.FC<SidebarProps> = ({ width }) => {
           <div className="sidebar-panel-content">
             {ActiveComponent && <ActiveComponent {...(activeTabData?.props || {})} />}
           </div>
+          
+          {/* Quick Build Panel - Always visible at bottom when expanded */}
+          {activeTab !== 'quickbuild' && (
+            <QuickBuildPanel isExpanded={false} />
+          )}
           
           <div className="sidebar-resize-handle"></div>
         </div>

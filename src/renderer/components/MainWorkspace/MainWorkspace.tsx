@@ -15,11 +15,16 @@ const MainWorkspace: React.FC = () => {
   const [isBottomPanelVisible, setIsBottomPanelVisible] = useState(true);
   const [showProjectManager, setShowProjectManager] = useState(!currentProject);
 
+  console.log('🏢 MainWorkspace rendering', { mode, currentProject, showProjectManager });
+
   useEffect(() => {
+    console.log('📊 MainWorkspace useEffect:', { currentProject, showProjectManager });
     // プロジェクトが開かれたらProjectManagerを閉じる
     if (currentProject) {
+      console.log('📂 Project opened:', currentProject);
       setShowProjectManager(false);
     } else {
+      console.log('📂 No project selected');
       // プロジェクトがない場合は表示
       setShowProjectManager(true);
     }

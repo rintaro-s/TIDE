@@ -42,21 +42,33 @@ const fs_1 = require("fs");
 const electron_store_1 = __importDefault(require("electron-store"));
 // Store for persistent settings
 const store = new electron_store_1.default();
+// Logger setup
+const log = (prefix, ...args) => {
+    console.log(`[Electron Main] ${prefix}`, ...args);
+};
+log('🚀', 'Electron main process starting...');
 class TovaIDE {
     constructor() {
         this.mainWindow = null;
+        // isDev は webpack.config.js と同様に environment 変数で判定
         this.isDev = process.env.NODE_ENV === 'development';
         this.init();
     }
     init() {
+        log('ℹ️', 'Initializing Tova IDE...');
         // App event handlers
-        electron_1.app.whenReady().then(() => this.createMainWindow());
+        electron_1.app.whenReady().then(() => {
+            log('✅', 'App ready');
+            this.createMainWindow();
+        });
         electron_1.app.on('window-all-closed', () => {
+            log('👋', 'All windows closed');
             if (process.platform !== 'darwin') {
                 electron_1.app.quit();
             }
         });
         electron_1.app.on('activate', () => {
+            log('🔄', 'App activated');
             if (electron_1.BrowserWindow.getAllWindows().length === 0) {
                 this.createMainWindow();
             }
@@ -65,6 +77,10 @@ class TovaIDE {
         this.setupIpcHandlers();
     }
     createMainWindow() {
+        log('🪟', 'Creating main window...');
+        // Check if icon exists
+        const iconPath = path.join(__dirname, '../assets/icon.png');
+        const iconExists = (0, fs_1.existsSync)(iconPath);
         this.mainWindow = new electron_1.BrowserWindow({
             width: 1400,
             height: 900,
@@ -77,24 +93,38 @@ class TovaIDE {
             },
             show: false,
             titleBarStyle: 'default',
-            icon: path.join(__dirname, '../assets/icon.png'),
+            ...(iconExists && { icon: iconPath }),
         });
+        log('ℹ️', 'isDev:', this.isDev);
         // Load the app
         if (this.isDev) {
+            log('🔗', 'Loading from localhost:3000');
             this.mainWindow.loadURL('http://localhost:3000');
             this.mainWindow.webContents.openDevTools();
         }
         else {
-            this.mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+            const filePath = path.join(__dirname, '../renderer/index.html');
+            log('📄', 'Loading from file:', filePath);
+            this.mainWindow.loadFile(filePath);
         }
+        // Capture renderer console messages
+        this.mainWindow.webContents.on('console-message', (level, message, line, sourceId) => {
+            log('🎨 RENDERER', `[${line}:${sourceId}]`, message);
+        });
+        // Capture renderer errors
+        this.mainWindow.webContents.on('crashed', () => {
+            log('💥', 'Renderer process crashed!');
+        });
         // Show window when ready
         this.mainWindow.once('ready-to-show', () => {
+            log('✨', 'Window ready to show');
             this.mainWindow?.show();
         });
         // Create menu
         this.createMenu();
     }
     createMenu() {
+        log('📋', 'Creating menu...');
         const template = [
             {
                 label: 'ファイル',
@@ -231,22 +261,28 @@ class TovaIDE {
         electron_1.Menu.setApplicationMenu(menu);
     }
     setupIpcHandlers() {
+        log('🔌', 'Setting up IPC handlers...');
         // Settings management
         electron_1.ipcMain.handle('store:get', (_, key) => {
+            log('📖', 'store:get', key);
             return store.get(key);
         });
         electron_1.ipcMain.handle('store:set', (_, key, value) => {
+            log('💾', 'store:set', key, value);
             store.set(key, value);
         });
         // File operations
         electron_1.ipcMain.handle('fs:exists', (_, filePath) => {
+            log('🔍', 'fs:exists', filePath);
             return (0, fs_1.existsSync)(filePath);
         });
         electron_1.ipcMain.handle('fs:readFile', async (_, filePath) => {
+            log('📄', 'fs:readFile', filePath);
             const { readFile } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
             return await readFile(filePath, 'utf-8');
         });
         electron_1.ipcMain.handle('fs:writeFile', async (_, filePath, content) => {
+            log('✍️', 'fs:writeFile', filePath);
             const { writeFile } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
             await writeFile(filePath, content, 'utf-8');
         });

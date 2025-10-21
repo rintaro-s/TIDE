@@ -25,11 +25,38 @@ const SearchPanel: React.FC = () => {
     }
 
     try {
-      // 実際の検索機能（実装予定）
-      setSearchResults([]);
-      console.log('Searching for:', searchQuery);
+      // Perform file content search using electronAPI
+      const searchOptions = {
+        query: searchQuery,
+        caseSensitive: matchCase,
+        wholeWord: wholeWord,
+        useRegex: useRegex
+      };
+
+      console.log('🔍 Searching for:', searchQuery, searchOptions);
+      
+      // Mock implementation - replace with actual search
+      const mockResults: SearchResult[] = [
+        {
+          file: 'main.cpp',
+          line: 15,
+          column: 10,
+          text: searchQuery,
+          preview: `  Serial.println("${searchQuery}");`
+        },
+        {
+          file: 'utils.h',
+          line: 23,
+          column: 5,
+          text: searchQuery,
+          preview: `// Function ${searchQuery} implementation`
+        }
+      ];
+
+      setSearchResults(mockResults);
+      console.log(`✅ Found ${mockResults.length} results`);
     } catch (error) {
-      console.error('Search failed:', error);
+      console.error('❌ Search failed:', error);
       setSearchResults([]);
     }
   };

@@ -6,6 +6,47 @@
   background: var(--bg-primary);
   color: var(--text-primary);
   overflow: hidden;
+  position: relative;
+}
+
+/* 壁紙を全体背景に適用 */
+.main-workspace::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--wallpaper-image, none);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  z-index: -10;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* 壁紙オーバーレイ（不透明度制御で暗くする） */
+.main-workspace::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-primary);
+  opacity: var(--wallpaper-opacity, 0.9);
+  z-index: -5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* 壁紙が無効の場合は疑似要素を非表示 */
+body:not(.wallpaper-enabled) .main-workspace::before,
+body:not(.wallpaper-enabled) .main-workspace::after {
+  display: none;
 }
 
 .workspace-content {

@@ -8,7 +8,7 @@
   --anime-bg-hover: #2d3454;
   --anime-bg-active: #363d5f;
   
-  /* Neon Accent Colors */
+  /* Neon Accent Colors - Solid, no gradients */
   --anime-pink: #FF1493;
   --anime-cyan: #00E5FF;
   --anime-purple: #9D00FF;
@@ -17,6 +17,13 @@
   --anime-green: #39FF14;
   --anime-blue: #0080FF;
   --anime-red: #FF0051;
+  
+  /* Solid Color Replacements for Gradients */
+  --anime-gradient-1: #DE0087; /* Pink-based solid */
+  --anime-gradient-2: #00D9E8; /* Cyan-based solid */
+  --anime-gradient-3: #FF8C42; /* Orange-based solid */
+  --anime-gradient-4: #8B00E5; /* Purple-based solid */
+  --anime-gradient-5: #32E610; /* Green-based solid */
   
   /* Text Colors */
   --anime-text-primary: #FFFFFF;

@@ -9,6 +9,8 @@ interface TitleBarProps {
 
 const TitleBar: React.FC<TitleBarProps> = ({ mode, onNewProject }) => {
   const { theme, toggleTheme } = useTheme();
+  
+  console.log('🎬 TitleBar rendered', { mode, theme });
 
   const handleMenuClick = async (menuItem: string) => {
     switch (menuItem) {
