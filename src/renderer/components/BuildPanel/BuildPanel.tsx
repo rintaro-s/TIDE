@@ -319,13 +319,13 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
   return (
     <div className="build-panel">
       <div className="panel-header">
-        <h3>⚡ ビルド・書き込み</h3>
-        <div className="panel-mode">{state.mode === 'arduino' ? '🔶 Arduino' : state.mode === 'platformio' ? '🔷 PlatformIO' : '設定なし'}</div>
+        <h3>ビルド・書き込み</h3>
+        <div className="panel-mode">{state.mode === 'arduino' ? 'Arduino' : state.mode === 'platformio' ? 'PlatformIO' : '設定なし'}</div>
       </div>
       
       <div className="config-section">
         <div className="config-row">
-          <label>📟 マイコンボード</label>
+          <label>マイコンボード</label>
           <div className="config-controls">
             <select 
               value={selectedBoard} 
@@ -351,7 +351,7 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
               className="btn-refresh"
               title="ボード一覧を更新"
             >
-              {isLoadingBoards ? '読込中...' : '🔄 更新'}
+              {isLoadingBoards ? '読込中...' : '更新'}
             </button>
           </div>
           {boards.length > 0 && (
@@ -360,7 +360,7 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
         </div>
 
         <div className="config-row">
-          <label>🔌 接続ポート</label>
+          <label>接続ポート</label>
           <div className="config-controls">
             <select 
               value={selectedPort} 
@@ -386,7 +386,7 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
               className="btn-refresh"
               title="ポート一覧を更新"
             >
-              {isLoadingPorts ? '読込中...' : '🔄 更新'}
+              {isLoadingPorts ? '読込中...' : '更新'}
             </button>
           </div>
           {ports.length > 0 && (
@@ -402,7 +402,7 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
           className="btn-action btn-compile"
           title="プログラムをビルド（コンパイル）して実行ファイルを生成"
         >
-          {isBuilding ? '⏳ ビルド中...' : '🔨 ビルドのみ'}
+          {isBuilding ? 'ビルド中...' : 'ビルドのみ'}
         </button>
         <button 
           onClick={handleCompileAndUpload} 
@@ -410,7 +410,7 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
           className="btn-action btn-both"
           title="ビルドしてマイコンに書き込む（最もよく使います）"
         >
-          {isBuilding ? '⏳ 処理中...' : '⚡ ビルド＆書き込み'}
+          {isBuilding ? '処理中...' : 'ビルド＆書き込み'}
         </button>
         <button 
           onClick={handleUpload} 
@@ -418,15 +418,15 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
           className="btn-action btn-upload"
           title="前回ビルドしたファイルを書き込む（高速）"
         >
-          {isBuilding ? '⏳ 書き込み中...' : '📤 書き込みのみ'}
+          {isBuilding ? '書き込み中...' : '書き込みのみ'}
         </button>
       </div>
 
       {buildCache && buildCache.board === selectedBoard && (
         <div className="cache-status">
-          <span>✅ 前回のビルド結果を保存中（書き込みのみボタンで使用）</span>
+          <span>前回のビルド結果を保存中（書き込みのみボタンで使用）</span>
           <button onClick={handleClearCache} className="btn-clear-cache" title="キャッシュを削除">
-            🗑️ 削除
+            削除
           </button>
         </div>
       )}

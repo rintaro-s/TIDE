@@ -1,418 +1,242 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../contexts/AppContext';
-import { logger, toast } from '../../utils/logger';
-import ArduinoService from '../../services/ArduinoService';
-import PlatformIOService from '../../services/PlatformIOService';
 import './UploadSettingsPanel.css';
 
-interface ArduinoSettings {
-  board: string;
-  port: string;
-  programmer: string;
-  baudrate: number;
-  verifyAfterUpload: boolean;
+interface PlatformIOEnvironment {
+  name: string;
+  platform?: string;
+  board?: string;
+  framework?: string;
+  upload_port?: string;
 }
 
-interface PlatformIOSettings {
-  environment: string;
-  port: string;
-  uploadProtocol: string;
-  uploadSpeed: number;
-  uploadFlags: string[];
-}
-
-const UploadSettingsPanel: React.FC = () => {
-  const { state, settings, updateSettings } = useApp();
-  const [boards, setBoards] = useState<any[]>([]);
+export const UploadSettingsPanel: React.FC = () => {
+  const { state, setState } = useApp();
+  const [environments, setEnvironments] = useState<PlatformIOEnvironment[]>([]);
   const [ports, setPorts] = useState<string[]>([]);
-  const [environments, setEnvironments] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [selectedEnvironment, setSelectedEnvironment] = useState('');
+  const [selectedPort, setSelectedPort] = useState('');
+  const [selectedBoard, setSelectedBoard] = useState('');
+  const [arduinoBoards, setArduinoBoards] = useState<Array<{ fqbn: string; name: string }>>([]);
 
-  const arduinoService = ArduinoService;
-  const platformioService = PlatformIOService;
+  const isPlatformIO = state.currentProject?.type === 'platformio';
 
-  const [arduinoSettings, setArduinoSettings] = useState<ArduinoSettings>({
-    board: settings.arduino?.board || '',
-    port: settings.arduino?.port || '',
-    programmer: settings.arduino?.programmer || 'arduino',
-    baudrate: settings.arduino?.baudrate || 115200,
-    verifyAfterUpload: settings.arduino?.verifyAfterUpload !== false
-  });
-
-  const [pioSettings, setPioSettings] = useState<PlatformIOSettings>({
-    environment: settings.platformio?.environment || 'default',
-    port: settings.platformio?.port || '',
-    uploadProtocol: settings.platformio?.uploadProtocol || 'serial',
-    uploadSpeed: settings.platformio?.uploadSpeed || 921600,
-    uploadFlags: settings.platformio?.uploadFlags || []
-  });
-
+  // Load PlatformIO environments from platformio.ini
   useEffect(() => {
-    loadSettings();
-  }, [state.mode]);
+    if (isPlatformIO && state.currentProject) {
+      loadPlatformIOEnvironments();
+    }
+  }, [isPlatformIO, state.currentProject]);
 
-  const loadSettings = async () => {
-    setLoading(true);
+  // Load Arduino CLI boards
+  useEffect(() => {
+    if (!isPlatformIO) {
+      loadArduinoBoards();
+    }
+  }, [isPlatformIO]);
+
+  // Load ports
+  useEffect(() => {
+    loadPorts();
+  }, [isPlatformIO]);
+
+  const loadPlatformIOEnvironments = async () => {
+    if (!state.currentProject) return;
+    
     try {
-      if (state.mode === 'arduino') {
-        // Load Arduino boards
-        const boardList = await arduinoService.listBoards();
-        setBoards(boardList);
+      const iniPath = `${state.currentProject.path}/platformio.ini`;
+      const content = await window.electronAPI.fs.readFile(iniPath);
+      
+      const envs: PlatformIOEnvironment[] = [];
+      const lines = content.split('\n');
+      let currentEnv: PlatformIOEnvironment | null = null;
 
-        // Load serial ports
-        const portList = await loadSerialPorts();
-        setPorts(portList);
-      } else if (state.mode === 'platformio') {
-        // Load PlatformIO boards
-        const boardList = await platformioService.listAllBoards();
-        setBoards(boardList);
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('[env:')) {
+          if (currentEnv) envs.push(currentEnv);
+          const name = trimmed.substring(5, trimmed.length - 1);
+          currentEnv = { name };
+        } else if (currentEnv && trimmed.includes('=')) {
+          const [key, value] = trimmed.split('=').map(s => s.trim());
+          if (key === 'platform') currentEnv.platform = value;
+          else if (key === 'board') currentEnv.board = value;
+          else if (key === 'framework') currentEnv.framework = value;
+          else if (key === 'upload_port') currentEnv.upload_port = value;
+        }
+      }
+      if (currentEnv) envs.push(currentEnv);
 
-        // Load serial ports
-        const portList = await loadSerialPorts();
-        setPorts(portList);
+      setEnvironments(envs);
+      if (envs.length > 0 && !selectedEnvironment) {
+        setSelectedEnvironment(envs[0].name);
+      }
+    } catch (error) {
+      console.error('[UploadSettings] Failed to load platformio.ini:', error);
+    }
+  };
 
-        // Load environments from platformio.ini
-        if (state.currentProject?.path) {
-          const envList = await loadPlatformIOEnvironments(state.currentProject.path);
-          setEnvironments(envList);
+  const loadArduinoBoards = async () => {
+    try {
+      const result = await window.electronAPI.executeCommand('arduino-cli board listall --format json');
+      if (result.success && result.output) {
+        const data = JSON.parse(result.output);
+        if (data.boards) {
+          setArduinoBoards(data.boards);
         }
       }
     } catch (error) {
-      logger.error('Failed to load upload settings', { error });
-      toast.error('設定の読み込みに失敗', String(error));
-    } finally {
-      setLoading(false);
+      console.error('[UploadSettings] Failed to load Arduino boards:', error);
     }
   };
 
-  const loadSerialPorts = async (): Promise<string[]> => {
+  const loadPorts = async () => {
     try {
-      if (state.mode === 'arduino') {
-        const ports = await arduinoService.listPorts();
-        return ports.map((p: any) => p.port);
-      } else {
-        const devices = await platformioService.listDevices();
-        return devices.map((d: any) => d.port);
+      const command = isPlatformIO 
+        ? 'pio device list --json-output'
+        : 'arduino-cli board list --format json';
+      
+      const result = await window.electronAPI.executeCommand(command);
+      if (result.success && result.output) {
+        const data = JSON.parse(result.output);
+        
+        let portList: string[] = [];
+        if (isPlatformIO) {
+          portList = data.map((p: any) => p.port);
+        } else {
+          portList = data.detected_ports?.map((p: any) => p.port?.address) || [];
+        }
+        
+        setPorts(portList);
+        if (portList.length > 0 && !selectedPort) {
+          setSelectedPort(portList[0]);
+        }
       }
     } catch (error) {
-      logger.error('Failed to load serial ports', { error });
-      return [];
+      console.error('[UploadSettings] Failed to load ports:', error);
     }
   };
 
-  const loadPlatformIOEnvironments = async (projectPath: string): Promise<string[]> => {
-    try {
-      const iniPath = `${projectPath}/platformio.ini`;
-      const content = await window.electronAPI.fs.readFile(iniPath);
-      const lines = content.split('\n');
-      const envs: string[] = [];
-
-      lines.forEach(line => {
-        const match = line.match(/\[env:(\w+)\]/);
-        if (match) {
-          envs.push(match[1]);
+  const handleSave = () => {
+    if (isPlatformIO) {
+      window.electronAPI.store.set('appSettings', {
+        ...state.settings,
+        platformio: {
+          ...state.settings.platformio,
+          environment: selectedEnvironment,
+          port: selectedPort
         }
       });
-
-      return envs;
-    } catch (error) {
-      logger.error('Failed to load platformio.ini', { error });
-      return ['default'];
-    }
-  };
-
-  const handleArduinoSettingChange = (key: keyof ArduinoSettings, value: any) => {
-    const newSettings = { ...arduinoSettings, [key]: value };
-    setArduinoSettings(newSettings);
-    updateSettings('arduino', key, value);
-  };
-
-  const handlePioSettingChange = (key: keyof PlatformIOSettings, value: any) => {
-    const newSettings = { ...pioSettings, [key]: value };
-    setPioSettings(newSettings);
-    updateSettings('platformio', key, value);
-  };
-
-  const handleSaveSettings = async () => {
-    try {
-      if (state.mode === 'arduino') {
-        await window.electronAPI.store.set('arduino', arduinoSettings);
-        logger.success('Arduino settings saved');
-        toast.success('Arduino設定を保存しました');
-      } else {
-        await window.electronAPI.store.set('platformio', pioSettings);
-        logger.success('PlatformIO settings saved');
-        toast.success('PlatformIO設定を保存しました');
-      }
-    } catch (error) {
-      logger.error('Failed to save settings', { error });
-      toast.error('設定の保存に失敗', String(error));
-    }
-  };
-
-  const handleTestUpload = async () => {
-    if (!state.currentProject?.path) {
-      toast.warning('プロジェクトが開かれていません');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      if (state.mode === 'arduino') {
-        if (!arduinoSettings.board || !arduinoSettings.port) {
-          toast.warning('ボードとポートを選択してください');
-          return;
+    } else {
+      window.electronAPI.store.set('appSettings', {
+        ...state.settings,
+        arduino: {
+          ...state.settings.arduino,
+          board: selectedBoard,
+          port: selectedPort
         }
-
-        toast.info('アップロードをテスト中...', 'コンパイルとアップロードを実行します');
-        const result = await arduinoService.compile(
-          state.currentProject.path,
-          arduinoSettings.board
-        );
-
-        if (result.success) {
-          toast.success('アップロードテスト成功', '設定は正しく動作します');
-        } else {
-          toast.error('アップロードテスト失敗', result.errors.join('\n'));
-        }
-      } else {
-        if (!pioSettings.port) {
-          toast.warning('ポートを選択してください');
-          return;
-        }
-
-        toast.info('アップロードをテスト中...', 'ビルドとアップロードを実行します');
-        const result = await platformioService.buildAndUpload(
-          state.currentProject.path,
-          pioSettings.port
-        );
-
-        if (result.success) {
-          toast.success('アップロードテスト成功', '設定は正しく動作します');
-        } else {
-          toast.error('アップロードテスト失敗', result.errors.join('\n'));
-        }
-      }
-    } catch (error) {
-      logger.error('Upload test failed', { error });
-      toast.error('テストに失敗', String(error));
-    } finally {
-      setLoading(false);
+      });
     }
+    
+    window.location.reload();
   };
-
-  if (loading && boards.length === 0) {
-    return (
-      <div className="upload-settings-panel">
-        <div className="loading-state">
-          <div className="spinner"></div>
-          <p>設定を読み込み中...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="upload-settings-panel">
-      <div className="panel-header">
-        <h3>⚡ アップロード設定</h3>
-        <button onClick={loadSettings} className="refresh-btn" disabled={loading}>
-          🔄
-        </button>
+      <div className="upload-settings-header">
+        <h2>アップロード設定</h2>
       </div>
 
-      <div className="mode-indicator">
-        <span className={`mode-badge ${state.mode}`}>
-          {state.mode === 'arduino' ? '🔷 Arduino-CLI' : '⚡ PlatformIO'}
-        </span>
-      </div>
+      <div className="upload-settings-content">
+        {isPlatformIO ? (
+          <>
+            <div className="setting-group">
+              <label>環境</label>
+              <select 
+                value={selectedEnvironment} 
+                onChange={(e) => setSelectedEnvironment(e.target.value)}
+              >
+                {environments.map(env => (
+                  <option key={env.name} value={env.name}>
+                    {env.name}
+                    {env.board && ` (${env.board})`}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-      {state.mode === 'arduino' && (
-        <div className="settings-section arduino-settings">
-          <h4>Arduino-CLI 設定</h4>
+            {selectedEnvironment && environments.find(e => e.name === selectedEnvironment) && (
+              <div className="env-info">
+                <div className="info-row">
+                  <span className="info-label">Platform:</span>
+                  <span className="info-value">{environments.find(e => e.name === selectedEnvironment)?.platform || 'N/A'}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Board:</span>
+                  <span className="info-value">{environments.find(e => e.name === selectedEnvironment)?.board || 'N/A'}</span>
+                </div>
+                <div className="info-row">
+                  <span className="info-label">Framework:</span>
+                  <span className="info-value">{environments.find(e => e.name === selectedEnvironment)?.framework || 'N/A'}</span>
+                </div>
+              </div>
+            )}
 
-          <div className="setting-item">
-            <label>ボード (FQBN)</label>
-            <select
-              value={arduinoSettings.board}
-              onChange={(e) => handleArduinoSettingChange('board', e.target.value)}
-            >
-              <option value="">ボードを選択...</option>
-              {boards.map((board: any) => (
-                <option key={board.fqbn} value={board.fqbn}>
-                  {board.name} ({board.fqbn})
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="setting-group">
+              <label>ポート</label>
+              <select 
+                value={selectedPort} 
+                onChange={(e) => setSelectedPort(e.target.value)}
+              >
+                <option value="">自動検出</option>
+                {ports.map(port => (
+                  <option key={port} value={port}>{port}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="setting-item">
-            <label>シリアルポート</label>
-            <select
-              value={arduinoSettings.port}
-              onChange={(e) => handleArduinoSettingChange('port', e.target.value)}
-            >
-              <option value="">ポートを選択...</option>
-              {ports.map((port: string) => (
-                <option key={port} value={port}>
-                  {port}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div className="note">
+              <p>環境を追加・変更するには、platformio.iniを直接編集してください。</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="setting-group">
+              <label>ボード</label>
+              <select 
+                value={selectedBoard} 
+                onChange={(e) => setSelectedBoard(e.target.value)}
+              >
+                <option value="">選択してください</option>
+                {arduinoBoards.map(board => (
+                  <option key={board.fqbn} value={board.fqbn}>
+                    {board.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="setting-item">
-            <label>プログラマー</label>
-            <select
-              value={arduinoSettings.programmer}
-              onChange={(e) => handleArduinoSettingChange('programmer', e.target.value)}
-            >
-              <option value="arduino">Arduino as ISP</option>
-              <option value="usbtinyisp">USBtinyISP</option>
-              <option value="usbasp">USBasp</option>
-              <option value="avrisp">AVR ISP</option>
-              <option value="stk500v1">STK500 v1</option>
-              <option value="stk500v2">STK500 v2</option>
-            </select>
-          </div>
+            <div className="setting-group">
+              <label>ポート</label>
+              <select 
+                value={selectedPort} 
+                onChange={(e) => setSelectedPort(e.target.value)}
+              >
+                <option value="">選択してください</option>
+                {ports.map(port => (
+                  <option key={port} value={port}>{port}</option>
+                ))}
+              </select>
+            </div>
+          </>
+        )}
 
-          <div className="setting-item">
-            <label>ボーレート</label>
-            <select
-              value={arduinoSettings.baudrate}
-              onChange={(e) => handleArduinoSettingChange('baudrate', parseInt(e.target.value))}
-            >
-              <option value={9600}>9600</option>
-              <option value={19200}>19200</option>
-              <option value={38400}>38400</option>
-              <option value={57600}>57600</option>
-              <option value={115200}>115200</option>
-              <option value={230400}>230400</option>
-              <option value={460800}>460800</option>
-              <option value={921600}>921600</option>
-            </select>
-          </div>
-
-          <div className="setting-item checkbox">
-            <input
-              type="checkbox"
-              id="verify-upload"
-              checked={arduinoSettings.verifyAfterUpload}
-              onChange={(e) => handleArduinoSettingChange('verifyAfterUpload', e.target.checked)}
-            />
-            <label htmlFor="verify-upload">アップロード後に検証</label>
-          </div>
+        <div className="button-group">
+          <button className="save-button" onClick={handleSave}>
+            保存
+          </button>
         </div>
-      )}
-
-      {state.mode === 'platformio' && (
-        <div className="settings-section pio-settings">
-          <h4>PlatformIO 設定</h4>
-
-          <div className="setting-item">
-            <label>環境 (Environment)</label>
-            <select
-              value={pioSettings.environment}
-              onChange={(e) => handlePioSettingChange('environment', e.target.value)}
-            >
-              {environments.map((env: string) => (
-                <option key={env} value={env}>
-                  {env}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="setting-item">
-            <label>シリアルポート</label>
-            <select
-              value={pioSettings.port}
-              onChange={(e) => handlePioSettingChange('port', e.target.value)}
-            >
-              <option value="">ポートを選択...</option>
-              {ports.map((port: string) => (
-                <option key={port} value={port}>
-                  {port}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="setting-item">
-            <label>アップロードプロトコル</label>
-            <select
-              value={pioSettings.uploadProtocol}
-              onChange={(e) => handlePioSettingChange('uploadProtocol', e.target.value)}
-            >
-              <option value="serial">Serial (UART)</option>
-              <option value="esptool">ESP Tool</option>
-              <option value="jlink">J-Link</option>
-              <option value="stlink">ST-Link</option>
-              <option value="dfu">DFU</option>
-              <option value="sam-ba">SAM-BA</option>
-              <option value="blackmagic">Black Magic Probe</option>
-            </select>
-          </div>
-
-          <div className="setting-item">
-            <label>アップロード速度 (bps)</label>
-            <select
-              value={pioSettings.uploadSpeed}
-              onChange={(e) => handlePioSettingChange('uploadSpeed', parseInt(e.target.value))}
-            >
-              <option value={115200}>115200</option>
-              <option value={230400}>230400</option>
-              <option value={460800}>460800</option>
-              <option value={921600}>921600</option>
-              <option value={1500000}>1500000</option>
-              <option value={2000000}>2000000</option>
-            </select>
-          </div>
-
-          <div className="setting-item">
-            <label>アップロードフラグ（オプション）</label>
-            <textarea
-              value={pioSettings.uploadFlags.join('\n')}
-              onChange={(e) => handlePioSettingChange('uploadFlags', e.target.value.split('\n').filter(f => f.trim()))}
-              placeholder="--erase-flash&#10;--verify&#10;--no-stub"
-              rows={3}
-            />
-            <small>1行に1つのフラグを入力</small>
-          </div>
-        </div>
-      )}
-
-      <div className="panel-actions">
-        <button onClick={handleSaveSettings} className="btn primary" disabled={loading}>
-          💾 設定を保存
-        </button>
-        <button onClick={handleTestUpload} className="btn secondary" disabled={loading}>
-          🧪 アップロードテスト
-        </button>
-      </div>
-
-      <div className="settings-tips">
-        <h4>💡 ヒント</h4>
-        <ul>
-          {state.mode === 'arduino' ? (
-            <>
-              <li>FQBNは完全なボード識別子です (例: arduino:avr:uno)</li>
-              <li>正しいポートを選択すると、アップロード成功率が上がります</li>
-              <li>検証を有効にすると、書き込みエラーを検出できます</li>
-              <li>USBシリアルデバイスが認識されない場合、ドライバーを確認してください</li>
-            </>
-          ) : (
-            <>
-              <li>platformio.iniで複数の環境を定義できます</li>
-              <li>ESP32/ESP8266はesptoolプロトコルを使用します</li>
-              <li>アップロード速度が高いほど書き込みが速くなりますが、エラーが発生する可能性があります</li>
-              <li>アップロードフラグでESP32のフラッシュ消去などを制御できます</li>
-            </>
-          )}
-        </ul>
       </div>
     </div>
   );
 };
-
-export default UploadSettingsPanel;

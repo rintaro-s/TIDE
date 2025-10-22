@@ -5,7 +5,7 @@ import DetailedBuildSettings from '../BuildManager/DetailedBuildSettings';
 import SettingsPanel from '../SettingsPanel/SettingsPanel';
 import GitPanel from '../GitPanel/GitPanel';
 import BoardLibraryManager from '../BoardLibraryManager/BoardLibraryManager';
-import UploadSettingsPanel from '../UploadSettingsPanel/UploadSettingsPanel';
+import { UploadSettingsPanel } from '../UploadSettingsPanel/UploadSettingsPanel';
 import CopilotPanel from '../CopilotPanel/CopilotPanel';
 import LANPanel from '../LANPanel/LANPanel';
 import BuildPanel from '../BuildPanel/BuildPanel';
