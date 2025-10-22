@@ -12,6 +12,7 @@ interface AdvancedEditorProps {
   value: string;
   onChange: (value: string) => void;
   language?: string;
+  onSave?: () => void;
 }
 
 interface ArduinoCommand {
@@ -26,7 +27,8 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
   filePath,
   value,
   onChange,
-  language = 'cpp'
+  language = 'cpp',
+  onSave
 }) => {
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -651,8 +653,14 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
 
       // Enhanced keyboard shortcuts
       editorRef.current.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
-        console.log('Save file:', filePath);
-        // Emit save event
+        console.log('� DEBUG: Ctrl+S pressed in AdvancedEditor, filePath:', filePath);
+        console.log('🔍 DEBUG: onSave callback exists:', !!onSave);
+        if (onSave) {
+          console.log('🔍 DEBUG: Calling onSave callback');
+          onSave();
+        } else {
+          console.log('❌ DEBUG: No onSave callback provided');
+        }
       });
 
       editorRef.current.addCommand(monaco.KeyCode.F7, () => {

@@ -48,7 +48,37 @@
   font-weight: 500;
 }
 
-.status-icon {
-  font-size: 10px;
-  flex-shrink: 0;
+.status-message {
+  color: var(--text-primary);
+  font-style: italic;
+  margin-left: 16px;
+}
+
+.panel-toggles {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.panel-toggle-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.panel-toggle-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--accent-blue);
+}
+
+.panel-toggle-btn.active {
+  background: var(--accent-blue);
+  color: white;
+  border-color: var(--accent-blue);
 }

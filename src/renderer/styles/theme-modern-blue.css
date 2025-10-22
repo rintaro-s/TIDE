@@ -22,11 +22,16 @@
   --bg-active: #2a3547;
   
   /* Text Colors */
-  --text-primary: #e8eef8;
-  --text-secondary: #b8c5d6;
-  --text-tertiary: #889ab0;
-  --text-disabled: #667080;
+  --text-primary: #ffffff;
+  --text-secondary: #d1dbe7;
+  --text-tertiary: #a8b5c7;
+  --text-disabled: #7c8aa0;
   --text-inverse: #0a0f1f;
+  
+  /* Component-specific overrides for better contrast */
+  --copilot-header-text: #ffffff;
+  --copilot-status-text: #d1dbe7;
+  --sidebar-text: #ffffff;
 
   /* Border Colors - ブルーティント */
   --border-light: #2a3d52;

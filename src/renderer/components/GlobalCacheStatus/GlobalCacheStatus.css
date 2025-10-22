@@ -1,0 +1,103 @@
+/* Global Cache Status Component */
+
+.global-cache-status {
+  margin-top: 12px;
+  padding: 16px;
+  background: rgba(var(--surface-rgb), 0.6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+.cache-status-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.status-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.cache-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
+.stat-label {
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.global-cache-status .btn.small {
+  padding: 6px 12px;
+  font-size: 11px;
+  align-self: flex-start;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .global-cache-status {
+  background: rgba(64, 64, 64, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Light theme adjustments */
+[data-theme="light"] .global-cache-status {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Modern blue theme adjustments */
+[data-theme="modern-blue"] .global-cache-status {
+  background: rgba(30, 40, 60, 0.9);
+  border-color: rgba(100, 150, 255, 0.3);
+}
+
+/* Material theme adjustments */
+[data-theme="material"] .global-cache-status {
+  background: linear-gradient(135deg, 
+    rgba(var(--md-primary-rgb), 0.05),
+    rgba(var(--md-secondary-rgb), 0.05));
+  border: 1px solid rgba(var(--md-primary-rgb), 0.2);
+  box-shadow: var(--elevation-2);
+}
+
+/* Liquid glass theme adjustments */
+[data-theme="liquid-glass"] .global-cache-status {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+}
+
+/* Anime theme adjustments */
+[data-theme="anime"] .global-cache-status {
+  background: linear-gradient(135deg,
+    rgba(255, 182, 193, 0.1),
+    rgba(173, 216, 230, 0.1));
+  border: 1px solid rgba(255, 105, 180, 0.3);
+}

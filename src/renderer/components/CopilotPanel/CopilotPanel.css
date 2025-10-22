@@ -15,6 +15,21 @@
   background: var(--bg-secondary);
 }
 
+/* Modern Blue Theme Overrides for better visibility */
+[data-theme="modern-blue"] .copilot-header h3 {
+  color: var(--copilot-header-text, #ffffff);
+  font-weight: 600;
+}
+
+[data-theme="modern-blue"] .connection-status {
+  color: var(--copilot-status-text, #d1dbe7);
+}
+
+[data-theme="modern-blue"] .copilot-panel {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
 .header-left {
   display: flex;
   align-items: center;

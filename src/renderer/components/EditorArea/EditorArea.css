@@ -56,6 +56,17 @@
   flex: 1;
 }
 
+.dirty-indicator {
+  color: var(--accent-orange);
+  font-size: 16px;
+  line-height: 1;
+  margin-left: 4px;
+}
+
+.editor-tab.dirty .tab-name {
+  font-style: italic;
+}
+
 .tab-close {
   width: 16px;
   height: 16px;

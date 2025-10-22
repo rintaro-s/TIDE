@@ -8,7 +8,7 @@ interface FileContent {
 }
 
 const EditorArea: React.FC = () => {
-  const { state, closeFile, setActiveFile, settings } = useApp();
+  const { state, closeFile, setActiveFile, settings, updateFileContent, saveFile } = useApp();
   const [fileContents, setFileContents] = useState<FileContent>({});
   const [autoSaveTimer, setAutoSaveTimer] = useState<NodeJS.Timeout | null>(null);
 
@@ -66,20 +66,17 @@ const EditorArea: React.FC = () => {
     }
   };
 
-  const saveFileContent = async (filePath: string, content: string) => {
-    try {
-      await window.electronAPI.fs.writeFile(filePath, content);
-      console.log('File saved:', filePath);
-    } catch (error) {
-      console.error('Failed to save file:', error);
-    }
-  };
-
   const handleFileContentChange = (filePath: string, content: string) => {
     setFileContents(prev => ({
       ...prev,
       [filePath]: content
     }));
+    
+    // Update file content in app context and mark as dirty
+    const file = state.openFiles.find(f => f.path === filePath);
+    if (file) {
+      updateFileContent(file.id, content);
+    }
     
     // Handle auto-save based on settings
     const autoSaveMode = settings.general?.autoSave || 'off';
@@ -92,7 +89,9 @@ const EditorArea: React.FC = () => {
       
       // Set new timer (1 second delay)
       const timer = setTimeout(() => {
-        saveFileContent(filePath, content);
+        if (file) {
+          saveFile(file.id);
+        }
       }, 1000);
       
       setAutoSaveTimer(timer);
@@ -105,21 +104,31 @@ const EditorArea: React.FC = () => {
   useEffect(() => {
     const handleBlur = () => {
       if (settings.general?.autoSave === 'onFocusChange' && state.activeFile) {
-        const activeFile = state.openFiles.find(f => f.id === state.activeFile);
-        if (activeFile && fileContents[activeFile.path]) {
-          saveFileContent(activeFile.path, fileContents[activeFile.path]);
+        saveFile(state.activeFile);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Handle Ctrl+S for manual save
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (state.activeFile) {
+          saveFile(state.activeFile);
         }
       }
     };
 
     window.addEventListener('blur', handleBlur);
+    window.addEventListener('keydown', handleKeyDown);
+    
     return () => {
       window.removeEventListener('blur', handleBlur);
+      window.removeEventListener('keydown', handleKeyDown);
       if (autoSaveTimer) {
         clearTimeout(autoSaveTimer);
       }
     };
-  }, [settings.general?.autoSave, state.activeFile, state.openFiles, fileContents, autoSaveTimer]);
+  }, [settings.general?.autoSave, state.activeFile, saveFile, autoSaveTimer]);
 
   const handleNewFile = async () => {
     try {
@@ -217,15 +226,17 @@ const EditorArea: React.FC = () => {
         {state.openFiles.map(file => {
           const fileName = file.name;
           const isActive = state.activeFile === file.id;
+          const isDirty = file.isDirty;
           
           return (
             <div 
               key={file.id}
-              className={`editor-tab ${isActive ? 'active' : ''}`}
+              className={`editor-tab ${isActive ? 'active' : ''} ${isDirty ? 'dirty' : ''}`}
               onClick={() => setActiveFile(file.id)}
             >
               <span className="tab-icon">{getFileIcon(file.path)}</span>
               <span className="tab-name">{fileName}</span>
+              {isDirty && <span className="dirty-indicator">●</span>}
               <button 
                 className="tab-close" 
                 onClick={(e) => {
@@ -253,6 +264,10 @@ const EditorArea: React.FC = () => {
               value={fileContents[activeFile.path] || ''}
               onChange={(content: string) => handleFileContentChange(activeFile.path, content)}
               language={getFileLanguage(activeFile.path)}
+              onSave={() => {
+                console.log('🔍 DEBUG: EditorArea onSave called for file:', activeFile.id);
+                saveFile(activeFile.id);
+              }}
             />
           );
         })()}

@@ -15,6 +15,48 @@ declare global {
         rename: (oldPath: string, newPath: string) => Promise<void>;
         unlink: (filePath: string) => Promise<void>;
         rmdir: (dirPath: string) => Promise<void>;
+        readBinary: (filePath: string) => Promise<ArrayBuffer>;
+        writeBinary: (filePath: string, data: ArrayBuffer) => Promise<void>;
+        getFileHash: (filePath: string) => Promise<string>;
+        copy: (src: string, dest: string) => Promise<void>;
+      };
+      network: {
+        startServer: (options: {
+          port: number;
+          routes: Record<string, (request: any) => Promise<any>>;
+        }) => Promise<void>;
+        stopServer: () => Promise<void>;
+        broadcastUDP: (options: {
+          port: number;
+          message: string;
+          interval: number;
+        }) => Promise<void>;
+        onUDPMessage: (callback: (message: string, address: string) => void) => void;
+        httpRequest: (url: string, options?: any) => Promise<any>;
+        startCacheServer: (peerId: string) => Promise<{ success: boolean; port: number }>;
+        stopCacheServer: () => Promise<void>;
+        broadcastPresence: (info: any) => Promise<void>;
+        discoverTeamMembers: () => Promise<any[]>;
+        startCollaborationServer: (options: any) => Promise<{ success: boolean; port: number }>;
+        stopCollaborationServer: () => Promise<void>;
+      };
+      system: {
+        requestFirewallPermission: (options: {
+          ports: number[];
+          reason: string;
+        }) => Promise<{ granted: boolean; message?: string }>;
+        getNetworkInterfaces: () => Promise<any[]>;
+      };
+      os: {
+        hostname: () => Promise<string>;
+        username: () => Promise<string>;
+        platform: () => Promise<string>;
+        arch: () => Promise<string>;
+        cpus: () => Promise<any[]>;
+        totalmem: () => Promise<number>;
+      };
+      path: {
+        getAppDataPath: () => Promise<string>;
       };
       dialog: {
         showOpenDialog: (options: any) => Promise<any>;

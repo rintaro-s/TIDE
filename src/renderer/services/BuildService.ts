@@ -1,3 +1,5 @@
+import { globalCompileCache } from './GlobalCompileCacheService';
+
 export interface BuildProgress {
   phase: 'compiling' | 'linking' | 'uploading' | 'completed' | 'error';
   message: string;
@@ -59,6 +61,7 @@ export class BuildService {
     try {
       const verboseOutput = this.buildSettings?.build?.verboseOutput || false;
       const parallelBuild = this.buildSettings?.build?.parallelBuild || false;
+      const useGlobalCache = this.buildSettings?.build?.useGlobalCache !== false; // Default to true
       
       this.notifyBuildProgress({
         phase: 'compiling',
@@ -67,11 +70,33 @@ export class BuildService {
         timestamp: new Date()
       });
 
-      if (mode === 'arduino') {
-        return await this.compileArduino(projectPath, verboseOutput, parallelBuild);
-      } else {
-        return await this.compilePlatformIO(projectPath, verboseOutput, parallelBuild);
+      // Check global cache if enabled
+      if (useGlobalCache) {
+        const cacheResult = await this.checkGlobalCache(projectPath, mode);
+        if (cacheResult.found) {
+          this.notifyBuildProgress({
+            phase: 'completed',
+            message: `グローバルキャッシュからコンパイル済みバイナリを取得しました (ソース: ${cacheResult.sourceNode})`,
+            percentage: 100,
+            timestamp: new Date()
+          });
+          return true;
+        }
       }
+
+      let result: boolean;
+      if (mode === 'arduino') {
+        result = await this.compileArduino(projectPath, verboseOutput, parallelBuild);
+      } else {
+        result = await this.compilePlatformIO(projectPath, verboseOutput, parallelBuild);
+      }
+
+      // Store in global cache if compilation was successful
+      if (result && useGlobalCache) {
+        await this.storeInGlobalCache(projectPath, mode);
+      }
+
+      return result;
     } catch (error) {
       this.notifyBuildProgress({
         phase: 'error',
@@ -381,6 +406,153 @@ export class BuildService {
 
     await this.delay(200); // Simulate port detection
     return ports;
+  }
+
+  // Global Cache Integration
+  private async checkGlobalCache(projectPath: string, mode: 'arduino' | 'platformio'): Promise<{ found: boolean; sourceNode?: string }> {
+    try {
+      const cacheRequest = await this.createCacheRequest(projectPath, mode);
+      const response = await globalCompileCache.queryGlobalCache(cacheRequest);
+      
+      if (response.found) {
+        this.notifyBuildProgress({
+          phase: 'compiling',
+          message: `グローバルキャッシュをチェック中... 見つかりました！`,
+          percentage: 50,
+          timestamp: new Date()
+        });
+        
+        return {
+          found: true,
+          sourceNode: response.sourceNode || 'unknown'
+        };
+      }
+      
+      this.notifyBuildProgress({
+        phase: 'compiling',
+        message: 'グローバルキャッシュをチェック中... 見つかりませんでした',
+        percentage: 10,
+        timestamp: new Date()
+      });
+      
+      return { found: false };
+    } catch (error) {
+      console.error('Cache check error:', error);
+      return { found: false };
+    }
+  }
+
+  private async storeInGlobalCache(projectPath: string, mode: 'arduino' | 'platformio'): Promise<void> {
+    try {
+      const cacheRequest = await this.createCacheRequest(projectPath, mode);
+      const binaryPath = this.getBinaryPath(projectPath, mode);
+      
+      if (await window.electronAPI.fs.exists(binaryPath)) {
+        await globalCompileCache.storeCacheEntry(cacheRequest, binaryPath);
+        console.log('Compilation result stored in global cache');
+      }
+    } catch (error) {
+      console.error('Failed to store in global cache:', error);
+    }
+  }
+
+  private async createCacheRequest(projectPath: string, mode: 'arduino' | 'platformio'): Promise<import('./GlobalCompileCacheService').CacheRequest> {
+    const sourceFiles = await this.getSourceFiles(projectPath);
+    const libraries = await this.getUsedLibraries(projectPath, mode);
+    const boardConfig = this.getBoardConfig(mode);
+    
+    return {
+      projectHash: '', // Will be calculated by cache service
+      sourceFiles,
+      libraries,
+      boardConfig
+    };
+  }
+
+  private async getSourceFiles(projectPath: string): Promise<string[]> {
+    try {
+      const files: string[] = [];
+      const entries = await window.electronAPI.fs.readdir(projectPath);
+      
+      for (const entry of entries) {
+        const fullPath = `${projectPath}/${entry}`;
+        const stat = await window.electronAPI.fs.stat(fullPath);
+        
+        if (stat.isFile && (entry.endsWith('.ino') || entry.endsWith('.cpp') || entry.endsWith('.c') || entry.endsWith('.h'))) {
+          const content = await window.electronAPI.fs.readFile(fullPath);
+          files.push(`${entry}:${content}`);
+        }
+      }
+      
+      return files.sort();
+    } catch (error) {
+      console.error('Failed to get source files:', error);
+      return [];
+    }
+  }
+
+  private async getUsedLibraries(projectPath: string, mode: 'arduino' | 'platformio'): Promise<string[]> {
+    try {
+      if (mode === 'platformio') {
+        const platformioIniPath = `${projectPath}/platformio.ini`;
+        if (await window.electronAPI.fs.exists(platformioIniPath)) {
+          const content = await window.electronAPI.fs.readFile(platformioIniPath);
+          const libRegex = /lib_deps\s*=\s*(.*)/g;
+          const libraries: string[] = [];
+          let match;
+          
+          while ((match = libRegex.exec(content)) !== null) {
+            libraries.push(...match[1].split(/[,\n]/).map(lib => lib.trim()).filter(lib => lib));
+          }
+          
+          return libraries.sort();
+        }
+      } else {
+        // Arduino mode - scan for #include statements
+        const sourceFiles = await window.electronAPI.fs.readdir(projectPath);
+        const includes = new Set<string>();
+        
+        for (const file of sourceFiles) {
+          if (file.endsWith('.ino') || file.endsWith('.cpp') || file.endsWith('.h')) {
+            const content = await window.electronAPI.fs.readFile(`${projectPath}/${file}`);
+            const includeRegex = /#include\s*[<"]([^>"]+)[>"]/g;
+            let match;
+            
+            while ((match = includeRegex.exec(content)) !== null) {
+              includes.add(match[1]);
+            }
+          }
+        }
+        
+        return Array.from(includes).sort();
+      }
+      
+      return [];
+    } catch (error) {
+      console.error('Failed to get used libraries:', error);
+      return [];
+    }
+  }
+
+  private getBoardConfig(mode: 'arduino' | 'platformio'): string {
+    const board = this.buildSettings?.board?.selected;
+    const port = this.buildSettings?.board?.port;
+    
+    return JSON.stringify({
+      mode,
+      board,
+      port,
+      buildFlags: this.buildSettings?.build?.flags || []
+    });
+  }
+
+  private getBinaryPath(projectPath: string, mode: 'arduino' | 'platformio'): string {
+    if (mode === 'platformio') {
+      return `${projectPath}/.pio/build/default/firmware.bin`;
+    } else {
+      const projectName = projectPath.split('/').pop() || projectPath.split('\\').pop() || 'project';
+      return `${projectPath}/build/${projectName}.hex`;
+    }
   }
 
   private delay(ms: number): Promise<void> {

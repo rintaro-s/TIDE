@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as monaco from 'monaco-editor';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useApp } from '../../contexts/AppContext';
+import { arduinoCommandsService, CodeSnippet } from '../../services/ArduinoCommandsService';
 import './MonacoEditor.css';
 
 interface MonacoEditorProps {
@@ -9,12 +10,6 @@ interface MonacoEditorProps {
   value: string;
   onChange: (value: string) => void;
   language?: string;
-}
-
-interface ArduinoCommand {
-  command: string;
-  template: string;
-  description: string;
 }
 
 const MonacoEditor: React.FC<MonacoEditorProps> = ({
@@ -27,32 +22,14 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const { theme } = useTheme();
   const { settings } = useApp();
-  const [arduinoCommands, setArduinoCommands] = useState<ArduinoCommand[]>([]);
+  const [codeSnippets, setCodeSnippets] = useState<CodeSnippet[]>([]);
 
   // Load Arduino commands for enhanced completion
   useEffect(() => {
     const loadCommands = async () => {
       try {
-        // Parse commands from static data
-        const defaultCommands: ArduinoCommand[] = [
-          { command: 'pinMode', template: 'pinMode(${1:pin}, ${2:mode})', description: 'ピンのモードを設定 (INPUT, OUTPUT, INPUT_PULLUP)' },
-          { command: 'digitalWrite', template: 'digitalWrite(${1:pin}, ${2:value})', description: 'デジタルピンに HIGH または LOW を出力する' },
-          { command: 'digitalRead', template: 'digitalRead(${1:pin})', description: 'デジタルピンの状態を読み取る (HIGH または LOW)' },
-          { command: 'analogWrite', template: 'analogWrite(${1:pin}, ${2:value})', description: 'PWMピンにアナログ値（PWM波）を出力する (0 から 255)' },
-          { command: 'analogRead', template: 'analogRead(${1:pin})', description: 'アナログピンの値を読み取る (0 から 1023)' },
-          { command: 'delay', template: 'delay(${1:ms})', description: '指定した時間（ミリ秒）プログラムを一時停止する' },
-          { command: 'delayMicroseconds', template: 'delayMicroseconds(${1:us})', description: '指定した時間（マイクロ秒）プログラムを一時停止する' },
-          { command: 'millis', template: 'millis()', description: 'プログラム開始からの経過時間（ミリ秒）を返す' },
-          { command: 'micros', template: 'micros()', description: 'プログラム開始からの経過時間（マイクロ秒）を返す' },
-          { command: 'Serial.begin', template: 'Serial.begin(${1:baudrate})', description: 'シリアル通信を開始する（ボーレート指定）' },
-          { command: 'Serial.print', template: 'Serial.print(${1:data})', description: 'データをASCIIテキストとしてシリアル送信する' },
-          { command: 'Serial.println', template: 'Serial.println(${1:data})', description: 'データをASCIIテキストとしてシリアル送信し、最後に改行を追加する' },
-          { command: 'map', template: 'map(${1:value}, ${2:fromLow}, ${3:fromHigh}, ${4:toLow}, ${5:toHigh})', description: 'ある範囲の数値を別の範囲に線形変換する' },
-          { command: 'constrain', template: 'constrain(${1:x}, ${2:a}, ${3:b})', description: '数値を範囲 (a から b) 内に収める' },
-          { command: 'random', template: 'random(${1:max})', description: '指定した範囲の疑似乱数（整数）を生成する' },
-          { command: 'randomSeed', template: 'randomSeed(${1:seed})', description: '疑似乱数生成のシード（種）を設定する' }
-        ];
-        setArduinoCommands(defaultCommands);
+        const snippets = arduinoCommandsService.getCodeSnippets();
+        setCodeSnippets(snippets);
       } catch (error) {
         console.error('Failed to load Arduino commands:', error);
       }
@@ -209,17 +186,17 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
 
           const suggestions: any[] = [];
           
-          // Arduino commands
-          arduinoCommands.forEach((cmd, index) => {
-            if (word.word.length === 0 || cmd.command.toLowerCase().includes(word.word.toLowerCase())) {
+          // Arduino commands with enhanced snippets
+          codeSnippets.forEach((snippet, index) => {
+            if (word.word.length === 0 || snippet.label.toLowerCase().includes(word.word.toLowerCase())) {
               suggestions.push({
-                label: cmd.command,
+                label: snippet.label,
                 kind: monaco.languages.CompletionItemKind.Function,
                 documentation: {
-                  value: `**${cmd.command}**\n\n${cmd.description}\n\n\`\`\`cpp\n${cmd.template}\n\`\`\``
+                  value: `**${snippet.label}**\n\n${snippet.documentation}\n\n\`\`\`cpp\n${snippet.detail}\n\`\`\``
                 },
-                detail: cmd.template,
-                insertText: cmd.template,
+                detail: snippet.detail,
+                insertText: snippet.insertText,
                 insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
                 range: range,
                 sortText: `a${index.toString().padStart(3, '0')}`
@@ -366,14 +343,68 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
       // Setup change listener
       editorRef.current.onDidChangeModelContent(() => {
         if (editorRef.current) {
-          onChange(editorRef.current.getValue());
+          const content = editorRef.current.getValue();
+          onChange(content);
+          
+          // Mark document as dirty
+          const fileName = filePath.split(/[/\\]/).pop() || 'untitled';
+          document.title = `●${fileName} - Tova IDE`;
+          
+          // Store current editor instance globally for menu access
+          (window as any).monacoEditor = editorRef.current;
+          (window as any).currentFile = filePath;
+          (window as any).currentFileContent = content;
         }
       });
 
       // Setup keyboard shortcuts
-      editorRef.current.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+      editorRef.current.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, async () => {
         // Save file - emit to main process
         console.log('Save file:', filePath);
+        const content = editorRef.current?.getValue() || '';
+        
+        try {
+          await window.electronAPI?.fs.writeFile(filePath, content);
+          console.log('✅ File saved successfully:', filePath);
+          
+          // Dispatch save event for other components to listen
+          const saveEvent = new CustomEvent('fileSaved', { 
+            detail: { filePath, content, success: true } 
+          });
+          window.dispatchEvent(saveEvent);
+          
+          // Update document title to remove dirty indicator
+          const fileName = filePath.split(/[/\\]/).pop() || 'untitled';
+          document.title = `${fileName} - Tova IDE`;
+          
+        } catch (error) {
+          console.error('❌ Failed to save file:', error);
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          
+          // Dispatch save error event
+          const saveErrorEvent = new CustomEvent('fileSaveError', { 
+            detail: { filePath, error: errorMessage, success: false } 
+          });
+          window.dispatchEvent(saveErrorEvent);
+          
+          // Show error in editor (you could also use a toast)
+          const model = editorRef.current?.getModel();
+          if (model) {
+            monaco.editor.setModelMarkers(model, 'save-error', [{
+              startLineNumber: 1,
+              endLineNumber: 1,
+              startColumn: 1,
+              endColumn: 1,
+              message: `Failed to save: ${errorMessage}`,
+              severity: monaco.MarkerSeverity.Error
+            }]);
+            
+            // Clear error marker after 3 seconds
+            setTimeout(() => {
+              monaco.editor.setModelMarkers(model, 'save-error', []);
+            }, 3000);
+          }
+        }
       });
 
       editorRef.current.addCommand(monaco.KeyCode.F7, () => {
@@ -418,37 +449,93 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
       });
     }
 
-    // Register error checking and markers
-    errorProvider = monaco.languages.registerCodeLensProvider('cpp', {
-      provideCodeLenses: (model: any) => {
-        const lenses: any[] = [];
-        const content = model.getValue();
-        
-        // Simple error checking for common Arduino issues
-        const lines = content.split('\n');
-        lines.forEach((line: string, index: number) => {
-          if (line.includes('digitalRead') && !line.includes('pinMode')) {
-            lenses.push({
-              range: {
-                startLineNumber: index + 1,
-                endLineNumber: index + 1,
-                startColumn: 1,
-                endColumn: line.length + 1
+      // Register parameter hints provider
+      const signatureProvider = monaco.languages.registerSignatureHelpProvider('cpp', {
+        signatureHelpTriggerCharacters: ['(', ','],
+        provideSignatureHelp: (model, position) => {
+          const line = model.getLineContent(position.lineNumber);
+          const beforeCursor = line.substring(0, position.column - 1);
+          
+          // Find function call pattern
+          const functionMatch = beforeCursor.match(/(\w+)\s*\([^)]*$/);
+          if (!functionMatch) {
+            return {
+              value: {
+                signatures: [],
+                activeSignature: 0,
+                activeParameter: 0
               },
-              id: `warning_${index}`,
-              command: {
-                id: 'editor.action.showHover',
-                title: '⚠️ Consider using pinMode() first'
-              }
-            });
+              dispose: () => {}
+            };
           }
-        });
-        
-        return { lenses, dispose: () => {} };
-      }
-    });
+          
+          const functionName = functionMatch[1];
+          const snippet = codeSnippets.find(s => s.label === functionName);
+          
+          if (!snippet || !snippet.parameters) {
+            return {
+              value: {
+                signatures: [],
+                activeSignature: 0,
+                activeParameter: 0
+              },
+              dispose: () => {}
+            };
+          }
+          
+          // Count commas to determine active parameter
+          const commaCount = (beforeCursor.match(/,/g) || []).length;
+          const activeParameter = Math.min(commaCount, snippet.parameters.length - 1);
+          
+          const signature = {
+            label: snippet.detail,
+            documentation: snippet.documentation,
+            parameters: snippet.parameters.map(param => ({
+              label: param.name,
+              documentation: param.hint
+            }))
+          };
+          
+          return {
+            value: {
+              signatures: [signature],
+              activeSignature: 0,
+              activeParameter: activeParameter
+            },
+            dispose: () => {}
+          };
+        }
+      });
 
-    // Add bracket matching and auto-closing
+      // Register error checking and markers
+      errorProvider = monaco.languages.registerCodeLensProvider('cpp', {
+        provideCodeLenses: (model: any) => {
+          const lenses: any[] = [];
+          const content = model.getValue();
+          
+          // Simple error checking for common Arduino issues
+          const lines = content.split('\n');
+          lines.forEach((line: string, index: number) => {
+            if (line.includes('digitalRead') && !line.includes('pinMode')) {
+              lenses.push({
+                range: {
+                  startLineNumber: index + 1,
+                  endLineNumber: index + 1,
+                  startColumn: 1,
+                  endColumn: line.length + 1
+                },
+                id: `warning_${index}`,
+                command: {
+                  id: 'editor.action.showHover',
+                  title: '⚠️ Consider using pinMode() first'
+                }
+              });
+            }
+          });
+          
+          return { lenses, dispose: () => {} };
+        }
+      });    // Add bracket matching and auto-closing
     monaco.languages.setLanguageConfiguration('cpp', {
       brackets: [['(', ')'], ['{', '}'], ['[', ']']],
       autoClosingPairs: [

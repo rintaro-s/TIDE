@@ -9,17 +9,19 @@
   position: relative;
 }
 
-/* Wallpaper Layer */
+/* Wallpaper Layer - Absolute positioning within workspace */
 .workspace-wallpaper {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 0;
+  z-index: var(--z-wallpaper, -10);
   pointer-events: none;
   transition: opacity 0.3s ease, filter 0.3s ease;
 }
@@ -28,6 +30,19 @@
 .main-workspace > *:not(.workspace-wallpaper) {
   position: relative;
   z-index: 1;
+}
+
+/* Wallpaper visibility settings - make backgrounds semi-transparent when wallpaper is enabled */
+.main-workspace:has(.workspace-wallpaper) .sidebar,
+.main-workspace:has(.workspace-wallpaper) .editor-area,
+.main-workspace:has(.workspace-wallpaper) .bottom-panel {
+  background-color: rgba(var(--bg-primary-rgb, 10, 15, 31), 0.85);
+  backdrop-filter: blur(2px);
+}
+
+.main-workspace:has(.workspace-wallpaper) .monaco-editor .margin,
+.main-workspace:has(.workspace-wallpaper) .monaco-editor .monaco-editor-background {
+  background-color: rgba(var(--editor-bg-rgb, 10, 15, 31), 0.8) !important;
 }
 
 .workspace-content {

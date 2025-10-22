@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import FileExplorer from '../FileExplorer/FileExplorer';
 import SearchPanel from '../SearchPanel/SearchPanel';
-import BuildManager from '../BuildManager/BuildManager';
-import QuickBuildPanel from '../QuickBuildPanel/QuickBuildPanel';
+import DetailedBuildSettings from '../BuildManager/DetailedBuildSettings';
 import SettingsPanel from '../SettingsPanel/SettingsPanel';
 import GitPanel from '../GitPanel/GitPanel';
 import BoardLibraryManager from '../BoardLibraryManager/BoardLibraryManager';
 import UploadSettingsPanel from '../UploadSettingsPanel/UploadSettingsPanel';
 import CopilotPanel from '../CopilotPanel/CopilotPanel';
+import LANPanel from '../LANPanel/LANPanel';
+import BuildPanel from '../BuildPanel/BuildPanel';
 import './Sidebar.css';
 
 interface SidebarTab {
@@ -32,10 +33,11 @@ const Sidebar: React.FC<SidebarProps> = ({ width }) => {
   const tabs: SidebarTab[] = [
     { id: 'explorer', name: 'Explorer', icon: 'F', component: FileExplorer },
     { id: 'search', name: 'Search', icon: 'S', component: SearchPanel },
+    { id: 'build', name: 'Build', icon: 'B', component: BuildPanel, props: { isExpanded: true } },
     { id: 'copilot', name: 'AI Copilot', icon: '🤖', component: CopilotPanel },
+    { id: 'lan', name: 'LAN Collaboration', icon: '🌐', component: LANPanel },
     { id: 'git', name: 'Git', icon: 'G', component: GitPanel },
-    { id: 'quickbuild', name: 'Quick Build', icon: '⚡', component: QuickBuildPanel, props: { isExpanded: true } },
-    { id: 'build', name: 'Build Manager', icon: 'B', component: BuildManager },
+    { id: 'build-settings', name: 'Build Settings', icon: '⚙️', component: DetailedBuildSettings },
     { id: 'boards', name: 'Boards', icon: 'H', component: BoardLibraryManager, props: { type: 'board' } },
     { id: 'libraries', name: 'Libraries', icon: 'L', component: BoardLibraryManager, props: { type: 'library' } },
     { id: 'upload', name: 'Upload', icon: 'U', component: UploadSettingsPanel },
@@ -88,11 +90,6 @@ const Sidebar: React.FC<SidebarProps> = ({ width }) => {
           <div className="sidebar-panel-content">
             {ActiveComponent && <ActiveComponent {...(activeTabData?.props || {})} />}
           </div>
-          
-          {/* Quick Build Panel - Always visible at bottom when expanded */}
-          {activeTab !== 'quickbuild' && (
-            <QuickBuildPanel isExpanded={false} />
-          )}
           
           <div className="sidebar-resize-handle"></div>
         </div>

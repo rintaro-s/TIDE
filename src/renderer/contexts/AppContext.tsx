@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 
 type DevMode = 'arduino' | 'platformio';
 
@@ -43,6 +43,7 @@ interface AppSettings {
   build?: {
     parallelBuild?: boolean;
     verboseOutput?: boolean;
+    useGlobalCache?: boolean;
     arduinoCliPath?: string;
     boardUrls?: string;
     platformioPath?: string;
@@ -113,6 +114,8 @@ interface AppContextType {
   setActiveFile: (fileId: string | null) => void;
   updateFileContent: (fileId: string, content: string) => void;
   updateSettings: (category: string, key: string, value: any) => void;
+  saveFile: (fileId?: string) => Promise<boolean>;
+  saveAllFiles: () => Promise<boolean>;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -212,6 +215,19 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     };
     
     loadSettings();
+
+    // Initialize global compile cache service
+    const initializeGlobalCache = async () => {
+      try {
+        const { globalCompileCache } = await import('../services/GlobalCompileCacheService');
+        await globalCompileCache.initialize();
+        console.log('Global compile cache initialized');
+      } catch (error) {
+        console.error('Failed to initialize global compile cache:', error);
+      }
+    };
+
+    initializeGlobalCache();
   }, []);
 
   // Save settings to electron store whenever they change
@@ -219,6 +235,20 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     if (window.electronAPI) {
       window.electronAPI.store.set('appSettings', state.settings);
     }
+  }, [state.settings]);
+
+  // Update build service settings when they change
+  useEffect(() => {
+    const updateBuildService = async () => {
+      try {
+        const { buildService } = await import('../services/BuildService');
+        buildService.setBuildSettings(state.settings);
+      } catch (error) {
+        console.error('Failed to update build service settings:', error);
+      }
+    };
+
+    updateBuildService();
   }, [state.settings]);
 
   // Save mode whenever it changes
@@ -329,6 +359,92 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }));
   };
 
+  const saveFile = useCallback(async (fileId?: string): Promise<boolean> => {
+    // Use a promise to get the latest state
+    return new Promise((resolve) => {
+      setState(prev => {
+        const targetFileId = fileId || prev.activeFile;
+        if (!targetFileId) {
+          console.log('❌ DEBUG: No targetFileId found');
+          resolve(false);
+          return prev;
+        }
+
+        const file = prev.openFiles.find(f => f.id === targetFileId);
+        if (!file) {
+          console.log('❌ DEBUG: No file found with id:', targetFileId);
+          resolve(false);
+          return prev;
+        }
+
+        console.log('🔍 DEBUG: saveFile called - Attempting to save file:', file.path);
+        console.log('🔍 DEBUG: Content length:', file.content.length);
+        console.log('🔍 DEBUG: Content preview:', file.content.substring(0, 100));
+
+        // Perform the save operation
+        window.electronAPI.fs.writeFile(file.path, file.content)
+          .then(() => {
+            console.log('✅ File saved successfully:', file.path);
+            // Update state to mark file as not dirty
+            setState(prev2 => ({
+              ...prev2,
+              openFiles: prev2.openFiles.map(f =>
+                f.id === targetFileId ? { ...f, isDirty: false } : f
+              ),
+            }));
+            resolve(true);
+          })
+          .catch((error) => {
+            console.error('❌ Failed to save file:', file.path, error);
+            resolve(false);
+          });
+
+        return prev;
+      });
+    });
+  }, []);
+
+  const saveAllFiles = useCallback(async (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      setState(prev => {
+        const dirtyFiles = prev.openFiles.filter(f => f.isDirty);
+        if (dirtyFiles.length === 0) {
+          resolve(true);
+          return prev;
+        }
+
+        console.log('🔍 DEBUG: Saving', dirtyFiles.length, 'dirty files');
+        
+        // Save all dirty files
+        Promise.all(
+          dirtyFiles.map(file =>
+            window.electronAPI.fs.writeFile(file.path, file.content)
+              .then(() => {
+                console.log('✅ File saved:', file.path);
+                return true;
+              })
+              .catch((error) => {
+                console.error('❌ Failed to save file:', file.path, error);
+                return false;
+              })
+          )
+        ).then((results) => {
+          const allSaved = results.every(r => r);
+          if (allSaved) {
+            // Mark all files as not dirty
+            setState(prev2 => ({
+              ...prev2,
+              openFiles: prev2.openFiles.map(f => ({ ...f, isDirty: false })),
+            }));
+          }
+          resolve(allSaved);
+        });
+
+        return prev;
+      });
+    });
+  }, []);
+
   const contextValue: AppContextType = {
     state,
     mode: state.mode,
@@ -343,6 +459,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     setActiveFile,
     updateFileContent,
     updateSettings,
+    saveFile,
+    saveAllFiles,
   };
 
   return (

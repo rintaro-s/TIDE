@@ -18,6 +18,28 @@ declare global {
         unlink: (filePath: string) => Promise<void>;
         rmdir: (dirPath: string) => Promise<void>;
       };
+      network: {
+        start: () => Promise<{ success: boolean; error?: string }>;
+        stop: () => Promise<{ success: boolean; error?: string }>;
+        getTeamMembers: () => Promise<any[]>;
+        sendMessage: (targetId: string, message: any) => Promise<{ success: boolean; error?: string }>;
+        broadcast: (message: any) => Promise<{ success: boolean; error?: string }>;
+        getLocalInfo: () => Promise<any>;
+        startFileTransfer: (targetId: string, filePath: string) => Promise<{ success: boolean; error?: string }>;
+        updatePresence: (presence: any) => Promise<{ success: boolean; error?: string }>;
+        onMessage: (callback: (message: any) => void) => void;
+        onTeamMemberUpdated: (callback: (member: any) => void) => void;
+        onTeamMemberLeft: (callback: (memberId: string) => void) => void;
+        // Legacy support
+        startServer: (options: any) => Promise<any>;
+        stopServer: () => Promise<any>;
+        broadcastUDP: (options: any) => Promise<any>;
+        onUDPMessage: (callback: (message: string, address: string) => void) => void;
+        httpRequest: (url: string, options?: any) => Promise<any>;
+        discoverPeers: () => Promise<any>;
+        startSharingServer: (port: number, boards: any[]) => Promise<any>;
+        stopSharingServer: () => Promise<any>;
+      };
       dialog: {
         showOpenDialog: (options: any) => Promise<any>;
         showSaveDialog: (options: any) => Promise<any>;
@@ -31,6 +53,11 @@ declare global {
           exitCode: number;
         }>;
       };
+      executeCommand: (command: string) => Promise<{
+        success: boolean;
+        output?: string;
+        error?: string;
+      }>;
       window: {
         minimize: () => Promise<void>;
         maximize: () => Promise<void>;

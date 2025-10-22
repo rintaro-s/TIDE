@@ -2,6 +2,7 @@ import { app, BrowserWindow, Menu, ipcMain, dialog, shell } from 'electron';
 import * as path from 'path';
 import { existsSync } from 'fs';
 import Store from 'electron-store';
+import NetworkService from './services/NetworkService';
 
 // Store for persistent settings
 const store = new Store();
@@ -17,6 +18,7 @@ class TovaIDE {
   private mainWindow: BrowserWindow | null = null;
   // isDev は webpack.config.js と同様に environment 変数で判定
   private isDev = process.env.NODE_ENV === 'development';
+  private networkService = new NetworkService();
 
   constructor() {
     this.init();
@@ -31,6 +33,7 @@ class TovaIDE {
     });
     app.on('window-all-closed', () => {
       log('👋', 'All windows closed');
+      this.networkService.stopService();
       if (process.platform !== 'darwin') {
         app.quit();
       }
@@ -44,6 +47,9 @@ class TovaIDE {
 
     // IPC handlers
     this.setupIpcHandlers();
+    
+    // Initialize network service
+    this.networkService.startService();
   }
 
   private createMainWindow(): void {
@@ -261,15 +267,38 @@ class TovaIDE {
     });
 
     ipcMain.handle('fs:readFile', async (_, filePath: string) => {
-      log('📄', 'fs:readFile', filePath);
+      const { normalize } = await import('path');
+      const normalizedPath = normalize(filePath);
+      log('📄', 'fs:readFile', normalizedPath);
       const { readFile } = await import('fs/promises');
-      return await readFile(filePath, 'utf-8');
+      return await readFile(normalizedPath, 'utf-8');
     });
 
     ipcMain.handle('fs:writeFile', async (_, filePath: string, content: string) => {
-      log('✍️', 'fs:writeFile', filePath);
-      const { writeFile } = await import('fs/promises');
-      await writeFile(filePath, content, 'utf-8');
+      const { normalize } = await import('path');
+      const normalizedPath = normalize(filePath);
+      log('✍️', 'fs:writeFile', normalizedPath);
+      log('📝', 'Content to write (first 100 chars):', content.substring(0, 100));
+      log('📏', 'Content length:', content.length);
+      
+      try {
+        const { writeFile } = await import('fs/promises');
+        await writeFile(normalizedPath, content, 'utf-8');
+        log('✅', 'File written successfully:', normalizedPath);
+        
+        // Verify the write
+        const { readFile } = await import('fs/promises');
+        const verifyContent = await readFile(normalizedPath, 'utf-8');
+        log('🔍', 'Verification read (first 100 chars):', verifyContent.substring(0, 100));
+        if (verifyContent === content) {
+          log('✅', 'Write verification successful');
+        } else {
+          log('⚠️', 'Write verification FAILED - content mismatch!');
+        }
+      } catch (error) {
+        log('❌', 'Failed to write file:', normalizedPath, error);
+        throw error;
+      }
     });
 
     ipcMain.handle('fs:mkdir', async (_, dirPath: string) => {
@@ -477,6 +506,35 @@ class TovaIDE {
           reject(error);
         });
       });
+    });
+
+    // Execute command handler
+    ipcMain.handle('execute:command', async (_, command: string) => {
+      const { exec } = await import('child_process');
+      const { promisify } = await import('util');
+      const execAsync = promisify(exec);
+
+      try {
+        log('⚙️', 'Executing command:', command);
+        const { stdout, stderr } = await execAsync(command, {
+          maxBuffer: 1024 * 1024 * 10, // 10MB buffer
+          windowsHide: true,
+        });
+        
+        log('✅', 'Command executed successfully');
+        return {
+          success: true,
+          output: stdout,
+          error: stderr || undefined,
+        };
+      } catch (error: any) {
+        log('❌', 'Command execution failed:', error.message);
+        return {
+          success: false,
+          output: error.stdout || undefined,
+          error: error.stderr || error.message,
+        };
+      }
     });
 
     // Window operations

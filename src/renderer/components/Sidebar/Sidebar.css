@@ -154,3 +154,26 @@
   background: var(--accent-color);
   color: var(--accent-text-color);
 }
+
+/* Modern Blue Theme Overrides for better text visibility */
+[data-theme="modern-blue"] .sidebar-icon .icon {
+  color: var(--sidebar-text, #ffffff);
+}
+
+[data-theme="modern-blue"] .sidebar-panel {
+  color: var(--text-primary);
+}
+
+[data-theme="modern-blue"] .sidebar-panel h3,
+[data-theme="modern-blue"] .sidebar-panel h4 {
+  color: var(--text-primary);
+}
+
+[data-theme="modern-blue"] .sidebar-container {
+  background: var(--bg-primary);
+}
+
+[data-theme="modern-blue"] .sidebar-iconbar {
+  background: var(--bg-secondary);
+  border-right-color: var(--border-light);
+}

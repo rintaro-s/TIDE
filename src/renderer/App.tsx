@@ -21,24 +21,24 @@ interface GitConfig {
 }
 
 const AppContent: React.FC<{ gitConfigured: boolean }> = ({ gitConfigured }) => {
-  const { setMode, setCurrentProject, settings } = useApp();
+  const appContext = useApp();
+  const [menuListenerSetup, setMenuListenerSetup] = useState(false);
 
+  // Restore previous project on mount ONCE
   useEffect(() => {
-    console.log('ℹ️ AppContent mounted');
+    console.log('ℹ️ AppContent mounted - restoring project');
     
-    // Restore previous project if enabled
     const restorePreviousProject = async () => {
-      if (settings.general?.restoreProject) {
+      if (appContext.settings.general?.restoreProject) {
         try {
           const lastProject = await window.electronAPI?.store.get('lastProject');
           if (lastProject) {
             console.log('Restoring previous project:', lastProject);
-            setCurrentProject(lastProject);
+            appContext.setCurrentProject(lastProject);
             
-            // Restore mode
             const lastMode = await window.electronAPI?.store.get('lastMode');
             if (lastMode) {
-              setMode(lastMode);
+              appContext.setMode(lastMode);
             }
           }
         } catch (error) {
@@ -48,35 +48,60 @@ const AppContent: React.FC<{ gitConfigured: boolean }> = ({ gitConfigured }) => 
     };
 
     restorePreviousProject();
-    
-    // Setup menu action listener
-    if (window.electronAPI) {
-      console.log('✅ electronAPI available');
-      window.electronAPI.onMenuAction(async (action: string, data?: any) => {
-        console.log('📝 Menu action:', action, data);
-        
-        switch (action) {
-          case 'open-folder':
-            if (data) {
-              setCurrentProject(data);
-              // Save as last project
-              await window.electronAPI?.store.set('lastProject', data);
-            }
-            break;
-          case 'new-project':
-            // ProjectManagerが処理
-            break;
-          case 'save':
-            // ファイル保存
-            break;
-          default:
-            break;
-        }
-      });
-    } else {
-      console.warn('⚠️ electronAPI not available');
+  }, []); // Empty deps - run only once
+
+  // Setup menu listener ONCE
+  useEffect(() => {
+    if (!window.electronAPI || menuListenerSetup) {
+      return;
     }
-  }, [setCurrentProject, setMode, settings.general?.restoreProject]);
+
+    console.log('✅ Setting up menu listener (once)');
+    setMenuListenerSetup(true);
+
+    const handleMenuAction = async (action: string, data?: any) => {
+      console.log('📝 Menu action:', action, data);
+      
+      switch (action) {
+        case 'open-folder':
+          if (data) {
+            appContext.setCurrentProject(data);
+            await window.electronAPI?.store.set('lastProject', data);
+          }
+          break;
+        case 'save':
+          console.log('🔍 Save action triggered');
+          try {
+            const saved = await appContext.saveFile();
+            if (saved) {
+              console.log('✅ File saved');
+            }
+          } catch (error) {
+            console.error('❌ Save failed:', error);
+          }
+          break;
+        case 'compile':
+          window.dispatchEvent(new CustomEvent('triggerBuild', { 
+            detail: { action: 'compile' } 
+          }));
+          break;
+        case 'upload':
+          window.dispatchEvent(new CustomEvent('triggerBuild', { 
+            detail: { action: 'build-upload' } 
+          }));
+          break;
+        case 'clean-build':
+          window.dispatchEvent(new CustomEvent('triggerBuild', { 
+            detail: { action: 'clean' } 
+          }));
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.electronAPI.onMenuAction(handleMenuAction);
+  }, [menuListenerSetup]); // Only when menuListenerSetup changes
 
   if (!gitConfigured) {
     return null;

@@ -189,8 +189,11 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
       logger.info('Opening file', { name: node.name, path: node.path });
       
       try {
+        // パスを正規化（Windowsのバックスラッシュに統一）
+        const normalizedPath = node.path.replace(/\//g, '\\');
+        
         // ファイルの内容を読み込む
-        const content = await window.electronAPI.fs.readFile(node.path);
+        const content = await window.electronAPI.fs.readFile(normalizedPath);
         
         logger.success('File content loaded', { 
           name: node.name, 
@@ -198,9 +201,9 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
         });
         
         const fileTab = {
-          id: node.path,
+          id: normalizedPath,
           name: node.name,
-          path: node.path,
+          path: normalizedPath,
           content: content,
           isDirty: false
         };

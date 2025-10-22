@@ -1,43 +1,55 @@
-/* Material Design Theme - Google Material Design 3 inspired */
+/* Material Design 3 Theme - Vibrant and Colorful */
 
 :root[data-theme="material"] {
-  /* Material Colors - Based on Material Design 3 */
-  --md-primary: #6750A4;
-  --md-primary-container: #EADDFF;
-  --md-on-primary: #FFFFFF;
-  --md-on-primary-container: #21005E;
+  /* Material You Dynamic Colors - More vibrant palette */
+  --md-primary: #BB86FC;
+  --md-primary-container: #3700B3;
+  --md-on-primary: #000000;
+  --md-on-primary-container: #EADDFF;
   
-  --md-secondary: #625B71;
-  --md-secondary-container: #E8DEF8;
-  --md-on-secondary: #FFFFFF;
-  --md-on-secondary-container: #1E192B;
+  --md-secondary: #03DAC6;
+  --md-secondary-container: #018786;
+  --md-on-secondary: #000000;
+  --md-on-secondary-container: #A7FFEB;
   
-  --md-tertiary: #7D5260;
-  --md-tertiary-container: #FFD8E4;
+  --md-tertiary: #FF6B6B;
+  --md-tertiary-container: #C51162;
   --md-on-tertiary: #FFFFFF;
-  --md-on-tertiary-container: #370B1E;
+  --md-on-tertiary-container: #FFE4E1;
   
-  --md-error: #B3261E;
-  --md-error-container: #F9DEDC;
-  --md-on-error: #FFFFFF;
-  --md-on-error-container: #410E0B;
+  --md-quaternary: #FFD54F;
+  --md-quaternary-container: #FF8F00;
+  --md-on-quaternary: #000000;
+  --md-on-quaternary-container: #FFF8E1;
   
-  --md-success: #2E7D32;
-  --md-success-container: #C8E6C9;
-  --md-warning: #F57C00;
-  --md-warning-container: #FFE0B2;
+  --md-quinary: #4FC3F7;
+  --md-quinary-container: #0277BD;
+  --md-on-quinary: #000000;
+  --md-on-quinary-container: #E1F5FE;
   
-  /* Surface Colors */
-  --md-surface: #1C1B1F;
-  --md-surface-variant: #49454E;
-  --md-surface-container-lowest: #0F0D13;
-  --md-surface-container-low: #1C1B1F;
-  --md-surface-container: #201F26;
-  --md-surface-container-high: #2B2930;
-  --md-surface-container-highest: #36343B;
+  --md-error: #CF6679;
+  --md-error-container: #B00020;
+  --md-on-error: #000000;
+  --md-on-error-container: #FDEAEA;
   
-  --md-on-surface: #E6E1E5;
-  --md-on-surface-variant: #CAC4CF;
+  --md-success: #4CAF50;
+  --md-success-container: #2E7D32;
+  --md-warning: #FF9800;
+  --md-warning-container: #E65100;
+  --md-info: #2196F3;
+  --md-info-container: #0D47A1;
+  
+  /* Surface Colors - Darker for better contrast */
+  --md-surface: #121212;
+  --md-surface-variant: #2D2D30;
+  --md-surface-container-lowest: #0D0D0D;
+  --md-surface-container-low: #1A1A1A;
+  --md-surface-container: #1E1E1E;
+  --md-surface-container-high: #252526;
+  --md-surface-container-highest: #2D2D30;
+  
+  --md-on-surface: #FFFFFF;
+  --md-on-surface-variant: #E1E1E1;
   
   /* Outline */
   --md-outline: #948F99;
@@ -60,41 +72,62 @@
 
 /* Base Application */
 [data-theme="material"] body {
-  background: var(--md-surface);
+  background: linear-gradient(135deg, var(--md-surface) 0%, var(--md-surface-container-low) 100%);
   color: var(--md-on-surface);
-  font-family: 'Roboto', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Google Sans', 'Roboto', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Containers with elevation */
-[data-theme="material"] .sidebar,
+[data-theme="material"] .main-workspace {
+  background: linear-gradient(135deg, var(--md-surface) 0%, var(--md-surface-container-low) 50%, var(--md-surface) 100%);
+}
+
+/* Containers with Material elevation and accent colors */
+[data-theme="material"] .sidebar {
+  background: linear-gradient(180deg, rgba(187, 134, 252, 0.05) 0%, var(--md-surface-container) 100%);
+  box-shadow: var(--md-elevation-2);
+  border-right: 2px solid var(--md-primary);
+  border-radius: 0 16px 16px 0;
+}
+
 [data-theme="material"] .file-explorer {
   background: var(--md-surface-container);
   box-shadow: var(--md-elevation-1);
-  border-right: 1px solid var(--md-outline-variant);
+  border-radius: 12px;
+  margin: 8px;
 }
 
 [data-theme="material"] .bottom-panel {
-  background: var(--md-surface-container);
-  box-shadow: var(--md-elevation-2);
-  border-top: 1px solid var(--md-outline-variant);
+  background: linear-gradient(90deg, rgba(3, 218, 198, 0.05) 0%, var(--md-surface-container) 100%);
+  box-shadow: var(--md-elevation-3);
+  border-top: 2px solid var(--md-secondary);
+  border-radius: 16px 16px 0 0;
 }
 
 [data-theme="material"] .title-bar {
-  background: var(--md-surface-container);
-  border-bottom: 1px solid var(--md-outline-variant);
+  background: linear-gradient(90deg, var(--md-primary-container) 0%, var(--md-secondary-container) 100%);
+  color: var(--md-on-primary);
+  box-shadow: var(--md-elevation-1);
+  font-weight: 600;
 }
 
 [data-theme="material"] .status-bar {
-  background: var(--md-surface-container-high);
-  border-top: 1px solid var(--md-outline-variant);
-  color: var(--md-on-surface-variant);
+  background: linear-gradient(90deg, var(--md-surface-container-high) 0%, rgba(187, 134, 252, 0.1) 100%);
+  border-top: 1px solid var(--md-primary);
+  color: var(--md-on-surface);
 }
 
-/* Editor */
+/* Editor with colorful accents */
 [data-theme="material"] .editor-container {
   background: var(--md-surface-container-lowest);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
+  border: 1px solid var(--md-primary);
+  box-shadow: var(--md-elevation-2);
+}
+
+[data-theme="material"] .editor-tabs {
+  background: linear-gradient(90deg, var(--md-primary-container) 0%, var(--md-secondary-container) 100%);
+  border-bottom: 2px solid var(--md-primary);
 }
 
 /* Material Buttons */
@@ -162,8 +195,102 @@
 }
 
 [data-theme="material"] .md-outlined-button:hover {
-  background: rgba(103, 80, 164, 0.08);
+  background: rgba(187, 134, 252, 0.08);
   border-color: var(--md-primary);
+}
+
+/* Floating Action Button (FAB) */
+[data-theme="material"] .fab {
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  border: none;
+  border-radius: 16px;
+  width: 56px;
+  height: 56px;
+  box-shadow: var(--md-elevation-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all var(--md-duration-medium) var(--md-easing-emphasized);
+}
+
+[data-theme="material"] .fab:hover {
+  box-shadow: var(--md-elevation-4);
+  transform: scale(1.05);
+}
+
+[data-theme="material"] .fab.extended {
+  width: auto;
+  padding: 0 16px;
+  border-radius: 16px;
+  min-width: 80px;
+  gap: 8px;
+}
+
+/* Material Cards */
+[data-theme="material"] .card,
+[data-theme="material"] .md-card {
+  background: var(--md-surface-container);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--md-elevation-1);
+  border: 1px solid var(--md-outline-variant);
+  transition: all var(--md-duration-short) var(--md-easing-standard);
+}
+
+[data-theme="material"] .card:hover,
+[data-theme="material"] .md-card:hover {
+  box-shadow: var(--md-elevation-2);
+  transform: translateY(-2px);
+}
+
+[data-theme="material"] .md-card.elevated {
+  box-shadow: var(--md-elevation-3);
+  border: none;
+}
+
+/* Material Chips */
+[data-theme="material"] .chip,
+[data-theme="material"] .md-chip {
+  background: var(--md-surface-container-high);
+  color: var(--md-on-surface);
+  border: 1px solid var(--md-outline);
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--md-duration-short) var(--md-easing-standard);
+}
+
+[data-theme="material"] .chip:hover,
+[data-theme="material"] .md-chip:hover {
+  background: var(--md-surface-container-highest);
+  box-shadow: var(--md-elevation-1);
+}
+
+[data-theme="material"] .chip.selected,
+[data-theme="material"] .md-chip.selected {
+  background: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  border-color: var(--md-secondary);
+}
+
+/* Material Badges */
+[data-theme="material"] .badge {
+  background: var(--md-error);
+  color: var(--md-on-error);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 16px;
+  text-align: center;
 }
 
 /* Text Buttons */

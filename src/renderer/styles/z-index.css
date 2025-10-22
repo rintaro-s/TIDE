@@ -1,8 +1,10 @@
 /* Z-Index Hierarchy - グローバル定義 */
 :root {
+  --z-wallpaper: -10;
   --z-base: 0;
   --z-background: 0;
   --z-content: 1;
+  --z-editor: 5;
   --z-sidebar: 10;
   --z-bottom-panel: 10;
   --z-resizer: 15;
@@ -15,6 +17,8 @@
 }
 
 /* 適用 */
+.workspace-wallpaper { z-index: var(--z-wallpaper) !important; }
+.editor-area { z-index: var(--z-editor) !important; }
 .sidebar { z-index: var(--z-sidebar) !important; }
 .bottom-panel { z-index: var(--z-bottom-panel) !important; }
 .title-bar { z-index: var(--z-titlebar) !important; }

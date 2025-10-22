@@ -3,6 +3,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useApp } from '../../contexts/AppContext';
 import EditorSettingsPanel from '../EditorSettingsPanel/EditorSettingsPanel';
 import { WorkflowTestPage } from '../TestRunner/WorkflowTestPage';
+import GlobalCacheStatus from '../GlobalCacheStatus/GlobalCacheStatus';
 import './SettingsPanel.css';
 
 interface SettingsTab {
@@ -270,6 +271,20 @@ const SettingsPanel: React.FC = () => {
   const renderBuildSettings = () => (
     <div className="settings-section">
       <h3>ビルド設定</h3>
+      <div className="setting-item">
+        <label>グローバルコンパイルキャッシュ</label>
+        <input
+          type="checkbox"
+          checked={settings.build?.useGlobalCache !== false}
+          onChange={(e) => handleSettingChange('build', 'useGlobalCache', e.target.checked)}
+        />
+        <span>LAN内で共有されたコンパイル済みバイナリを使用</span>
+        <div className="setting-description">
+          同じコード・ライブラリ・ボード設定でコンパイルした結果を他のPCから取得できます。
+          初回のみファイアウォール許可が必要です。
+        </div>
+        <GlobalCacheStatus />
+      </div>
       <div className="setting-item">
         <label>並列ビルド</label>
         <input

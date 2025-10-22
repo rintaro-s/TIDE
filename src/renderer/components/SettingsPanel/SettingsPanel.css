@@ -589,3 +589,12 @@
 .theme-preview-anime .preview-content {
   background: #0a0e27;
 }
+
+/* Setting Description */
+.setting-description {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  opacity: 0.8;
+}

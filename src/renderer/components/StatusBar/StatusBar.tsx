@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './StatusBar.css';
 
 interface StatusBarProps {
@@ -7,35 +7,45 @@ interface StatusBarProps {
 }
 
 const StatusBar: React.FC<StatusBarProps> = ({ mode, onToggleBottomPanel }) => {
+  const [statusMessage, setStatusMessage] = useState('');
+
   return (
     <div className="status-bar">
       <div className="status-left">
         <div className="status-item mode">
-          <span className="status-icon">{mode === 'arduino' ? '🔧' : '⚙️'}</span>
           <span>{mode === 'arduino' ? 'Arduino CLI' : 'PlatformIO'}</span>
         </div>
         
         <div className="status-item">
-          <span className="status-icon">📋</span>
           <span>Arduino Uno</span>
         </div>
         
         <div className="status-item">
-          <span className="status-icon">🔌</span>
           <span>COM3</span>
         </div>
+        
+        <div className="status-message">{statusMessage}</div>
       </div>
       
       <div className="status-center">
-        <div className="status-item clickable" onClick={onToggleBottomPanel}>
-          <span className="status-icon">📊</span>
-          <span>出力パネル</span>
+        <div className="panel-toggles">
+          <button className="panel-toggle-btn" onClick={onToggleBottomPanel} title="出力パネル">
+            出力
+          </button>
+          <button className="panel-toggle-btn" onClick={onToggleBottomPanel} title="ターミナル">
+            ターミナル
+          </button>
+          <button className="panel-toggle-btn" onClick={onToggleBottomPanel} title="問題">
+            問題
+          </button>
+          <button className="panel-toggle-btn" onClick={onToggleBottomPanel} title="シリアルモニター">
+            シリアルモニター
+          </button>
         </div>
       </div>
       
       <div className="status-right">
         <div className="status-item">
-          <span className="status-icon">✅</span>
           <span>準備完了</span>
         </div>
         

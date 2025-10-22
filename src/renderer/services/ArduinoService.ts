@@ -396,8 +396,10 @@ export class ArduinoCLIService {
    * Compile sketch
    * arduino-cli compile --fqbn <fqbn> <sketch-path>
    */
-  async compile(sketchPath: string, fqbn: string): Promise<CompileResult> {
+  async compile(sketchPath: string, fqbn: string, verbose: boolean = false): Promise<CompileResult> {
     try {
+      logger.info('Starting Arduino compilation...', `${sketchPath} for ${fqbn}`);
+      
       // コンパイル前にハッシュを計算
       const cacheService = CompileCacheService.getInstance();
       const codeHash = await cacheService.computeHash(sketchPath);
@@ -422,8 +424,17 @@ export class ArduinoCLIService {
         }
       }
 
+      // Build compilation arguments
+      const args = ['compile', '--fqbn', fqbn];
+      if (verbose) {
+        args.push('--verbose');
+      }
+      args.push(sketchPath);
+
+      logger.info('Executing Arduino compilation...', args.join(' '));
+
       // キャッシュミスの場合、通常のコンパイルを実行
-      const result = await this.executeCommand('arduino-cli', ['compile', '--fqbn', fqbn, sketchPath]);
+      const result = await this.executeCommand('arduino-cli', args);
       
       const output = result.stdout + '\n' + result.stderr;
       const errors: string[] = [];
@@ -432,18 +443,35 @@ export class ArduinoCLIService {
       if (result.stderr) {
         const lines = result.stderr.split('\n');
         lines.forEach(line => {
-          if (line.includes('error:')) {
-            errors.push(line);
-          } else if (line.includes('warning:')) {
-            warnings.push(line);
+          if (line.includes('error:') || line.includes('Error') || line.includes('FAILED')) {
+            errors.push(line.trim());
+          } else if (line.includes('warning:') || line.includes('Warning')) {
+            warnings.push(line.trim());
           }
         });
       }
 
+      // Also check stdout for build information
+      if (result.stdout) {
+        const lines = result.stdout.split('\n');
+        lines.forEach(line => {
+          if (line.includes('error:') || line.includes('Error') || line.includes('FAILED')) {
+            errors.push(line.trim());
+          } else if (line.includes('warning:') || line.includes('Warning')) {
+            warnings.push(line.trim());
+          }
+        });
+      }
+
+      const success = result.exitCode === 0 && errors.length === 0;
+
       // コンパイル成功時にローカルキャッシュに保存
-      if (result.exitCode === 0 && codeHash) {
+      if (success && codeHash) {
         const binaryPath = `${sketchPath}/build`;
         await cacheService.cacheLocally(codeHash, binaryPath, fqbn.split(':')[1], fqbn.split(':')[0]);
+        logger.success('Arduino compilation completed successfully');
+      } else {
+        logger.error('Arduino compilation failed', `Exit code: ${result.exitCode}, Errors: ${errors.length}`);
       }
       
       return {

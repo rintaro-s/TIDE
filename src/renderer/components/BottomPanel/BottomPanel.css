@@ -99,6 +99,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  background: var(--background-secondary);
 }
 
 .empty-output {
@@ -114,44 +115,154 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  padding: 2px 0;
+  padding: 4px 8px;
   color: var(--text-primary);
+  border-radius: 3px;
+  margin: 1px 0;
 }
 
 .output-line.success {
   color: var(--accent-green);
+  background: rgba(76, 175, 80, 0.1);
+  border-left: 3px solid var(--accent-green);
 }
 
 .output-line.error {
   color: var(--accent-red);
+  background: rgba(244, 67, 54, 0.1);
+  border-left: 3px solid var(--accent-red);
 }
 
 .output-line.warning {
   color: var(--accent-yellow);
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 3px solid var(--accent-yellow);
 }
 
 .timestamp {
   color: var(--text-muted);
   font-size: 11px;
-  flex-shrink: 0;
   min-width: 70px;
+  font-family: monospace;
 }
 
 .phase-indicator {
-  font-size: 10px;
-  flex-shrink: 0;
-  width: 16px;
+  min-width: 20px;
+  text-align: center;
+  font-size: 14px;
 }
 
 .output-text {
   flex: 1;
-  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .progress-info {
   color: var(--text-muted);
-  font-size: 10px;
-  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.progress-info {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+/* Problems Tab Styles */
+.problems-content {
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty-problems {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+}
+
+.problems-summary {
+  display: flex;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 12px;
+}
+
+.error-count {
+  color: var(--accent-red);
+  font-weight: 500;
+}
+
+.warning-count {
+  color: var(--accent-yellow);
+  font-weight: 500;
+}
+
+.problems-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.no-problems {
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+.problem-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  border-left: 3px solid transparent;
+  margin: 2px 0;
+}
+
+.problem-item.error {
+  background: rgba(244, 67, 54, 0.1);
+  border-left-color: var(--accent-red);
+}
+
+.problem-item.warning {
+  background: rgba(255, 152, 0, 0.1);
+  border-left-color: var(--accent-yellow);
+}
+
+.problem-item.info {
+  background: rgba(33, 150, 243, 0.1);
+  border-left-color: var(--accent-blue);
+}
+
+.problem-icon {
+  min-width: 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.problem-source {
+  color: var(--text-muted);
+  font-weight: 500;
+  min-width: 80px;
+  font-family: monospace;
+}
+
+.problem-message {
+  flex: 1;
+  color: var(--text-primary);
+  white-space: pre-wrap;
 }
 
 /* Terminal Tab Styles */

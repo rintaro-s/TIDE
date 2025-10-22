@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TitleBar from '../TitleBar/TitleBar';
 import Sidebar from '../Sidebar/Sidebar';
 import EditorArea from '../EditorArea/EditorArea';
-import BottomPanel from '../BottomPanel/BottomPanel';
+import BottomPanelTabs from '../BottomPanel/BottomPanelTabs';
 import StatusBar from '../StatusBar/StatusBar';
 import ProjectManager from '../ProjectManager/ProjectManager';
 import { useApp } from '../../contexts/AppContext';
@@ -62,9 +62,8 @@ const MainWorkspace: React.FC = () => {
               <EditorArea />
               
               {isBottomPanelVisible && (
-                <BottomPanel 
-                  height={bottomPanelHeight}
-                  onResize={setBottomPanelHeight}
+                <BottomPanelTabs 
+                  isVisible={isBottomPanelVisible}
                   onToggle={() => setIsBottomPanelVisible(false)}
                 />
               )}

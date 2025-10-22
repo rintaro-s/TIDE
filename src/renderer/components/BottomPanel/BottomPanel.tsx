@@ -13,6 +13,8 @@ interface BottomPanelProps {
 const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
   const [activeTab, setActiveTab] = useState<'output' | 'terminal' | 'problems' | 'serial'>('output');
   const [buildLogs, setBuildLogs] = useState<BuildProgress[]>([]);
+  const [buildOutput, setBuildOutput] = useState<{ message: string; type: string; timestamp: Date }[]>([]);
+  const [buildErrors, setBuildErrors] = useState<{ message: string; type: string; source: string }[]>([]);
 
   useEffect(() => {
     // Subscribe to build progress for output tab
@@ -20,7 +22,36 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
       setBuildLogs(prev => [...prev, progress]);
     });
 
-    return unsubscribe;
+    // Listen for build output from QuickBuildPanel
+    const handleBuildOutput = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { message, type } = customEvent.detail;
+      setBuildOutput(prev => [...prev, {
+        message,
+        type,
+        timestamp: new Date()
+      }]);
+    };
+
+    // Listen for build errors from QuickBuildPanel
+    const handleBuildError = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { message, type, source } = customEvent.detail;
+      setBuildErrors(prev => [...prev, {
+        message,
+        type,
+        source
+      }]);
+    };
+
+    window.addEventListener('buildOutput', handleBuildOutput);
+    window.addEventListener('buildError', handleBuildError);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('buildOutput', handleBuildOutput);
+      window.removeEventListener('buildError', handleBuildError);
+    };
   }, []);
 
   const renderTabContent = () => {
@@ -84,15 +115,42 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
       case 'problems':
         return (
           <div className="problems-content">
-            <div className="problems-summary">
-              <span className="error-count">❌ 0 エラー</span>
-              <span className="warning-count">⚠️ 0 警告</span>
-            </div>
-            <div className="problems-list">
-              <div className="no-problems">
-                問題は見つかりませんでした
+            {buildErrors.length === 0 ? (
+              <div className="empty-problems">
+                <div className="problems-summary">
+                  <span className="error-count">❌ 0 エラー</span>
+                  <span className="warning-count">⚠️ 0 警告</span>
+                </div>
+                <div className="no-problems">
+                  問題は見つかりませんでした
+                </div>
               </div>
-            </div>
+            ) : (
+              <>
+                <div className="problems-summary">
+                  <span className="error-count">
+                    ❌ {buildErrors.filter(e => e.type === 'error').length} エラー
+                  </span>
+                  <span className="warning-count">
+                    ⚠️ {buildErrors.filter(e => e.type === 'warning').length} 警告
+                  </span>
+                </div>
+                <div className="problems-list">
+                  {buildErrors.map((error, index) => (
+                    <div 
+                      key={index}
+                      className={`problem-item ${error.type}`}
+                    >
+                      <span className="problem-icon">
+                        {error.type === 'error' ? '❌' : error.type === 'warning' ? '⚠️' : 'ℹ️'}
+                      </span>
+                      <span className="problem-source">[{error.source}]</span>
+                      <span className="problem-message">{error.message}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         );
       

@@ -40,6 +40,7 @@ const electron_1 = require("electron");
 const path = __importStar(require("path"));
 const fs_1 = require("fs");
 const electron_store_1 = __importDefault(require("electron-store"));
+const NetworkService_1 = __importDefault(require("./services/NetworkService"));
 // Store for persistent settings
 const store = new electron_store_1.default();
 // Logger setup
@@ -52,6 +53,7 @@ class TovaIDE {
         this.mainWindow = null;
         // isDev は webpack.config.js と同様に environment 変数で判定
         this.isDev = process.env.NODE_ENV === 'development';
+        this.networkService = new NetworkService_1.default();
         this.init();
     }
     init() {
@@ -63,6 +65,7 @@ class TovaIDE {
         });
         electron_1.app.on('window-all-closed', () => {
             log('👋', 'All windows closed');
+            this.networkService.stopService();
             if (process.platform !== 'darwin') {
                 electron_1.app.quit();
             }
@@ -75,6 +78,8 @@ class TovaIDE {
         });
         // IPC handlers
         this.setupIpcHandlers();
+        // Initialize network service
+        this.networkService.startService();
     }
     createMainWindow() {
         log('🪟', 'Creating main window...');
@@ -277,14 +282,37 @@ class TovaIDE {
             return (0, fs_1.existsSync)(filePath);
         });
         electron_1.ipcMain.handle('fs:readFile', async (_, filePath) => {
-            log('📄', 'fs:readFile', filePath);
+            const { normalize } = await Promise.resolve().then(() => __importStar(require('path')));
+            const normalizedPath = normalize(filePath);
+            log('📄', 'fs:readFile', normalizedPath);
             const { readFile } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
-            return await readFile(filePath, 'utf-8');
+            return await readFile(normalizedPath, 'utf-8');
         });
         electron_1.ipcMain.handle('fs:writeFile', async (_, filePath, content) => {
-            log('✍️', 'fs:writeFile', filePath);
-            const { writeFile } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
-            await writeFile(filePath, content, 'utf-8');
+            const { normalize } = await Promise.resolve().then(() => __importStar(require('path')));
+            const normalizedPath = normalize(filePath);
+            log('✍️', 'fs:writeFile', normalizedPath);
+            log('📝', 'Content to write (first 100 chars):', content.substring(0, 100));
+            log('📏', 'Content length:', content.length);
+            try {
+                const { writeFile } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
+                await writeFile(normalizedPath, content, 'utf-8');
+                log('✅', 'File written successfully:', normalizedPath);
+                // Verify the write
+                const { readFile } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
+                const verifyContent = await readFile(normalizedPath, 'utf-8');
+                log('🔍', 'Verification read (first 100 chars):', verifyContent.substring(0, 100));
+                if (verifyContent === content) {
+                    log('✅', 'Write verification successful');
+                }
+                else {
+                    log('⚠️', 'Write verification FAILED - content mismatch!');
+                }
+            }
+            catch (error) {
+                log('❌', 'Failed to write file:', normalizedPath, error);
+                throw error;
+            }
         });
         electron_1.ipcMain.handle('fs:mkdir', async (_, dirPath) => {
             const { mkdir } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
@@ -469,6 +497,33 @@ class TovaIDE {
                     reject(error);
                 });
             });
+        });
+        // Execute command handler
+        electron_1.ipcMain.handle('execute:command', async (_, command) => {
+            const { exec } = await Promise.resolve().then(() => __importStar(require('child_process')));
+            const { promisify } = await Promise.resolve().then(() => __importStar(require('util')));
+            const execAsync = promisify(exec);
+            try {
+                log('⚙️', 'Executing command:', command);
+                const { stdout, stderr } = await execAsync(command, {
+                    maxBuffer: 1024 * 1024 * 10, // 10MB buffer
+                    windowsHide: true,
+                });
+                log('✅', 'Command executed successfully');
+                return {
+                    success: true,
+                    output: stdout,
+                    error: stderr || undefined,
+                };
+            }
+            catch (error) {
+                log('❌', 'Command execution failed:', error.message);
+                return {
+                    success: false,
+                    output: error.stdout || undefined,
+                    error: error.stderr || error.message,
+                };
+            }
         });
         // Window operations
         electron_1.ipcMain.handle('window:minimize', () => {

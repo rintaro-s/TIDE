@@ -20,6 +20,48 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
         rename: (oldPath, newPath) => electron_1.ipcRenderer.invoke('fs:rename', oldPath, newPath),
         unlink: (filePath) => electron_1.ipcRenderer.invoke('fs:unlink', filePath),
         rmdir: (dirPath) => electron_1.ipcRenderer.invoke('fs:rmdir', dirPath),
+        readBinary: (filePath) => electron_1.ipcRenderer.invoke('fs:readBinary', filePath),
+        writeBinary: (filePath, data) => electron_1.ipcRenderer.invoke('fs:writeBinary', filePath, data),
+        getFileHash: (filePath) => electron_1.ipcRenderer.invoke('fs:getFileHash', filePath),
+    },
+    // Network operations
+    network: {
+        start: () => electron_1.ipcRenderer.invoke('network:start'),
+        stop: () => electron_1.ipcRenderer.invoke('network:stop'),
+        getTeamMembers: () => electron_1.ipcRenderer.invoke('network:getTeamMembers'),
+        sendMessage: (targetId, message) => electron_1.ipcRenderer.invoke('network:sendMessage', targetId, message),
+        broadcast: (message) => electron_1.ipcRenderer.invoke('network:broadcast', message),
+        getLocalInfo: () => electron_1.ipcRenderer.invoke('network:getLocalInfo'),
+        startFileTransfer: (targetId, filePath) => electron_1.ipcRenderer.invoke('network:startFileTransfer', targetId, filePath),
+        updatePresence: (presence) => electron_1.ipcRenderer.invoke('network:updatePresence', presence),
+        // Event listeners
+        onMessage: (callback) => {
+            electron_1.ipcRenderer.on('network:message', (_, message) => callback(message));
+        },
+        onTeamMemberUpdated: (callback) => {
+            electron_1.ipcRenderer.on('network:teamMemberUpdated', (_, member) => callback(member));
+        },
+        onTeamMemberLeft: (callback) => {
+            electron_1.ipcRenderer.on('network:teamMemberLeft', (_, memberId) => callback(memberId));
+        },
+        // Legacy support for existing code
+        startServer: (options) => electron_1.ipcRenderer.invoke('network:startServer', options),
+        stopServer: () => electron_1.ipcRenderer.invoke('network:stopServer'),
+        broadcastUDP: (options) => electron_1.ipcRenderer.invoke('network:broadcastUDP', options),
+        onUDPMessage: (callback) => {
+            electron_1.ipcRenderer.on('network:onUDPMessage', (_, message, address) => callback(message, address));
+        },
+        httpRequest: (url, options) => electron_1.ipcRenderer.invoke('network:httpRequest', url, options),
+        discoverPeers: () => electron_1.ipcRenderer.invoke('network:discoverPeers'),
+        startSharingServer: (port, boards) => electron_1.ipcRenderer.invoke('network:startSharingServer', port, boards),
+        stopSharingServer: () => electron_1.ipcRenderer.invoke('network:stopSharingServer'),
+    },
+    // System operations
+    system: {
+        requestFirewallPermission: (options) => electron_1.ipcRenderer.invoke('system:requestFirewallPermission', options),
+        getNetworkInterfaces: () => electron_1.ipcRenderer.invoke('system:getNetworkInterfaces'),
+        getEnv: (variable) => electron_1.ipcRenderer.invoke('system:getEnv', variable),
+        getHomePath: () => electron_1.ipcRenderer.invoke('system:getHomePath'),
     },
     // Dialog operations
     dialog: {
@@ -32,6 +74,8 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
     process: {
         exec: (command, args, options) => electron_1.ipcRenderer.invoke('process:exec', command, args, options),
     },
+    // Execute shell command
+    executeCommand: (command) => electron_1.ipcRenderer.invoke('execute:command', command),
     // Window operations
     window: {
         minimize: () => electron_1.ipcRenderer.invoke('window:minimize'),

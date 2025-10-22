@@ -87,10 +87,19 @@
   color: var(--text-primary);
   cursor: pointer;
   transition: background-color var(--transition-fast);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .menu-option:hover {
   background: var(--bg-hover);
+}
+
+.shortcut {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-left: 20px;
 }
 
 .menu-separator {
@@ -104,6 +113,16 @@
   align-items: center;
   gap: 4px;
   padding-right: 4px;
+}
+
+.project-indicator {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-right: 8px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .title-btn {
@@ -124,6 +143,14 @@
 
 .title-btn:hover {
   background: var(--bg-hover);
+}
+
+.log-btn {
+  font-size: 14px;
+}
+
+.share-btn {
+  font-size: 14px;
 }
 
 .theme-btn {
