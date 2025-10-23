@@ -1,0 +1,18 @@
+.app-wallpaper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: var(--z-wallpaper, -10);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.app {
+  position: relative;
+  z-index: var(--z-base, 0);
+}

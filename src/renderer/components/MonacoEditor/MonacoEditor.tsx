@@ -246,6 +246,11 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
         }
       });
 
+      // Determine if errors should be shown based on file type
+      const fileExtension = filePath.split('.').pop()?.toLowerCase() || '';
+      const noErrorCheckExtensions = ['ini', 'md', 'txt', 'json', 'yaml', 'yml', 'toml', 'xml', 'html', 'css'];
+      const showErrors = !noErrorCheckExtensions.includes(fileExtension);
+
       // Create editor instance with user-configured settings
       editorRef.current = monaco.editor.create(editorContainerRef.current, {
         value: value,
@@ -330,8 +335,8 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
         acceptSuggestionOnEnter: 'on',
         tabCompletion: 'on',
         
-        // Error handling
-        renderValidationDecorations: 'on',
+        // Error handling - disable for config files
+        renderValidationDecorations: showErrors ? 'on' : 'off',
         
         // Hover
         hover: {
@@ -339,6 +344,14 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
           delay: 300
         }
       });
+
+      // Disable diagnostics for non-code files
+      if (!showErrors) {
+        const model = editorRef.current.getModel();
+        if (model) {
+          monaco.editor.setModelMarkers(model, 'owner', []);
+        }
+      }
 
       // Setup change listener
       editorRef.current.onDidChangeModelContent(() => {
@@ -537,20 +550,65 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
         }
       });    // Add bracket matching and auto-closing
     monaco.languages.setLanguageConfiguration('cpp', {
+      comments: {
+        lineComment: '//',
+        blockComment: ['/*', '*/']
+      },
       brackets: [['(', ')'], ['{', '}'], ['[', ']']],
       autoClosingPairs: [
         { open: '(', close: ')' },
         { open: '{', close: '}' },
         { open: '[', close: ']' },
         { open: '"', close: '"' },
-        { open: "'", close: "'" }
+        { open: "'", close: "'" },
+        { open: '/*', close: ' */', notIn: ['string'] }
       ],
       surroundingPairs: [
         { open: '(', close: ')' },
         { open: '{', close: '}' },
         { open: '[', close: ']' },
         { open: '"', close: '"' },
-        { open: "'", close: "'" }
+        { open: "'", close: "'" },
+        { open: '/*', close: ' */' }
+      ],
+      onEnterRules: [
+        {
+          // Handle inline comments - don't treat as error
+          beforeText: /^\s*\/\/.*$/,
+          action: { indentAction: monaco.languages.IndentAction.None }
+        }
+      ]
+    });
+
+    // Also configure for arduino/ino files
+    monaco.languages.setLanguageConfiguration('arduino', {
+      comments: {
+        lineComment: '//',
+        blockComment: ['/*', '*/']
+      },
+      brackets: [['(', ')'], ['{', '}'], ['[', ']']],
+      autoClosingPairs: [
+        { open: '(', close: ')' },
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '"', close: '"' },
+        { open: "'", close: "'" },
+        { open: '/*', close: ' */', notIn: ['string'] }
+      ],
+      surroundingPairs: [
+        { open: '(', close: ')' },
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '"', close: '"' },
+        { open: "'", close: "'" },
+        { open: '/*', close: ' */' }
+      ],
+      onEnterRules: [
+        {
+          // Handle inline comments - don't treat as error
+          beforeText: /^\s*\/\/.*$/,
+          action: { indentAction: monaco.languages.IndentAction.None }
+        }
       ]
     });
 

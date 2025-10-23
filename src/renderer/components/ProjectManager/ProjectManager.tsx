@@ -351,7 +351,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
   return (
     <div className="project-manager">
       <div className="project-header">
-        <h1>🚀 Create New Project</h1>
+        <h1>Create New Project</h1>
         <p>Get started by creating a new Arduino or PlatformIO project</p>
       </div>
 
@@ -428,7 +428,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
             disabled={!projectName || !selectedTemplate || !projectPath || isCreating}
             className="create-btn"
           >
-            {isCreating ? 'Creating...' : '✨ Create Project'}
+            {isCreating ? 'Creating...' : 'Create Project'}
           </button>
         </div>
       </div>

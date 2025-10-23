@@ -59,30 +59,20 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
       case 'output':
         return (
           <div className="output-content">
-            {buildLogs.length === 0 ? (
+            {buildOutput.length === 0 ? (
               <div className="empty-output">
                 ビルド出力がここに表示されます...
               </div>
             ) : (
-              buildLogs.map((log, index) => (
+              buildOutput.map((log, index) => (
                 <div 
                   key={index}
-                  className={`output-line ${log.phase === 'error' ? 'error' : log.phase === 'completed' ? 'success' : ''}`}
+                  className={`output-line ${log.type}`}
                 >
                   <span className="timestamp">
                     [{log.timestamp.toLocaleTimeString('ja-JP', { hour12: false })}]
                   </span>
-                  <span className="phase-indicator">
-                    {log.phase === 'compiling' && '🔨'}
-                    {log.phase === 'linking' && '🔗'}
-                    {log.phase === 'uploading' && '�'}
-                    {log.phase === 'completed' && '✅'}
-                    {log.phase === 'error' && '❌'}
-                  </span>
                   <span className="output-text">{log.message}</span>
-                  {log.percentage > 0 && log.percentage < 100 && (
-                    <span className="progress-info">({log.percentage}%)</span>
-                  )}
                 </div>
               ))
             )}
@@ -118,8 +108,8 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
             {buildErrors.length === 0 ? (
               <div className="empty-problems">
                 <div className="problems-summary">
-                  <span className="error-count">❌ 0 エラー</span>
-                  <span className="warning-count">⚠️ 0 警告</span>
+                  <span className="error-count">0 エラー</span>
+                  <span className="warning-count">0 警告</span>
                 </div>
                 <div className="no-problems">
                   問題は見つかりませんでした
@@ -129,10 +119,10 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
               <>
                 <div className="problems-summary">
                   <span className="error-count">
-                    ❌ {buildErrors.filter(e => e.type === 'error').length} エラー
+                    {buildErrors.filter(e => e.type === 'error').length} エラー
                   </span>
                   <span className="warning-count">
-                    ⚠️ {buildErrors.filter(e => e.type === 'warning').length} 警告
+                    {buildErrors.filter(e => e.type === 'warning').length} 警告
                   </span>
                 </div>
                 <div className="problems-list">
@@ -141,9 +131,6 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
                       key={index}
                       className={`problem-item ${error.type}`}
                     >
-                      <span className="problem-icon">
-                        {error.type === 'error' ? '❌' : error.type === 'warning' ? '⚠️' : 'ℹ️'}
-                      </span>
                       <span className="problem-source">[{error.source}]</span>
                       <span className="problem-message">{error.message}</span>
                     </div>
@@ -170,31 +157,31 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
             className={`panel-tab ${activeTab === 'output' ? 'active' : ''}`}
             onClick={() => setActiveTab('output')}
           >
-            📋 出力
+            出力
           </div>
           <div 
             className={`panel-tab ${activeTab === 'terminal' ? 'active' : ''}`}
             onClick={() => setActiveTab('terminal')}
           >
-            🔧 ターミナル
+            ターミナル
           </div>
           <div 
             className={`panel-tab ${activeTab === 'problems' ? 'active' : ''}`}
             onClick={() => setActiveTab('problems')}
           >
-            🚫 問題
+            問題
           </div>
           <div 
             className={`panel-tab ${activeTab === 'serial' ? 'active' : ''}`}
             onClick={() => setActiveTab('serial')}
           >
-            📊 シリアルモニター
+            シリアルモニター
           </div>
         </div>
         <div className="panel-actions">
           {activeTab === 'output' && (
-            <button className="action-btn" onClick={() => setBuildLogs([])}>
-              🗑️ クリア
+            <button className="action-btn" onClick={() => setBuildOutput([])}>
+              クリア
             </button>
           )}
           <button className="panel-close" onClick={onToggle}>×</button>

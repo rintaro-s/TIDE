@@ -281,12 +281,12 @@ class TovaIDE {
             log('🔍', 'fs:exists', filePath);
             return (0, fs_1.existsSync)(filePath);
         });
-        electron_1.ipcMain.handle('fs:readFile', async (_, filePath) => {
+        electron_1.ipcMain.handle('fs:readFile', async (_, filePath, encoding) => {
             const { normalize } = await Promise.resolve().then(() => __importStar(require('path')));
             const normalizedPath = normalize(filePath);
-            log('📄', 'fs:readFile', normalizedPath);
+            log('📄', 'fs:readFile', normalizedPath, encoding || 'utf-8');
             const { readFile } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
-            return await readFile(normalizedPath, 'utf-8');
+            return await readFile(normalizedPath, (encoding || 'utf-8'));
         });
         electron_1.ipcMain.handle('fs:writeFile', async (_, filePath, content) => {
             const { normalize } = await Promise.resolve().then(() => __importStar(require('path')));

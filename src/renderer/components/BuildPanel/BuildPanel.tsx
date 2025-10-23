@@ -45,9 +45,14 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
     loadBuildCache();
   }, [state.mode]);
 
-  const addOutput = (text: string) => {
+  const addOutput = (text: string, type: 'info' | 'success' | 'error' | 'warning' = 'info') => {
     setBuildOutput(prev => prev + text + '\n');
     console.log('[BuildPanel]', text);
+    
+    // Send to BottomPanel
+    window.dispatchEvent(new CustomEvent('buildOutput', {
+      detail: { message: text, type, timestamp: new Date() }
+    }));
   };
 
   const loadBuildCache = () => {

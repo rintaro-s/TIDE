@@ -23,6 +23,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  background: transparent;
+}
+
 /* CSS Variables for Theming */
 :root {
   /* Dark Theme (Default) */

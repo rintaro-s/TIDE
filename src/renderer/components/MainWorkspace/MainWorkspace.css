@@ -3,7 +3,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--bg-primary);
+  background: transparent;
   color: var(--text-primary);
   overflow: hidden;
   position: relative;
