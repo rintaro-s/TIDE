@@ -9,7 +9,7 @@ declare global {
       };
       fs: {
         exists: (filePath: string) => Promise<boolean>;
-        readFile: (filePath: string) => Promise<string>;
+  readFile: (filePath: string, encoding?: string) => Promise<string>;
         writeFile: (filePath: string, content: string) => Promise<void>;
         mkdir: (dirPath: string, options?: { recursive?: boolean }) => Promise<void>;
         readdir: (dirPath: string) => Promise<string[]>;

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 
 type Theme = 'dark' | 'light' | 'modern-blue' | 'liquid-glass' | 'material' | 'anime';
 
@@ -59,8 +59,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       }
     };
 
-    loadSettings();
+    loadSettings().finally(() => {
+      initializedRef.current = true;
+      console.log('✅ ThemeContext initialization complete');
+    });
   }, []);
+
+  // Prevent saving defaults to store before initial load completes.
+  const initializedRef = useRef(false);
 
   useEffect(() => {
     console.log('🎨 Applying theme:', theme);
@@ -69,7 +75,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     
     // Save theme to electron store
     if (window.electronAPI) {
-      window.electronAPI.store.set('theme', theme);
+      if (initializedRef.current) {
+        window.electronAPI.store.set('theme', theme);
+      } else {
+        console.log('[Theme] Initialization not finished - skipping theme save');
+      }
     }
   }, [theme]);
 
@@ -78,9 +88,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     
     // Save wallpaper settings
     if (window.electronAPI) {
-      window.electronAPI.store.set('wallpaper', wallpaper);
+      if (initializedRef.current) {
+        window.electronAPI.store.set('wallpaper', wallpaper);
+      } else {
+        console.log('[Wallpaper] Initialization not finished - skipping wallpaper save');
+      }
     }
   }, [wallpaper]);
+
 
   const toggleTheme = () => {
     const themes: Theme[] = ['dark', 'light', 'modern-blue', 'liquid-glass', 'material', 'anime'];

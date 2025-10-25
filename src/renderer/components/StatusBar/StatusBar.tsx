@@ -10,7 +10,7 @@ const StatusBar: React.FC<StatusBarProps> = ({ mode, onToggleBottomPanel }) => {
   const [statusMessage, setStatusMessage] = useState('');
 
   return (
-    <div className="status-bar">
+    <div className="status-bar" data-surface="chrome">
       <div className="status-left">
         <div className="status-item mode">
           <span>{mode === 'arduino' ? 'Arduino CLI' : 'PlatformIO'}</span>

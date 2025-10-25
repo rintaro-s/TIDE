@@ -1,19 +1,18 @@
-.app {
-  width: 100vw;
-  height: 100vh;
+﻿.app {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  background: transparent;
   color: var(--text-primary);
   overflow: hidden;
+  background: var(--bg-primary);
   position: relative;
+  z-index: 1;
 }
 
-/* Startup Screen Styles */
 .startup-container {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-secondary);
 }

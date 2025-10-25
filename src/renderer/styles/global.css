@@ -21,6 +21,8 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
 
 #root {
@@ -40,6 +42,8 @@ body {
   --bg-primary-rgb: 30, 30, 30;
   --bg-secondary-rgb: 37, 37, 38;
   --bg-tertiary-rgb: 45, 45, 48;
+  --bg-hover-rgb: 55, 55, 61;
+  --bg-active-rgb: 9, 71, 113;
   
   --text-primary: #cccccc;
   --text-secondary: #969696;
@@ -64,6 +68,27 @@ body {
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
   --transition-slow: 350ms ease;
+
+  /* === WALLPAPER SYSTEM === */
+  /* Wallpaper control - set to 1 when wallpaper is active */
+  --wallpaper-active: 0;
+  
+  /* UI transparency when wallpaper is enabled - adjustable per theme */
+  --wallpaper-ui-alpha: 0.25;
+  --wallpaper-ui-alpha-hover: 0.35;
+  --wallpaper-ui-alpha-active: 0.45;
+  
+  /* Backdrop filter strength for readability */
+  --wallpaper-blur: 8px;
+  --wallpaper-saturate: 110%;
+  --wallpaper-brightness: 95%;
+  
+  /* Dynamic background calculation: use full opacity when no wallpaper, alpha when wallpaper active */
+  --bg-primary-dynamic: rgba(var(--bg-primary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-secondary-dynamic: rgba(var(--bg-secondary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-tertiary-dynamic: rgba(var(--bg-tertiary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-hover-dynamic: rgba(var(--bg-hover-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha-hover))));
+  --bg-active-dynamic: rgba(var(--bg-active-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha-active))));
 }
 
 /* Light Theme Variables */
@@ -77,6 +102,8 @@ body {
   --bg-primary-rgb: 255, 255, 255;
   --bg-secondary-rgb: 248, 249, 250;
   --bg-tertiary-rgb: 233, 236, 239;
+  --bg-hover-rgb: 227, 230, 234;
+  --bg-active-rgb: 3, 102, 214;
   
   --text-primary: #24292e;
   --text-secondary: #586069;
@@ -87,6 +114,19 @@ body {
   
   --accent-blue: #0366d6;
   --accent-blue-hover: #0256cc;
+
+  /* Light theme wallpaper settings */
+  --wallpaper-ui-alpha: 0.15;
+  --wallpaper-ui-alpha-hover: 0.25;
+  --wallpaper-ui-alpha-active: 0.35;
+  --wallpaper-blur: 12px;
+  --wallpaper-saturate: 120%;
+  
+  --bg-primary-dynamic: rgba(var(--bg-primary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-secondary-dynamic: rgba(var(--bg-secondary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-tertiary-dynamic: rgba(var(--bg-tertiary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-hover-dynamic: rgba(var(--bg-hover-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha-hover))));
+  --bg-active-dynamic: rgba(var(--bg-active-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha-active))));
 }
 
 /* Modern Light Blue Theme Variables */
@@ -100,6 +140,8 @@ body {
   --bg-primary-rgb: 246, 248, 250;
   --bg-secondary-rgb: 255, 255, 255;
   --bg-tertiary-rgb: 225, 245, 254;
+  --bg-hover-rgb: 227, 242, 253;
+  --bg-active-rgb: 33, 150, 243;
   
   --text-primary: #263238;
   --text-secondary: #546e7a;
@@ -110,9 +152,78 @@ body {
   
   --accent-blue: #2196f3;
   --accent-blue-hover: #1976d2;
+
+  /* Modern blue wallpaper settings */
+  --wallpaper-ui-alpha: 0.2;
+  --wallpaper-ui-alpha-hover: 0.3;
+  --wallpaper-ui-alpha-active: 0.4;
+  --wallpaper-blur: 10px;
+  --wallpaper-saturate: 115%;
+  
+  --bg-primary-dynamic: rgba(var(--bg-primary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-secondary-dynamic: rgba(var(--bg-secondary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-tertiary-dynamic: rgba(var(--bg-tertiary-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha))));
+  --bg-hover-dynamic: rgba(var(--bg-hover-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha-hover))));
+  --bg-active-dynamic: rgba(var(--bg-active-rgb), calc(1 - var(--wallpaper-active) * (1 - var(--wallpaper-ui-alpha-active))));
 }
 
-/* Wallpaper Support */
+/* === WALLPAPER INTEGRATION === */
+/* Activated when body.has-wallpaper class is present */
+body.has-wallpaper {
+  --wallpaper-active: 1;
+  background-color: transparent !important;
+}
+
+body.has-wallpaper #root {
+  background: transparent !important;
+}
+
+/* Universal wallpaper-aware background application */
+body.has-wallpaper .app,
+body.has-wallpaper .main-workspace,
+body.has-wallpaper .main-area,
+body.has-wallpaper .workspace-content,
+body.has-wallpaper .editor-area,
+body.has-wallpaper .project-manager,
+body.has-wallpaper .settings-panel,
+body.has-wallpaper .sidebar,
+body.has-wallpaper .sidebar-container,
+body.has-wallpaper .title-bar,
+body.has-wallpaper .bottom-panel,
+body.has-wallpaper .status-bar {
+  background-color: var(--bg-primary-dynamic) !important;
+  backdrop-filter: blur(var(--wallpaper-blur)) saturate(var(--wallpaper-saturate)) brightness(var(--wallpaper-brightness));
+  -webkit-backdrop-filter: blur(var(--wallpaper-blur)) saturate(var(--wallpaper-saturate)) brightness(var(--wallpaper-brightness));
+}
+
+/* Secondary panels with secondary background */
+body.has-wallpaper .file-explorer,
+body.has-wallpaper .search-panel,
+body.has-wallpaper .build-manager,
+body.has-wallpaper .git-panel,
+body.has-wallpaper .pin-panel,
+body.has-wallpaper .lan-panel,
+body.has-wallpaper .editor-tabs,
+body.has-wallpaper .bottom-panel-tabs {
+  background-color: var(--bg-secondary-dynamic) !important;
+  backdrop-filter: blur(var(--wallpaper-blur)) saturate(var(--wallpaper-saturate));
+  -webkit-backdrop-filter: blur(var(--wallpaper-blur)) saturate(var(--wallpaper-saturate));
+}
+
+/* Hover and active states respect wallpaper */
+body.has-wallpaper .btn:hover,
+body.has-wallpaper .list-item:hover,
+body.has-wallpaper .tree-item:hover {
+  background-color: var(--bg-hover-dynamic) !important;
+}
+
+body.has-wallpaper .btn:active,
+body.has-wallpaper .list-item.active,
+body.has-wallpaper .tree-item.active {
+  background-color: var(--bg-active-dynamic) !important;
+}
+
+/* Wallpaper layer itself - positioned below all UI */
 .main-workspace {
   position: relative;
 }

@@ -476,7 +476,7 @@ const BottomPanelTabs: React.FC<BottomPanelTabsProps> = ({ isVisible, onToggle }
   if (!isVisible) return null;
 
   return (
-    <div className="bottom-panel-tabs">
+    <div className="bottom-panel-tabs" data-surface="chrome">
       <div className="tab-bar">
         <button
           className={`tab-button ${activeTab === 'output' ? 'active' : ''}`}

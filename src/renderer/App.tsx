@@ -4,6 +4,7 @@ import ToastNotification from './components/ToastContainer/ToastNotification';
 import GitSetupWizard from './components/GitSetupWizard/GitSetupWizard';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Wallpaper } from './components/Wallpaper/Wallpaper';
+import './components/Wallpaper/Wallpaper.css';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AppProvider, useApp } from './contexts/AppContext';
 import './styles/App.css';
@@ -158,16 +159,9 @@ const App: React.FC = () => {
 
   if (isCheckingGit) {
     return (
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(135deg, rgba(10, 15, 30, 0.95) 0%, rgba(20, 35, 60, 0.95) 100%)'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ color: '#e0e8f0', fontSize: '14px' }}>
+      <div className="app-loading">
+        <div className="loading-content">
+          <p className="loading-text">
             起動中...
           </p>
         </div>

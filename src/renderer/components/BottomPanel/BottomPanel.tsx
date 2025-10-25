@@ -150,7 +150,7 @@ const BottomPanel: React.FC<BottomPanelProps> = ({ height, onToggle }) => {
   };
 
   return (
-    <div className="bottom-panel" style={{ height: `${height}px` }}>
+    <div className="bottom-panel" data-surface="chrome" style={{ height: `${height}px` }}>
       <div className="bottom-panel-header">
         <div className="panel-tabs">
           <div 

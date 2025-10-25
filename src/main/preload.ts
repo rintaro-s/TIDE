@@ -12,7 +12,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // File system operations
   fs: {
     exists: (filePath: string) => ipcRenderer.invoke('fs:exists', filePath),
-    readFile: (filePath: string) => ipcRenderer.invoke('fs:readFile', filePath),
+  readFile: (filePath: string, encoding?: string) => ipcRenderer.invoke('fs:readFile', filePath, encoding),
     writeFile: (filePath: string, content: string) => ipcRenderer.invoke('fs:writeFile', filePath, content),
     mkdir: (dirPath: string) => ipcRenderer.invoke('fs:mkdir', dirPath),
     readdir: (dirPath: string) => ipcRenderer.invoke('fs:readdir', dirPath),

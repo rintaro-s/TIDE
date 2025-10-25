@@ -1,6 +1,7 @@
 /* Z-Index Hierarchy - グローバル定義 */
 :root {
-  --z-wallpaper: -10;
+  /* Wallpaper layer should sit behind content but above page background. */
+  --z-wallpaper: 0;
   --z-base: 0;
   --z-background: 0;
   --z-content: 1;

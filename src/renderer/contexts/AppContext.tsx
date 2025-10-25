@@ -193,10 +193,25 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         try {
           const savedSettings = await window.electronAPI.store.get('appSettings');
           if (savedSettings) {
-            setState(prev => ({
-              ...prev,
-              settings: { ...prev.settings, ...savedSettings }
-            }));
+              // If a legacy/erroneous 'wallpaper' key sneaked into appSettings, remove it
+              if ((savedSettings as any).wallpaper) {
+                try {
+                  const sanitized = { ...savedSettings } as any;
+                  delete sanitized.wallpaper;
+                  await window.electronAPI.store.set('appSettings', sanitized);
+                  console.log('[AppContext] Removed legacy wallpaper from appSettings');
+                  // apply sanitized settings
+                  setState(prev => ({ ...prev, settings: { ...prev.settings, ...sanitized } }));
+                } catch (err) {
+                  console.warn('Failed to sanitize saved appSettings', err);
+                  setState(prev => ({ ...prev, settings: { ...prev.settings, ...savedSettings } }));
+                }
+              } else {
+                setState(prev => ({
+                  ...prev,
+                  settings: { ...prev.settings, ...savedSettings }
+                }));
+              }
           }
           
           const savedMode = await window.electronAPI.store.get('devMode');
@@ -233,7 +248,19 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   // Save settings to electron store whenever they change
   useEffect(() => {
     if (window.electronAPI) {
-      window.electronAPI.store.set('appSettings', state.settings);
+      // Defensive: ensure we don't accidentally persist wallpaper under appSettings
+      // Wallpaper has its own dedicated store key ('wallpaper'). Remove it if present
+      try {
+        const toSave: any = { ...state.settings } as any;
+        if (toSave.wallpaper) {
+          delete toSave.wallpaper;
+        }
+        window.electronAPI.store.set('appSettings', toSave);
+      } catch (err) {
+        console.error('Failed to save appSettings (sanitization)', err);
+        // fallback: attempt to save as-is
+        window.electronAPI.store.set('appSettings', state.settings);
+      }
     }
   }, [state.settings]);
 

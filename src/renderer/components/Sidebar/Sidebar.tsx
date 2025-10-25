@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ width }) => {
   const ActiveComponent = activeTabData?.component;
 
   return (
-    <div className="sidebar-container">
+    <div className="sidebar-container" data-surface="chrome">
       {/* Icon Bar */}
       <div className="sidebar-iconbar">
         {tabs.map((tab) => (

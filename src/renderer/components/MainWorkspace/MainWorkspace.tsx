@@ -34,18 +34,6 @@ const MainWorkspace: React.FC = () => {
 
   return (
     <div className="main-workspace">
-      {/* Wallpaper Layer */}
-      {wallpaper.enabled && wallpaper.imagePath && (
-        <div 
-          className="workspace-wallpaper"
-          style={{
-            backgroundImage: `url("${wallpaper.imagePath.replace(/\\/g, '/')}")`,
-            opacity: wallpaper.opacity / 100,
-            filter: `brightness(${wallpaper.brightness / 100})`
-          }}
-        />
-      )}
-      
       <TitleBar mode={mode} onNewProject={() => setShowProjectManager(true)} />
       
       <div className="workspace-content">

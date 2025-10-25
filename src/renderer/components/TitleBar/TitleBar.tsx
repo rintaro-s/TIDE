@@ -325,7 +325,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ mode, onNewProject }) => {
   }, [onNewProject, currentProject]);
 
   return (
-    <div className="title-bar">
+    <div className="title-bar" data-surface="chrome">
       <div className="title-bar-left">
         <div className="app-icon">T</div>
         <span className="app-title">Tova IDE</span>
