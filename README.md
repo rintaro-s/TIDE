@@ -2,6 +2,9 @@
 
 Arduino/PlatformIO 統合開発環境（IDE）
 
+<img width="2559" height="1342" alt="スクリーンショット 2025-10-25 003226" src="https://github.com/user-attachments/assets/126a2e9a-e2d6-4d87-9464-31fc968a2925" />
+
+
 ## プロジェクト完了状況 ✅
 
 ### ✅ 完成したタスク
