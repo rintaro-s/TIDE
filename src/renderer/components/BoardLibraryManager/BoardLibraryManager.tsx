@@ -743,41 +743,96 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
           }
 
           const installSpecifier = item.version ? `${target}@${item.version}` : target;
+          const progressId = toast.info('コアのインストールを準備中', `${item.name} (${installSpecifier}) の状態を確認しています...`, 0);
 
+          let alreadyInstalled = false;
           try {
             const existing = await window.electronAPI.process.exec('arduino-cli', ['core', 'list', '--format', 'json']);
             if (existing.exitCode === 0 && existing.stdout) {
               try {
                 const parsed = JSON.parse(existing.stdout);
                 const installedPlatforms = parsed.installed_platforms || parsed.platforms || [];
-                const alreadyInstalled = installedPlatforms.some((p: any) => {
+                alreadyInstalled = installedPlatforms.some((p: any) => {
                   const candidateId = extractFirstString(p?.id) || extractFirstString(p?.ID) || extractFirstString(p?.name);
                   return candidateId === target || candidateId === installSpecifier;
                 });
 
                 if (alreadyInstalled) {
-                  toast.info('既にインストール済み', `${item.name} はすでにインストールされています`);
+                  toast.update(progressId, {
+                    type: 'info',
+                    message: '既にインストール済み',
+                    details: `${item.name} はすでに利用可能です`,
+                    duration: 5000
+                  });
                   return;
                 }
               } catch (parseError) {
-                logger.warning('Failed to parse installed cores', parseError instanceof Error ? parseError.message : String(parseError));
+                const warnMsg = parseError instanceof Error ? parseError.message : String(parseError);
+                logger.warning('Failed to parse installed cores', warnMsg);
+                toast.update(progressId, {
+                  type: 'warning',
+                  message: 'インストール済みのコア確認に失敗しました',
+                  details: warnMsg,
+                  duration: 0
+                });
               }
             }
           } catch (checkError) {
-            logger.warning('Failed to check installed cores', checkError instanceof Error ? checkError.message : String(checkError));
+            const warnMsg = checkError instanceof Error ? checkError.message : String(checkError);
+            logger.warning('Failed to check installed cores', warnMsg);
+            toast.update(progressId, {
+              type: 'warning',
+              message: '既存コアの確認に失敗しました',
+              details: `${warnMsg}\n続行してインストールします`,
+              duration: 0
+            });
+          }
+
+          if (alreadyInstalled) {
+            return;
           }
 
           logger.info(`Installing Arduino core: ${installSpecifier}`);
-          const result = await window.electronAPI.process.exec('arduino-cli', ['core', 'install', installSpecifier]);
+          toast.update(progressId, {
+            type: 'info',
+            message: 'コアをインストール中...',
+            details: `arduino-cli core install ${installSpecifier}`,
+            duration: 0
+          });
 
-          if (result.exitCode === 0) {
-            logger.success(`Installed Arduino core ${installSpecifier}`);
-            toast.success('コアをインストール', `${item.name} (${installSpecifier}) をインストールしました`);
-          } else {
-            const errorMsg = result.stderr || 'Unknown error';
-            logger.error('Arduino core installation failed', errorMsg);
-            toast.error('インストール失敗', errorMsg);
+          try {
+            const result = await window.electronAPI.process.exec('arduino-cli', ['core', 'install', installSpecifier]);
+
+            if (result.exitCode === 0) {
+              logger.success(`Installed Arduino core ${installSpecifier}`);
+              toast.update(progressId, {
+                type: 'success',
+                message: 'コアのインストールが完了しました',
+                details: `${item.name} (${installSpecifier})`,
+                duration: 6000
+              });
+            } else {
+              const errorMsg = result.stderr || 'Unknown error';
+              logger.error('Arduino core installation failed', errorMsg);
+              toast.update(progressId, {
+                type: 'error',
+                message: 'コアのインストールに失敗しました',
+                details: errorMsg,
+                duration: 8000
+              });
+            }
+          } catch (installError) {
+            const errorMsg = installError instanceof Error ? installError.message : String(installError);
+            logger.error('Arduino core installation threw', errorMsg);
+            toast.update(progressId, {
+              type: 'error',
+              message: 'コアのインストールに失敗しました',
+              details: errorMsg,
+              duration: 8000
+            });
           }
+
+          return;
         } else if (mode === 'platformio') {
           const target = item.installTarget || item.platform;
           if (!target) {
@@ -786,81 +841,221 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
           }
 
           const installSpecifier = item.version ? `${target}@${item.version}` : target;
-          logger.info(`Installing PlatformIO platform: ${installSpecifier}`);
-          const success = await platformIOService.installPlatform(installSpecifier);
+          const progressId = toast.info('プラットフォームのインストールを準備中', `${item.name} (${installSpecifier}) を準備しています...`, 0);
 
-          if (success) {
-            logger.success(`Installed PlatformIO platform ${installSpecifier}`);
-            toast.success('プラットフォームをインストール', `${item.name} (${installSpecifier}) をインストールしました`);
-          } else {
-            toast.error('インストール失敗', `${item.name} のプラットフォームをインストールできませんでした`);
+          toast.update(progressId, {
+            type: 'info',
+            message: 'プラットフォームをインストール中...',
+            details: `pio pkg install -p ${installSpecifier}`,
+            duration: 0
+          });
+
+          try {
+            const success = await platformIOService.installPlatform(installSpecifier);
+
+            if (success) {
+              logger.success(`Installed PlatformIO platform ${installSpecifier}`);
+              toast.update(progressId, {
+                type: 'success',
+                message: 'プラットフォームのインストールが完了しました',
+                details: `${item.name} (${installSpecifier})`,
+                duration: 6000
+              });
+            } else {
+              const errorMsg = `${item.name} のプラットフォームをインストールできませんでした`;
+              toast.update(progressId, {
+                type: 'error',
+                message: 'インストール失敗',
+                details: errorMsg,
+                duration: 8000
+              });
+            }
+          } catch (platformError) {
+            const errorMsg = platformError instanceof Error ? platformError.message : String(platformError);
+            logger.error('PlatformIO platform installation failed', errorMsg);
+            toast.update(progressId, {
+              type: 'error',
+              message: 'インストール失敗',
+              details: errorMsg,
+              duration: 8000
+            });
           }
+
+          return;
         } else {
           toast.error('未対応のモードです');
+          return;
         }
       } else {
+        if (!mode) {
+          toast.error('モードが未選択のためインストールできません');
+          return;
+        }
+
         // ライブラリのインストール
         if (mode === 'arduino') {
           const lib = item as Library;
           const selectedVersion = selectedVersions.get(lib.name) || lib.version;
-          
-          // First check if already installed
+          const specifier = `${lib.name}@${selectedVersion}`;
+          const progressId = toast.info('ライブラリのインストールを準備中', `${lib.name} v${selectedVersion} の状態を確認しています...`, 0);
+
+          let alreadyInstalled = false;
           try {
             const result = await window.electronAPI.process.exec('arduino-cli', ['lib', 'list', '--format', 'json']);
             if (result.exitCode === 0 && result.stdout) {
               try {
                 const installed = JSON.parse(result.stdout);
                 const libs = installed.installed_libraries || installed.libraries || [];
-                const alreadyInstalled = libs.some((l: any) => (l.name || '').toLowerCase() === lib.name.toLowerCase());
+                alreadyInstalled = libs.some((l: any) => (l.name || '').toLowerCase() === lib.name.toLowerCase());
                 if (alreadyInstalled) {
                   logger.info(`Library "${lib.name}" is already installed`);
-                  toast.info('既にインストール済み', `${lib.name} はすでにインストールされています`);
+                  toast.update(progressId, {
+                    type: 'info',
+                    message: '既にインストール済み',
+                    details: `${lib.name} はすでに利用可能です`,
+                    duration: 5000
+                  });
                   return;
                 }
               } catch (parseError) {
-                logger.warning('Failed to parse installed libraries list', parseError instanceof Error ? parseError.message : String(parseError));
+                const warnMsg = parseError instanceof Error ? parseError.message : String(parseError);
+                logger.warning('Failed to parse installed libraries list', warnMsg);
+                toast.update(progressId, {
+                  type: 'warning',
+                  message: 'インストール済みライブラリ確認に失敗しました',
+                  details: warnMsg,
+                  duration: 0
+                });
               }
             }
           } catch (error) {
-            logger.warning('Failed to check Arduino libraries', error instanceof Error ? error.message : String(error));
+            const warnMsg = error instanceof Error ? error.message : String(error);
+            logger.warning('Failed to check Arduino libraries', warnMsg);
+            toast.update(progressId, {
+              type: 'warning',
+              message: '既存ライブラリの確認に失敗しました',
+              details: `${warnMsg}\n続行してインストールします`,
+              duration: 0
+            });
           }
 
-          const specifier = `${lib.name}@${selectedVersion}`;
+          if (alreadyInstalled) {
+            return;
+          }
+
           logger.info(`Installing Arduino library: ${specifier}`);
-          const installResult = await window.electronAPI.process.exec('arduino-cli', ['lib', 'install', specifier]);
+          toast.update(progressId, {
+            type: 'info',
+            message: 'ライブラリをインストール中...',
+            details: `arduino-cli lib install ${specifier}`,
+            duration: 0
+          });
 
-          if (installResult.exitCode === 0) {
-            logger.success(`Library "${specifier}" installed successfully`);
-            toast.success('ライブラリをインストール', `${lib.name} v${selectedVersion} をインストールしました`);
-          } else {
-            const errorMsg = installResult.stderr || 'Unknown error';
-            logger.error(`Installation failed for ${lib.name}`, errorMsg);
-            toast.error('インストール失敗', errorMsg);
+          try {
+            const installResult = await window.electronAPI.process.exec('arduino-cli', ['lib', 'install', specifier]);
+
+            if (installResult.exitCode === 0) {
+              logger.success(`Library "${specifier}" installed successfully`);
+              toast.update(progressId, {
+                type: 'success',
+                message: 'ライブラリのインストールが完了しました',
+                details: `${lib.name} v${selectedVersion}`,
+                duration: 6000
+              });
+            } else {
+              const errorMsg = installResult.stderr || 'Unknown error';
+              logger.error(`Installation failed for ${lib.name}`, errorMsg);
+              toast.update(progressId, {
+                type: 'error',
+                message: 'インストール失敗',
+                details: errorMsg,
+                duration: 8000
+              });
+            }
+          } catch (installError) {
+            const errorMsg = installError instanceof Error ? installError.message : String(installError);
+            logger.error(`Arduino library install threw for ${lib.name}`, errorMsg);
+            toast.update(progressId, {
+              type: 'error',
+              message: 'インストール失敗',
+              details: errorMsg,
+              duration: 8000
+            });
           }
+
+          return;
         } else if (mode === 'platformio') {
           const lib = item as Library;
           const selectedVersion = selectedVersions.get(lib.name) || lib.version;
+          const versionLabel = selectedVersion || 'latest';
           const installSpecifier = selectedVersion ? `${lib.name}@${selectedVersion}` : lib.name;
+          const progressId = toast.info('ライブラリのインストールを準備中', `${lib.name} ${versionLabel} を準備しています...`, 0);
 
           try {
             const installed = await platformIOService.listInstalledLibraries();
             const alreadyInstalled = installed.some(existing => existing.name === lib.name);
             if (alreadyInstalled) {
-              toast.info('既にインストール済み', `${lib.name} はすでにインストールされています`);
+              toast.update(progressId, {
+                type: 'info',
+                message: '既にインストール済み',
+                details: `${lib.name} はすでに利用可能です`,
+                duration: 5000
+              });
               return;
             }
           } catch (error) {
-            logger.warning('Failed to check PlatformIO libraries', error instanceof Error ? error.message : String(error));
+            const warnMsg = error instanceof Error ? error.message : String(error);
+            logger.warning('Failed to check PlatformIO libraries', warnMsg);
+            toast.update(progressId, {
+              type: 'warning',
+              message: '既存ライブラリの確認に失敗しました',
+              details: `${warnMsg}\n続行してインストールします`,
+              duration: 0
+            });
           }
 
-          const success = await platformIOService.installLibrary(installSpecifier);
-          if (success) {
-            toast.success('ライブラリをインストール', `${lib.name} (${selectedVersion}) をインストールしました`);
-          } else {
-            toast.error('インストール失敗', `${lib.name} をインストールできませんでした`);
+          toast.update(progressId, {
+            type: 'info',
+            message: 'ライブラリをインストール中...',
+            details: `pio pkg install ${installSpecifier}`,
+            duration: 0
+          });
+
+          try {
+            logger.info(`Installing PlatformIO library: ${installSpecifier}`);
+            const success = await platformIOService.installLibrary(installSpecifier);
+            if (success) {
+              logger.success(`PlatformIO library installed: ${installSpecifier}`);
+              toast.update(progressId, {
+                type: 'success',
+                message: 'ライブラリのインストールが完了しました',
+                details: `${lib.name} (${versionLabel})`,
+                duration: 6000
+              });
+            } else {
+              logger.error('PlatformIO library installation failed', `${lib.name} (${versionLabel})`);
+              toast.update(progressId, {
+                type: 'error',
+                message: 'インストール失敗',
+                details: `${lib.name} をインストールできませんでした`,
+                duration: 8000
+              });
+            }
+          } catch (installError) {
+            const errorMsg = installError instanceof Error ? installError.message : String(installError);
+            logger.error('PlatformIO library installation failed', errorMsg);
+            toast.update(progressId, {
+              type: 'error',
+              message: 'インストール失敗',
+              details: errorMsg,
+              duration: 8000
+            });
           }
+
+          return;
         } else {
           toast.error('未対応のモードです');
+          return;
         }
       }
     } catch (error) {

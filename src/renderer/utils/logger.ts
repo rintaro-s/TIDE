@@ -110,8 +110,9 @@ export interface Toast {
 class ToastManager {
   private toasts: Toast[] = [];
   private listeners: ((toasts: Toast[]) => void)[] = [];
+  private timeoutHandles = new Map<string, ReturnType<typeof setTimeout>>();
 
-  show(type: Toast['type'], message: string, details?: string, duration = 5000) {
+  show(type: Toast['type'], message: string, details?: string, duration = 5000): string {
     const toast: Toast = {
       id: `toast-${Date.now()}-${Math.random()}`,
       type,
@@ -128,35 +129,75 @@ class ToastManager {
 
     // 自動削除
     if (duration > 0) {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         this.remove(toast.id);
       }, duration);
+      this.timeoutHandles.set(toast.id, timeout);
     }
+
+    return toast.id;
   }
 
-  info(message: string, details?: string, duration?: number) {
-    this.show('info', message, details, duration);
+  info(message: string, details?: string, duration?: number): string {
+    return this.show('info', message, details, duration);
   }
 
-  success(message: string, details?: string, duration?: number) {
-    this.show('success', message, details, duration);
+  success(message: string, details?: string, duration?: number): string {
+    return this.show('success', message, details, duration);
   }
 
-  warning(message: string, details?: string, duration?: number) {
-    this.show('warning', message, details, duration);
+  warning(message: string, details?: string, duration?: number): string {
+    return this.show('warning', message, details, duration);
   }
 
-  error(message: string, details?: string, duration?: number) {
-    this.show('error', message, details, duration);
+  error(message: string, details?: string, duration?: number): string {
+    return this.show('error', message, details, duration);
   }
 
   remove(id: string) {
+    const timeout = this.timeoutHandles.get(id);
+    if (timeout) {
+      clearTimeout(timeout);
+      this.timeoutHandles.delete(id);
+    }
     this.toasts = this.toasts.filter(t => t.id !== id);
     this.notifyListeners();
   }
 
   getToasts(): Toast[] {
     return [...this.toasts];
+  }
+
+  update(id: string, updates: Partial<Omit<Toast, 'id'>>) {
+    const index = this.toasts.findIndex(t => t.id === id);
+    if (index === -1) return;
+
+    const current = this.toasts[index];
+    const next: Toast = {
+      ...current,
+      ...updates,
+      id: current.id
+    };
+
+    this.toasts[index] = next;
+    this.notifyListeners();
+
+    logger.log(next.type, next.message, next.details);
+
+    if (updates.duration !== undefined) {
+      const existing = this.timeoutHandles.get(id);
+      if (existing) {
+        clearTimeout(existing);
+        this.timeoutHandles.delete(id);
+      }
+
+      if (updates.duration > 0) {
+        const timeout = setTimeout(() => {
+          this.remove(id);
+        }, updates.duration);
+        this.timeoutHandles.set(id, timeout);
+      }
+    }
   }
 
   subscribe(listener: (toasts: Toast[]) => void) {
