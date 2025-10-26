@@ -19,6 +19,15 @@ export interface ArduinoLibrary {
   installed?: boolean;
 }
 
+export interface ArduinoCorePackage {
+  id: string;
+  name: string;
+  maintainer?: string;
+  description?: string;
+  latestVersion?: string;
+  website?: string;
+}
+
 export interface CompileResult {
   success: boolean;
   output: string;
@@ -293,6 +302,108 @@ export class ArduinoCLIService {
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error);
       logger.error('Failed to search boards', errorMsg);
+      return [];
+    }
+  }
+
+  /**
+   * Search board core packages (Board Manager entries)
+   * arduino-cli core search [query] --format json
+   */
+  async searchCorePackages(query: string = ''): Promise<ArduinoCorePackage[]> {
+    try {
+      const args = ['core', 'search'];
+      if (query && query.trim()) {
+        args.push(query.trim());
+      }
+      args.push('--format', 'json');
+
+      logger.info('Searching core packages...', query || '<all>');
+      const result = await this.executeCommand('arduino-cli', args);
+
+      if (result.exitCode !== 0) {
+        logger.warning(`Core search failed: ${query}`, result.stderr);
+        return [];
+      }
+
+      if (!result.stdout || result.stdout.trim() === '') {
+        logger.debug('No core packages found matching query', query);
+        return [];
+      }
+
+      try {
+        const data = JSON.parse(result.stdout);
+
+        const extractItems = (node: any): any[] => {
+          if (!node) return [];
+          if (Array.isArray(node)) return node;
+          if (node.items && Array.isArray(node.items)) return node.items;
+          if (node.result && Array.isArray(node.result)) return node.result;
+          if (node.results && Array.isArray(node.results)) return node.results;
+          if (node.packages && Array.isArray(node.packages)) return node.packages;
+          if (node.search_response && Array.isArray(node.search_response.items)) {
+            return node.search_response.items;
+          }
+          if (typeof node === 'object') {
+            for (const key of Object.keys(node)) {
+              const nested = extractItems(node[key]);
+              if (nested.length) return nested;
+            }
+          }
+          return [];
+        };
+
+        const pickString = (...values: any[]): string | undefined => {
+          for (const value of values) {
+            if (typeof value === 'string' && value.trim()) {
+              return value.trim();
+            }
+          }
+          for (const value of values) {
+            if (value && typeof value === 'object') {
+              const nested = pickString(...Object.values(value));
+              if (nested) return nested;
+            }
+          }
+          return undefined;
+        };
+
+        const items = extractItems(data);
+        const packages = items
+          .map((item: any) => {
+            const id = pickString(item.id, item.ID, item.package, item.Package);
+            const name = pickString(item.name, item.Name, item.title, item.Title);
+            const maintainer = pickString(item.maintainer, item.Maintainer, item.author, item.Author);
+            const latestVersion = pickString(item.latest_version, item.latestVersion, item.version, item.Version);
+            const description = pickString(item.description, item.Description, item.sentence, item.Sentence);
+            const website = pickString(item.website, item.Website, item.url, item.Url, item.URL, item.help, item.Help, item.homepage, item.Homepage);
+
+            const resolvedId = id || name;
+            if (!resolvedId) {
+              return null;
+            }
+
+            return {
+              id: resolvedId,
+              name: name || resolvedId,
+              maintainer: maintainer || undefined,
+              description: description || undefined,
+              latestVersion: latestVersion || undefined,
+              website: website || undefined,
+            } as ArduinoCorePackage;
+          })
+          .filter((pkg): pkg is ArduinoCorePackage => Boolean(pkg));
+
+        logger.success(`Found ${packages.length} core packages matching "${query || 'all'}"`);
+        return packages;
+      } catch (parseError) {
+        const errorMsg = parseError instanceof Error ? parseError.message : String(parseError);
+        logger.warning('Failed to parse core search results', errorMsg);
+        return [];
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Failed to search core packages', errorMsg);
       return [];
     }
   }

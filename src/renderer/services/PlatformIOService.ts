@@ -288,6 +288,21 @@ export class PlatformIOService {
   }
 
   /**
+   * プラットフォームをインストール
+   * pio pkg install -p <platform>
+   */
+  async installPlatform(name: string, projectPath?: string): Promise<boolean> {
+    try {
+      const options = projectPath ? { cwd: projectPath } : {};
+      const result = await this.executeCommand('pio', ['pkg', 'install', '-p', name], options);
+      return result.exitCode === 0;
+    } catch (error) {
+      console.error('Failed to install platform:', error);
+      return false;
+    }
+  }
+
+  /**
    * ライブラリをアンインストール
    * pio pkg uninstall <library>
    */
