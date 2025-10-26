@@ -457,84 +457,106 @@ class TovaIDE {
 
     // Process operations
     ipcMain.handle('process:exec', async (_, command: string, args: string[], options?: any) => {
-      const { spawn } = await import('child_process');
+      const { execFile } = await import('child_process');
       
       return new Promise((resolve, reject) => {
         const isWindows = process.platform === 'win32';
+        
+        // Increase buffer size for large outputs (e.g., arduino-cli board listall)
+        const maxBuffer = options?.maxBuffer || 10 * 1024 * 1024; // 10MB default
+        
         let child;
         
         if (isWindows) {
           // WindowsではPowerShellを使用してコマンドを実行
           const fullCommand = `${command} ${args.join(' ')}`;
-          child = spawn('powershell.exe', ['-Command', fullCommand], {
+          child = execFile('powershell.exe', ['-Command', fullCommand], {
             cwd: options?.cwd || process.cwd(),
             windowsHide: true,
+            maxBuffer,
+            encoding: 'utf-8',
             ...options
+          }, (error, stdout, stderr) => {
+            if (error && error.code !== 0) {
+              // Command failed, but still return output for parsing
+              resolve({
+                stdout: stdout || '',
+                stderr: stderr || error.message,
+                exitCode: error.code || 1
+              });
+            } else {
+              resolve({
+                stdout: stdout || '',
+                stderr: stderr || '',
+                exitCode: 0
+              });
+            }
           });
         } else {
-          child = spawn(command, args, {
+          child = execFile(command, args, {
             cwd: options?.cwd || process.cwd(),
             shell: true,
+            maxBuffer,
+            encoding: 'utf-8',
             ...options
+          }, (error, stdout, stderr) => {
+            if (error && error.code !== 0) {
+              resolve({
+                stdout: stdout || '',
+                stderr: stderr || error.message,
+                exitCode: error.code || 1
+              });
+            } else {
+              resolve({
+                stdout: stdout || '',
+                stderr: stderr || '',
+                exitCode: 0
+              });
+            }
           });
         }
 
-        let stdout = '';
-        let stderr = '';
-
-        if (child.stdout) {
-          child.stdout.on('data', (data) => {
-            stdout += data.toString();
-          });
+        if (!child) {
+          reject(new Error('Failed to spawn process'));
         }
-
-        if (child.stderr) {
-          child.stderr.on('data', (data) => {
-            stderr += data.toString();
-          });
-        }
-
-        child.on('close', (code) => {
-          resolve({
-            stdout,
-            stderr,
-            exitCode: code || 0
-          });
-        });
-
-        child.on('error', (error) => {
-          reject(error);
-        });
       });
     });
 
     // Execute command handler
     ipcMain.handle('execute:command', async (_, command: string) => {
       const { exec } = await import('child_process');
-      const { promisify } = await import('util');
-      const execAsync = promisify(exec);
-
-      try {
-        log('⚙️', 'Executing command:', command);
-        const { stdout, stderr } = await execAsync(command, {
-          maxBuffer: 1024 * 1024 * 10, // 10MB buffer
-          windowsHide: true,
-        });
-        
-        log('✅', 'Command executed successfully');
-        return {
-          success: true,
-          output: stdout,
-          error: stderr || undefined,
-        };
-      } catch (error: any) {
-        log('❌', 'Command execution failed:', error.message);
-        return {
-          success: false,
-          output: error.stdout || undefined,
-          error: error.stderr || error.message,
-        };
-      }
+      
+      return new Promise((resolve) => {
+        try {
+          log('⚙️', 'Executing command:', command);
+          
+          // Use exec directly for Windows - it handles quotes properly
+          const maxBuffer = 50 * 1024 * 1024; // 50MB
+          
+          exec(command, {
+            maxBuffer,
+            windowsHide: true,
+            encoding: 'utf-8',
+          }, (error, stdout, stderr) => {
+            if (error) {
+              log('⚠️', 'Command stderr:', stderr);
+            }
+            log('✅', 'Command executed');
+            resolve({
+              success: !error || error.code === 0,
+              output: stdout || '',
+              error: stderr || error?.message || undefined,
+            });
+          });
+        } catch (error: any) {
+          log('❌', 'Command execution error:', error.message);
+          resolve({
+            success: false,
+            output: '',
+            error: error.message,
+          });
+        }
+      });
     });
 
     // Window operations

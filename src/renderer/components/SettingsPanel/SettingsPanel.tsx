@@ -4,6 +4,7 @@ import { useApp } from '../../contexts/AppContext';
 import EditorSettingsPanel from '../EditorSettingsPanel/EditorSettingsPanel';
 import { WorkflowTestPage } from '../TestRunner/WorkflowTestPage';
 import GlobalCacheStatus from '../GlobalCacheStatus/GlobalCacheStatus';
+import { logger, toast } from '../../utils/logger';
 import './SettingsPanel.css';
 
 interface SettingsTab {
@@ -16,6 +17,8 @@ const SettingsPanel: React.FC = () => {
   const { theme, setTheme, wallpaper, setWallpaper } = useTheme();
   const { mode, settings, updateSettings } = useApp();
   const [activeTab, setActiveTab] = useState('general');
+  const [installing, setInstalling] = useState(false);
+  const [installProgress, setInstallProgress] = useState('');
 
   const tabs: SettingsTab[] = [
     { id: 'general', name: '一般', icon: 'G' },
@@ -268,76 +271,135 @@ const SettingsPanel: React.FC = () => {
     <EditorSettingsPanel />
   );
 
-  const renderBuildSettings = () => (
-    <div className="settings-section">
-      <h3>ビルド設定</h3>
-      <div className="setting-item">
-        <label>グローバルコンパイルキャッシュ</label>
-        <input
-          type="checkbox"
-          checked={settings.build?.useGlobalCache !== false}
-          onChange={(e) => handleSettingChange('build', 'useGlobalCache', e.target.checked)}
-        />
-        <span>LAN内で共有されたコンパイル済みバイナリを使用</span>
-        <div className="setting-description">
-          同じコード・ライブラリ・ボード設定でコンパイルした結果を他のPCから取得できます。
-          初回のみファイアウォール許可が必要です。
+  const renderBuildSettings = () => {
+    const defaultLibraries = [
+      'Arduino_BuiltIn',
+      'Servo',
+      'LiquidCrystal',
+      'Wire',
+      'SPI',
+      'WiFi',
+      'ArduinoJson'
+    ];
+
+    const handleInstallDefaultLibraries = async () => {
+      if (mode !== 'arduino') {
+        toast.warning('Arduino CLIモードのみサポート', 'PlatformIOはまだ実装されていません');
+        return;
+      }
+
+      setInstalling(true);
+      setInstallProgress('デフォルトライブラリのインストール中...');
+
+      try {
+        for (const lib of defaultLibraries) {
+          setInstallProgress(`${lib}をインストール中...`);
+          const result = await window.electronAPI.executeCommand(`arduino-cli lib install "${lib}"`);
+          if (!result.success) {
+            logger.warning(`Failed to install ${lib}`, result.error);
+          } else {
+            logger.success(`Successfully installed ${lib}`);
+          }
+        }
+        toast.success('デフォルトライブラリのインストール完了');
+        setInstallProgress('');
+      } catch (error) {
+        logger.error('Failed to install default libraries', String(error));
+        toast.error('インストール失敗', String(error));
+      } finally {
+        setInstalling(false);
+      }
+    };
+
+    return (
+      <div className="settings-section">
+        <h3>ビルド設定</h3>
+        <div className="setting-item">
+          <label>グローバルコンパイルキャッシュ</label>
+          <input
+            type="checkbox"
+            checked={settings.build?.useGlobalCache !== false}
+            onChange={(e) => handleSettingChange('build', 'useGlobalCache', e.target.checked)}
+          />
+          <span>LAN内で共有されたコンパイル済みバイナリを使用</span>
+          <div className="setting-description">
+            同じコード・ライブラリ・ボード設定でコンパイルした結果を他のPCから取得できます。
+            初回のみファイアウォール許可が必要です。
+          </div>
+          <GlobalCacheStatus />
         </div>
-        <GlobalCacheStatus />
-      </div>
-      <div className="setting-item">
-        <label>並列ビルド</label>
-        <input
-          type="checkbox"
-          checked={settings.build?.parallelBuild || false}
-          onChange={(e) => handleSettingChange('build', 'parallelBuild', e.target.checked)}
-        />
-        <span>可能な場合は並列ビルドを使用</span>
-      </div>
-      <div className="setting-item">
-        <label>詳細出力</label>
-        <input
-          type="checkbox"
-          checked={settings.build?.verboseOutput || false}
-          onChange={(e) => handleSettingChange('build', 'verboseOutput', e.target.checked)}
-        />
-        <span>ビルド時に詳細な出力を表示</span>
-      </div>
-      {mode === 'arduino' && (
-        <>
+        <div className="setting-item">
+          <label>並列ビルド</label>
+          <input
+            type="checkbox"
+            checked={settings.build?.parallelBuild || false}
+            onChange={(e) => handleSettingChange('build', 'parallelBuild', e.target.checked)}
+          />
+          <span>可能な場合は並列ビルドを使用</span>
+        </div>
+        <div className="setting-item">
+          <label>詳細出力</label>
+          <input
+            type="checkbox"
+            checked={settings.build?.verboseOutput || false}
+            onChange={(e) => handleSettingChange('build', 'verboseOutput', e.target.checked)}
+          />
+          <span>ビルド時に詳細な出力を表示</span>
+        </div>
+        {mode === 'arduino' && (
+          <>
+            <div className="setting-item">
+              <label>デフォルトライブラリのインストール</label>
+              <button 
+                onClick={handleInstallDefaultLibraries}
+                disabled={installing}
+                className="btn btn-primary"
+              >
+                {installing ? 'インストール中...' : 'インストール'}
+              </button>
+              {installProgress && (
+                <div className="setting-description">
+                  {installProgress}
+                </div>
+              )}
+              <div className="setting-description">
+                Arduino_BuiltIn, Servo, LiquidCrystal, Wire, SPI, WiFi, ArduinoJsonをインストールします。
+              </div>
+            </div>
+            <div className="setting-item">
+              <label>Arduino CLI パス</label>
+              <input
+                type="text"
+                value={settings.build?.arduinoCliPath || ''}
+                onChange={(e) => handleSettingChange('build', 'arduinoCliPath', e.target.value)}
+                placeholder="arduino-cli実行ファイルのパス"
+              />
+            </div>
+            <div className="setting-item">
+              <label>ボードURL</label>
+              <textarea
+                value={settings.build?.boardUrls || ''}
+                onChange={(e) => handleSettingChange('build', 'boardUrls', e.target.value)}
+                placeholder="追加ボードマネージャーURL（1行に1つ）"
+                rows={3}
+              />
+            </div>
+          </>
+        )}
+        {mode === 'platformio' && (
           <div className="setting-item">
-            <label>Arduino CLI パス</label>
+            <label>PlatformIO Core パス</label>
             <input
               type="text"
-              value={settings.build?.arduinoCliPath || ''}
-              onChange={(e) => handleSettingChange('build', 'arduinoCliPath', e.target.value)}
-              placeholder="arduino-cli実行ファイルのパス"
+              value={settings.build?.platformioPath || ''}
+              onChange={(e) => handleSettingChange('build', 'platformioPath', e.target.value)}
+              placeholder="pio実行ファイルのパス"
             />
           </div>
-          <div className="setting-item">
-            <label>ボードURL</label>
-            <textarea
-              value={settings.build?.boardUrls || ''}
-              onChange={(e) => handleSettingChange('build', 'boardUrls', e.target.value)}
-              placeholder="追加ボードマネージャーURL（1行に1つ）"
-              rows={3}
-            />
-          </div>
-        </>
-      )}
-      {mode === 'platformio' && (
-        <div className="setting-item">
-          <label>PlatformIO Core パス</label>
-          <input
-            type="text"
-            value={settings.build?.platformioPath || ''}
-            onChange={(e) => handleSettingChange('build', 'platformioPath', e.target.value)}
-            placeholder="pio実行ファイルのパス"
-          />
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 
   // Keybind and Pin settings removed - not implemented
 

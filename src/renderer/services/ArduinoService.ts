@@ -56,9 +56,29 @@ export class ArduinoCLIService {
     options?: { cwd?: string }
   ): Promise<{ stdout: string; stderr: string; exitCode: number }> {
     try {
-      return await window.electronAPI.process.exec(command, args, options || {});
+      // Try with full path first (Windows)
+      let result: any;
+      try {
+        result = await window.electronAPI.process.exec(command, args, options || {});
+      } catch (err) {
+        // If command not found, try with 'where' to locate it
+        if (command === 'arduino-cli') {
+          console.warn('arduino-cli not found in PATH, attempting to locate...');
+          const whereResult = await window.electronAPI.process.exec('where', ['arduino-cli']);
+          if (whereResult.exitCode === 0 && whereResult.stdout) {
+            const foundPath = whereResult.stdout.trim().split('\n')[0];
+            console.log('Found arduino-cli at:', foundPath);
+            result = await window.electronAPI.process.exec(foundPath, args, options || {});
+          } else {
+            throw err;
+          }
+        } else {
+          throw err;
+        }
+      }
+      return result;
     } catch (error) {
-      console.error('Command execution error:', error);
+      console.error(`Command execution error for "${command}":`, error);
       throw error;
     }
   }
@@ -113,19 +133,37 @@ export class ArduinoCLIService {
   async listConnectedBoards(): Promise<ArduinoBoard[]> {
     try {
       const result = await this.executeCommand('arduino-cli', ['board', 'list', '--format', 'json']);
-      if (result.exitCode === 0 && result.stdout) {
+      
+      if (result.exitCode !== 0) {
+        logger.warning('Failed to list connected boards', result.stderr);
+        return [];
+      }
+      
+      if (!result.stdout || result.stdout.trim() === '') {
+        logger.debug('No connected boards found');
+        return [];
+      }
+      
+      try {
         const data = JSON.parse(result.stdout);
-        return data.detected_ports?.map((port: any) => ({
+        const boards = data.detected_ports?.map((port: any) => ({
           name: port.matching_boards?.[0]?.name || 'Unknown Board',
           fqbn: port.matching_boards?.[0]?.fqbn || '',
           port: port.port?.address || '',
           connected: true,
           platform: port.matching_boards?.[0]?.fqbn?.split(':')[0] || ''
         })) || [];
+        
+        logger.debug(`Found ${boards.length} connected boards`);
+        return boards;
+      } catch (parseError) {
+        const errorMsg = parseError instanceof Error ? parseError.message : String(parseError);
+        logger.warning('Failed to parse connected boards JSON', errorMsg);
+        return [];
       }
-      return [];
     } catch (error) {
-      console.error('Failed to list connected boards:', error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.warning('Failed to list connected boards', errorMsg);
       return [];
     }
   }
@@ -136,24 +174,56 @@ export class ArduinoCLIService {
    */
   async listBoards(): Promise<ArduinoBoard[]> {
     try {
-      const connected = await this.listConnectedBoards();
+      logger.info('Listing Arduino boards...');
       
+      // First get connected boards
+      const connected = await this.listConnectedBoards();
+      logger.debug(`Found ${connected.length} connected boards`);
+      
+      // Then get all available boards
       const result = await this.executeCommand('arduino-cli', ['board', 'listall', '--format', 'json']);
-      if (result.exitCode === 0 && result.stdout) {
+      
+      if (result.exitCode !== 0) {
+        logger.warning(`arduino-cli board listall failed with code ${result.exitCode}`, result.stderr);
+        // Return only connected boards on failure
+        return connected;
+      }
+      
+      if (!result.stdout || result.stdout.trim() === '') {
+        logger.warning('No output from arduino-cli board listall');
+        return connected;
+      }
+      
+      try {
         const data = JSON.parse(result.stdout);
         const allBoards = data.boards?.map((board: any) => ({
-          name: board.name || '',
+          name: board.name || 'Unknown',
           fqbn: board.fqbn || '',
-          platform: board.platform?.metadata?.id || '',
+          platform: board.platform?.id || board.platform?.name || board.core || '',
           connected: false
         })) || [];
         
-        return [...connected, ...allBoards.slice(0, 20)];
+        logger.success(`Retrieved ${allBoards.length} available boards`);
+        
+        // Combine connected and available, removing duplicates
+        const boardMap = new Map<string, ArduinoBoard>();
+        allBoards.forEach((b: ArduinoBoard) => {
+          if (b.fqbn) boardMap.set(b.fqbn, b);
+        });
+        connected.forEach((c) => {
+          boardMap.set(c.fqbn || c.name, { ...c, connected: true });
+        });
+        
+        return Array.from(boardMap.values()).slice(0, 50);
+      } catch (parseError) {
+        const errorMsg = parseError instanceof Error ? parseError.message : String(parseError);
+        logger.error('Failed to parse JSON from arduino-cli', errorMsg);
+        console.error('JSON parse error - raw output:', result.stdout.substring(0, 500));
+        return connected;
       }
-      
-      return connected;
     } catch (error) {
-      console.error('Failed to list boards:', error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Failed to list boards', errorMsg);
       return [];
     }
   }
@@ -191,19 +261,38 @@ export class ArduinoCLIService {
    */
   async searchBoards(query: string): Promise<ArduinoBoard[]> {
     try {
+      logger.info('Searching boards...', query);
       const result = await this.executeCommand('arduino-cli', ['board', 'search', query, '--format', 'json']);
-      if (result.exitCode === 0 && result.stdout) {
+      
+      if (result.exitCode !== 0) {
+        logger.warning(`Board search failed: ${query}`, result.stderr);
+        return [];
+      }
+      
+      if (!result.stdout || result.stdout.trim() === '') {
+        logger.debug('No boards found matching query', query);
+        return [];
+      }
+      
+      try {
         const data = JSON.parse(result.stdout);
-        return data.boards?.map((board: any) => ({
+        const boards = data.boards?.map((board: any) => ({
           name: board.name || '',
           fqbn: board.fqbn || '',
           platform: board.platform?.name || '',
           connected: false
         })) || [];
+        
+        logger.success(`Found ${boards.length} boards matching "${query}"`);
+        return boards;
+      } catch (parseError) {
+        const errorMsg = parseError instanceof Error ? parseError.message : String(parseError);
+        logger.warning('Failed to parse board search results', errorMsg);
+        return [];
       }
-      return [];
     } catch (error) {
-      console.error('Failed to search boards:', error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Failed to search boards', errorMsg);
       return [];
     }
   }
@@ -256,23 +345,42 @@ export class ArduinoCLIService {
    */
   async searchLibraries(query: string): Promise<ArduinoLibrary[]> {
     try {
+      logger.info('Searching libraries...', query);
       const result = await this.executeCommand('arduino-cli', ['lib', 'search', query, '--format', 'json']);
-      if (result.exitCode === 0 && result.stdout) {
+      
+      if (result.exitCode !== 0) {
+        logger.warning(`Library search failed: ${query}`, result.stderr);
+        return [];
+      }
+      
+      if (!result.stdout || result.stdout.trim() === '') {
+        logger.debug('No libraries found matching query', query);
+        return [];
+      }
+      
+      try {
         const data = JSON.parse(result.stdout);
-        return data.libraries?.map((lib: any) => {
+        const libraries = data.libraries?.map((lib: any) => {
           const latest = lib.releases ? Object.values(lib.releases).pop() as any : lib.latest;
           return {
             name: lib.name || '',
-            version: latest?.version || '',
-            author: latest?.author || '',
-            description: latest?.sentence || '',
+            version: latest?.version || lib.version || '1.0.0',
+            author: latest?.author || lib.author || '',
+            description: latest?.sentence || lib.sentence || lib.description || '',
             installed: false
           };
         }) || [];
+        
+        logger.success(`Found ${libraries.length} libraries matching "${query}"`);
+        return libraries;
+      } catch (parseError) {
+        const errorMsg = parseError instanceof Error ? parseError.message : String(parseError);
+        logger.warning('Failed to parse library search results', errorMsg);
+        return [];
       }
-      return [];
     } catch (error) {
-      console.error('Failed to search libraries:', error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Failed to search libraries', errorMsg);
       return [];
     }
   }
@@ -283,20 +391,39 @@ export class ArduinoCLIService {
    */
   async listInstalledLibraries(): Promise<ArduinoLibrary[]> {
     try {
+      logger.info('Listing installed libraries...');
       const result = await this.executeCommand('arduino-cli', ['lib', 'list', '--format', 'json']);
-      if (result.exitCode === 0 && result.stdout) {
+      
+      if (result.exitCode !== 0) {
+        logger.warning('Failed to list installed libraries', result.stderr);
+        return [];
+      }
+      
+      if (!result.stdout || result.stdout.trim() === '') {
+        logger.debug('No installed libraries found');
+        return [];
+      }
+      
+      try {
         const data = JSON.parse(result.stdout);
-        return data.installed_libraries?.map((lib: any) => ({
+        const libraries = data.installed_libraries?.map((lib: any) => ({
           name: lib.library?.name || '',
           version: lib.library?.version || '',
           author: lib.library?.author || '',
-          description: lib.library?.sentence || '',
+          description: lib.library?.sentence || lib.library?.description || '',
           installed: true
         })) || [];
+        
+        logger.success(`Found ${libraries.length} installed libraries`);
+        return libraries;
+      } catch (parseError) {
+        const errorMsg = parseError instanceof Error ? parseError.message : String(parseError);
+        logger.warning('Failed to parse installed libraries JSON', errorMsg);
+        return [];
       }
-      return [];
     } catch (error) {
-      console.error('Failed to list installed libraries:', error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.warning('Failed to list installed libraries', errorMsg);
       return [];
     }
   }

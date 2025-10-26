@@ -91,37 +91,54 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
       if (state.mode === 'arduino') {
         const result = await window.electronAPI.executeCommand('arduino-cli board listall --format json');
         if (result.success && result.output) {
-          const data = JSON.parse(result.output);
-          const boardList: Board[] = data.boards?.map((b: any) => ({
-            fqbn: b.fqbn,
-            name: b.name,
-            platform: b.platform
-          })) || [];
-          setBoards(boardList);
-          addOutput(`Loaded ${boardList.length} Arduino boards`);
-          if (boardList.length > 0 && !selectedBoard) {
-            setSelectedBoard(boardList[0].fqbn);
+          try {
+            const data = JSON.parse(result.output);
+            const boardList: Board[] = data.boards?.map((b: any) => ({
+              fqbn: b.fqbn,
+              name: b.name,
+              platform: b.platform || 'Unknown'
+            })) || [];
+            setBoards(boardList);
+            addOutput(`Loaded ${boardList.length} Arduino boards`);
+            if (boardList.length > 0 && !selectedBoard) {
+              setSelectedBoard(boardList[0].fqbn);
+            }
+          } catch (parseError) {
+            addOutput(`Failed to parse boards: ${parseError}`);
+            setBoards([]);
           }
+        } else {
+          addOutput(`Command failed: ${result.error || 'Unknown error'}`);
+          setBoards([]);
         }
       } else if (state.mode === 'platformio') {
         const result = await window.electronAPI.executeCommand('pio boards --json-output');
         if (result.success && result.output) {
-          const data = JSON.parse(result.output);
-          const boardList: Board[] = Object.values(data).map((b: any) => ({
-            fqbn: b.id,
-            name: b.name,
-            platform: b.platform
-          }));
-          setBoards(boardList);
-          addOutput(`Loaded ${boardList.length} PlatformIO boards`);
-          if (boardList.length > 0 && !selectedBoard) {
-            setSelectedBoard(boardList[0].fqbn);
+          try {
+            const data = JSON.parse(result.output);
+            const boardList: Board[] = Object.values(data).map((b: any) => ({
+              fqbn: b.id,
+              name: b.name,
+              platform: b.platform || 'Unknown'
+            }));
+            setBoards(boardList);
+            addOutput(`Loaded ${boardList.length} PlatformIO boards`);
+            if (boardList.length > 0 && !selectedBoard) {
+              setSelectedBoard(boardList[0].fqbn);
+            }
+          } catch (parseError) {
+            addOutput(`Failed to parse boards: ${parseError}`);
+            setBoards([]);
           }
+        } else {
+          addOutput(`Command failed: ${result.error || 'Unknown error'}`);
+          setBoards([]);
         }
       }
     } catch (error) {
       addOutput(`Failed to load boards: ${error}`);
       console.error('Board loading error:', error);
+      setBoards([]);
     } finally {
       setIsLoadingBoards(false);
     }
@@ -135,37 +152,54 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
       if (state.mode === 'arduino') {
         const result = await window.electronAPI.executeCommand('arduino-cli board list --format json');
         if (result.success && result.output) {
-          const data = JSON.parse(result.output);
-          const portList: Port[] = data.detected_ports?.map((p: any) => ({
-            address: p.port.address,
-            protocol: p.port.protocol,
-            description: p.port.label || p.matching_boards?.[0]?.name
-          })) || [];
-          setPorts(portList);
-          addOutput(`Found ${portList.length} ports`);
-          if (portList.length > 0 && !selectedPort) {
-            setSelectedPort(portList[0].address);
+          try {
+            const data = JSON.parse(result.output);
+            const portList: Port[] = data.detected_ports?.map((p: any) => ({
+              address: p.port.address,
+              protocol: p.port.protocol,
+              description: p.port.label || p.matching_boards?.[0]?.name
+            })) || [];
+            setPorts(portList);
+            addOutput(`Found ${portList.length} ports`);
+            if (portList.length > 0 && !selectedPort) {
+              setSelectedPort(portList[0].address);
+            }
+          } catch (parseError) {
+            addOutput(`Failed to parse ports: ${parseError}`);
+            setPorts([]);
           }
+        } else {
+          addOutput(`Command failed: ${result.error || 'Unknown error'}`);
+          setPorts([]);
         }
       } else if (state.mode === 'platformio') {
         const result = await window.electronAPI.executeCommand('pio device list --json-output');
         if (result.success && result.output) {
-          const data = JSON.parse(result.output);
-          const portList: Port[] = data.map((p: any) => ({
-            address: p.port,
-            protocol: 'serial',
-            description: p.description
-          }));
-          setPorts(portList);
-          addOutput(`Found ${portList.length} ports`);
-          if (portList.length > 0 && !selectedPort) {
-            setSelectedPort(portList[0].address);
+          try {
+            const data = JSON.parse(result.output);
+            const portList: Port[] = data.map((p: any) => ({
+              address: p.port,
+              protocol: 'serial',
+              description: p.description
+            }));
+            setPorts(portList);
+            addOutput(`Found ${portList.length} ports`);
+            if (portList.length > 0 && !selectedPort) {
+              setSelectedPort(portList[0].address);
+            }
+          } catch (parseError) {
+            addOutput(`Failed to parse ports: ${parseError}`);
+            setPorts([]);
           }
+        } else {
+          addOutput(`Command failed: ${result.error || 'Unknown error'}`);
+          setPorts([]);
         }
       }
     } catch (error) {
       addOutput(`Failed to scan ports: ${error}`);
       console.error('Port scanning error:', error);
+      setPorts([]);
     } finally {
       setIsLoadingPorts(false);
     }

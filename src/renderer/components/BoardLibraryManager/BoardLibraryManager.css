@@ -263,12 +263,33 @@
   gap: 4px;
 }
 
+.meta-item.version-selector {
+  align-items: center;
+  gap: 6px;
+}
+
 .meta-label {
   font-size: 11px;
   color: var(--text-color-secondary);
   font-weight: 500;
   min-width: 60px;
   flex-shrink: 0;
+}
+
+.meta-item.version-selector select {
+  flex: 1;
+  padding: 4px 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.meta-item.version-selector select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .meta-value {

@@ -3,7 +3,7 @@ import MainWorkspace from './components/MainWorkspace/MainWorkspace';
 import ToastNotification from './components/ToastContainer/ToastNotification';
 import GitSetupWizard from './components/GitSetupWizard/GitSetupWizard';
 import ErrorBoundary from './components/ErrorBoundary';
-import { Wallpaper } from './components/Wallpaper/Wallpaper';
+import Wallpaper from './components/Wallpaper/Wallpaper';
 import './components/Wallpaper/Wallpaper.css';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AppProvider, useApp } from './contexts/AppContext';

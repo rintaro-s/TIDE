@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { ArduinoCLIService } from '../../services/ArduinoService';
-import { PlatformIOService } from '../../services/PlatformIOService';
 import { useApp } from '../../contexts/AppContext';
 import { logger, toast } from '../../utils/logger';
 import './BoardLibraryManager.css';
@@ -26,6 +24,8 @@ interface Library {
   author?: string;
   description?: string;
   website?: string;
+  availableVersions?: string[];
+  selectedVersion?: string;
 }
 
 const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
@@ -35,10 +35,8 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [installing, setInstalling] = useState<Set<string>>(new Set());
+  const [selectedVersions, setSelectedVersions] = useState<Map<string, string>>(new Map());
   const [cacheInfo, setCacheInfo] = useState<{ lastUpdate: number; source: string } | null>(null);
-
-  const arduinoService = ArduinoCLIService.getInstance();
-  const platformioService = PlatformIOService.getInstance();
 
   // キャッシュ関連の関数
   const getCacheKey = (cacheType: string) => `${CACHE_KEY_PREFIX}${mode}_${cacheType}_${type}`;
@@ -140,122 +138,78 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
       let data: any[] = [];
 
       if (type === 'board') {
-        // 基本的なボードのみを表示（最も使用頻度の高いもの）
-        const commonBoards = [
-          { id: 'arduino:avr:uno', name: 'Arduino Uno', platform: 'Arduino AVR', version: '1.8.6' },
-          { id: 'arduino:avr:nano', name: 'Arduino Nano', platform: 'Arduino AVR', version: '1.8.6' },
-          { id: 'arduino:avr:mega', name: 'Arduino Mega 2560', platform: 'Arduino AVR', version: '1.8.6' },
-          { id: 'arduino:avr:leonardo', name: 'Arduino Leonardo', platform: 'Arduino AVR', version: '1.8.6' },
-          { id: 'esp32:esp32:esp32', name: 'ESP32 Dev Module', platform: 'ESP32', version: '3.0.0' },
-          { id: 'esp8266:esp8266:nodemcuv2', name: 'NodeMCU 1.0 (ESP-12E)', platform: 'ESP8266', version: '3.1.2' },
-        ];
-
         if (mode === 'arduino') {
           try {
-            const installed = await arduinoService.checkInstallation();
-            if (installed) {
-              const boards = await arduinoService.listBoards();
-              // インストール済みボードがあれば、それを優先表示
-              if (boards && boards.length > 0) {
-                data = boards.slice(0, 10).map((b: any) => ({
-                  id: b.fqbn || b.id,
+            logger.info('Fetching boards...');
+            const result = await window.electronAPI.executeCommand('arduino-cli board listall --format json');
+            
+            if (result.success && result.output) {
+              try {
+                const data_parsed = JSON.parse(result.output);
+                const boardList = data_parsed.boards?.map((b: any) => ({
+                  id: b.fqbn,
                   name: b.name,
-                  platform: b.core || b.platform || 'Unknown',
+                  platform: b.platform || 'Unknown',
                   version: b.version
-                }));
-              } else {
-                data = commonBoards;
+                })) || [];
+                
+                logger.success(`Found ${boardList.length} boards`);
+                data = boardList;  // すべてのボードを表示
+              } catch (parseError) {
+                logger.error('Failed to parse boards JSON', String(parseError));
+                data = [];
               }
             } else {
-              data = commonBoards;
+              logger.error('Failed to fetch boards', result.error || 'Unknown error');
+              data = [];
             }
           } catch (error) {
-            console.warn('Arduino CLI not available, using common boards');
-            data = commonBoards;
+            const errorMsg = error instanceof Error ? error.message : String(error);
+            logger.error('Board fetch error', errorMsg);
+            data = [];
           }
-        } else {
-          // PlatformIO用の基本ボード
-          data = [
-            { id: 'uno', name: 'Arduino Uno', platform: 'atmelavr', version: '4.2.0' },
-            { id: 'esp32dev', name: 'ESP32 Dev Module', platform: 'espressif32', version: '6.5.0' },
-            { id: 'nodemcuv2', name: 'NodeMCU 1.0', platform: 'espressif8266', version: '4.2.1' },
-            { id: 'leonardo', name: 'Arduino Leonardo', platform: 'atmelavr', version: '4.2.0' },
-          ];
+        } else if (mode === 'platformio') {
+          // TODO: Implement PlatformIO board listing
+          logger.warning('PlatformIO board manager not yet implemented');
+          data = [];
         }
       } else {
-        // 人気ライブラリの厳選リスト
-        const popularLibraries = [
-          {
-            name: 'ArduinoJson',
-            version: '7.0.4',
-            author: 'Benoit Blanchon',
-            description: 'JSON library for embedded C++ with zero-copy parser',
-            website: 'https://arduinojson.org'
-          },
-          {
-            name: 'WiFi',
-            version: '1.2.7',
-            author: 'Arduino',
-            description: 'WiFi library for Arduino',
-            website: 'https://www.arduino.cc/en/Reference/WiFi'
-          },
-          {
-            name: 'Servo',
-            version: '1.2.1',
-            author: 'Michael Margolis',
-            description: 'Control servo motors',
-            website: 'https://www.arduino.cc/reference/en/libraries/servo/'
-          },
-          {
-            name: 'SPI',
-            version: '1.0',
-            author: 'Arduino',
-            description: 'Serial Peripheral Interface library',
-            website: 'https://www.arduino.cc/en/reference/SPI'
-          },
-          {
-            name: 'Wire',
-            version: '1.0',
-            author: 'Arduino',
-            description: 'I2C communication library',
-            website: 'https://www.arduino.cc/en/reference/wire'
-          },
-          {
-            name: 'LiquidCrystal',
-            version: '1.0.7',
-            author: 'Arduino',
-            description: 'Control liquid crystal displays (LCDs)',
-            website: 'https://www.arduino.cc/en/Reference/LiquidCrystal'
-          }
-        ];
-
+        // Libraries
         if (mode === 'arduino') {
           try {
-            const installed = await arduinoService.checkInstallation();
-            if (installed) {
-              // 常に全ライブラリを取得してキャッシュ（検索語句によらず）
-              const libs = await arduinoService.searchLibraries('*'); // '*'で全ライブラリを取得
-              if (libs && libs.length > 0) {
-                data = libs.map((l: any) => ({
+            logger.info('Fetching libraries...');
+            const result = await window.electronAPI.executeCommand('arduino-cli lib search ""');
+            
+            if (result.success && result.output) {
+              try {
+                const data_parsed = JSON.parse(result.output);
+                const libList = data_parsed.libraries?.map((l: any) => ({
                   name: l.name,
-                  version: l.latest || l.version || '1.0.0',
-                  author: l.author || 'Unknown',
-                  description: l.sentence || l.description || '',
-                  website: l.website || ''
-                }));
-              } else {
-                // APIが空の場合は人気ライブラリを使用
-                data = popularLibraries;
+                  version: l.latest?.version || '1.0.0',
+                  author: l.latest?.author || 'Unknown',
+                  description: l.latest?.description || '',
+                  website: l.latest?.website || ''
+                })) || [];
+                
+                logger.success(`Found ${libList.length} libraries`);
+                data = libList;  // すべてのライブラリを表示
+              } catch (parseError) {
+                logger.error('Failed to parse libraries JSON', String(parseError));
+                data = [];
               }
             } else {
-              data = popularLibraries;
+              logger.error('Failed to fetch libraries', result.error || 'Unknown error');
+              data = [];
             }
           } catch (error) {
-            console.warn('Arduino CLI library fetch failed, using popular libraries');
-            data = popularLibraries;
+            const errorMsg = error instanceof Error ? error.message : String(error);
+            logger.error('Library fetch error', errorMsg);
+            data = [];
           }
-        } else {
-          data = popularLibraries;
+        } else if (mode === 'platformio') {
+          // TODO: Implement PlatformIO library listing
+          logger.warning('PlatformIO library manager not yet implemented');
+          data = [];
         }
       }
 
@@ -266,13 +220,9 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
       setFilteredItems(data);
     } catch (error) {
       console.error(`Failed to load ${type}s:`, error);
-      // エラー時は基本データを表示
-      const fallbackData = type === 'board' 
-        ? [{ id: 'arduino:avr:uno', name: 'Arduino Uno', platform: 'Arduino AVR', version: '1.8.6' }]
-        : [{ name: 'ArduinoJson', version: '7.0.4', author: 'Benoit Blanchon', description: 'JSON library for embedded C++' }];
-      
-      setItems(fallbackData);
-      setFilteredItems(fallbackData);
+      // エラー時は空配列を表示
+      setItems([]);
+      setFilteredItems([]);
     } finally {
       setLoading(false);
     }
@@ -317,20 +267,53 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
     try {
       if (type === 'board') {
         // ボードのインストールはcore/platformのインストール
-        alert(`Board installation not yet implemented for ${item.name}`);
+        toast.warning('Board installation not yet implemented');
       } else {
         // ライブラリのインストール
         if (mode === 'arduino') {
           const lib = item as Library;
-          await arduinoService.installLibrary(lib.name);
-          alert(`Library "${lib.name}" installed successfully!`);
+          const selectedVersion = selectedVersions.get(lib.name) || lib.version;
+          
+          // First check if already installed
+          const checkCommand = `arduino-cli lib list --format json`;
+          const checkResult = await window.electronAPI.executeCommand(checkCommand);
+          
+          let isAlreadyInstalled = false;
+          if (checkResult.success && checkResult.output) {
+            try {
+              const installed = JSON.parse(checkResult.output);
+              const libs = installed.installed_libraries || [];
+              isAlreadyInstalled = libs.some((l: any) => l.name === lib.name);
+            } catch (e) {
+              logger.warning('Failed to parse installed libraries list', String(e));
+            }
+          }
+          
+          if (isAlreadyInstalled) {
+            logger.info(`Library "${lib.name}" is already installed`);
+            toast.info('既にインストール済み', `${lib.name} はすでにインストールされています`);
+          } else {
+            const installCommand = `arduino-cli lib install "${lib.name}@${selectedVersion}"`;
+            
+            logger.info(`Installing library: ${lib.name}@${selectedVersion}`);
+            const result = await window.electronAPI.executeCommand(installCommand);
+            
+            if (result.success) {
+              logger.success(`Library "${lib.name}@${selectedVersion}" installed successfully`);
+              toast.success('ライブラリをインストール', `${lib.name} v${selectedVersion} をインストールしました`);
+            } else {
+              logger.error(`Installation failed for ${lib.name}`, result.error || 'Unknown error');
+              toast.error('インストール失敗', result.error || 'Unknown error');
+            }
+          }
         } else {
-          alert(`Library installation not yet implemented for PlatformIO`);
+          toast.warning('PlatformIO library installation not yet implemented');
         }
       }
     } catch (error) {
-      console.error('Installation failed:', error);
-      alert(`Installation failed: ${error}`);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logger.error('Installation failed', errorMsg);
+      toast.error('インストールエラー', errorMsg);
     } finally {
       setInstalling(prev => {
         const next = new Set(prev);
@@ -338,6 +321,14 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
         return next;
       });
     }
+  };
+
+  const handleVersionChange = (libraryName: string, version: string) => {
+    setSelectedVersions(prev => {
+      const next = new Map(prev);
+      next.set(libraryName, version);
+      return next;
+    });
   };
 
   const isBoard = (item: Board | Library): item is Board => {
@@ -458,6 +449,19 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
                           </a>
                         </div>
                       )}
+                      <div className="meta-item version-selector">
+                        <span className="meta-label">Version:</span>
+                        <select
+                          value={selectedVersions.get(item.name) || item.version}
+                          onChange={(e) => handleVersionChange(item.name, e.target.value)}
+                          disabled={isInstalling}
+                        >
+                          <option value={item.version}>{item.version} (latest)</option>
+                          {item.availableVersions?.filter(v => v !== item.version).map(v => (
+                            <option key={v} value={v}>{v}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                   )}
 
