@@ -17,8 +17,6 @@ const SettingsPanel: React.FC = () => {
   const { theme, setTheme, wallpaper, setWallpaper } = useTheme();
   const { mode, settings, updateSettings } = useApp();
   const [activeTab, setActiveTab] = useState('general');
-  const [installing, setInstalling] = useState(false);
-  const [installProgress, setInstallProgress] = useState('');
 
   const tabs: SettingsTab[] = [
     { id: 'general', name: '一般', icon: 'G' },
@@ -272,45 +270,6 @@ const SettingsPanel: React.FC = () => {
   );
 
   const renderBuildSettings = () => {
-    const defaultLibraries = [
-      'Arduino_BuiltIn',
-      'Servo',
-      'LiquidCrystal',
-      'Wire',
-      'SPI',
-      'WiFi',
-      'ArduinoJson'
-    ];
-
-    const handleInstallDefaultLibraries = async () => {
-      if (mode !== 'arduino') {
-        toast.warning('Arduino CLIモードのみサポート', 'PlatformIOはまだ実装されていません');
-        return;
-      }
-
-      setInstalling(true);
-      setInstallProgress('デフォルトライブラリのインストール中...');
-
-      try {
-        for (const lib of defaultLibraries) {
-          setInstallProgress(`${lib}をインストール中...`);
-          const result = await window.electronAPI.executeCommand(`arduino-cli lib install "${lib}"`);
-          if (!result.success) {
-            logger.warning(`Failed to install ${lib}`, result.error);
-          } else {
-            logger.success(`Successfully installed ${lib}`);
-          }
-        }
-        toast.success('デフォルトライブラリのインストール完了');
-        setInstallProgress('');
-      } catch (error) {
-        logger.error('Failed to install default libraries', String(error));
-        toast.error('インストール失敗', String(error));
-      } finally {
-        setInstalling(false);
-      }
-    };
-
     return (
       <div className="settings-section">
         <h3>ビルド設定</h3>
@@ -348,24 +307,6 @@ const SettingsPanel: React.FC = () => {
         </div>
         {mode === 'arduino' && (
           <>
-            <div className="setting-item">
-              <label>デフォルトライブラリのインストール</label>
-              <button 
-                onClick={handleInstallDefaultLibraries}
-                disabled={installing}
-                className="btn btn-primary"
-              >
-                {installing ? 'インストール中...' : 'インストール'}
-              </button>
-              {installProgress && (
-                <div className="setting-description">
-                  {installProgress}
-                </div>
-              )}
-              <div className="setting-description">
-                Arduino_BuiltIn, Servo, LiquidCrystal, Wire, SPI, WiFi, ArduinoJsonをインストールします。
-              </div>
-            </div>
             <div className="setting-item">
               <label>Arduino CLI パス</label>
               <input

@@ -330,82 +330,60 @@ export class BuildService {
 
   // Board and Port detection
   async getAvailableBoards(mode: 'arduino' | 'platformio'): Promise<BoardInfo[]> {
-    // Mock board data
-    const arduinoBoards: BoardInfo[] = [
-      {
-        id: 'arduino:avr:uno',
-        name: 'Arduino Uno',
-        platform: 'Arduino AVR Boards',
-        cpu: 'ATmega328P',
-        frequency: '16MHz',
-        upload: {
-          protocol: 'arduino',
-          maximum_size: 32256,
-          maximum_data_size: 2048
-        }
-      },
-      {
-        id: 'arduino:avr:nano',
-        name: 'Arduino Nano',
-        platform: 'Arduino AVR Boards',
-        cpu: 'ATmega328P',
-        frequency: '16MHz'
-      },
-      {
-        id: 'esp32:esp32:esp32',
-        name: 'ESP32 Dev Module',
-        platform: 'ESP32 Arduino',
-        cpu: 'ESP32',
-        frequency: '240MHz'
+    try {
+      if (mode === 'arduino') {
+        // Use ArduinoCLIService to get real boards
+        const { ArduinoCLIService } = await import('./ArduinoService');
+        const arduinoService = ArduinoCLIService.getInstance();
+        const boards = await arduinoService.listBoards();
+        return boards.map(b => ({
+          id: b.fqbn || b.name,
+          name: b.name,
+          platform: b.platform || 'Unknown',
+          cpu: '',
+          frequency: '',
+          upload: {
+            protocol: 'serial',
+            maximum_size: 0,
+            maximum_data_size: 0
+          }
+        }));
+      } else if (mode === 'platformio') {
+        // Use PlatformIOService for platformio boards
+        const { PlatformIOService } = await import('./PlatformIOService');
+        const platformioService = PlatformIOService.getInstance();
+        const boards = await platformioService.listAllBoards();
+        return boards.map(b => ({
+          id: b.id,
+          name: b.name,
+          platform: b.platform || 'platformio',
+          cpu: '',
+          frequency: ''
+        }));
       }
-    ];
-
-    const platformioBoards: BoardInfo[] = [
-      {
-        id: 'uno',
-        name: 'Arduino Uno',
-        platform: 'atmelavr'
-      },
-      {
-        id: 'esp32dev',
-        name: 'ESP32 Dev Module',
-        platform: 'espressif32'
-      },
-      {
-        id: 'nodemcuv2',
-        name: 'NodeMCU 1.0',
-        platform: 'espressif8266'
-      }
-    ];
-
-    await this.delay(300); // Simulate API call
-    return mode === 'arduino' ? arduinoBoards : platformioBoards;
+      return [];
+    } catch (error) {
+      console.error('Failed to get available boards:', error);
+      return [];
+    }
   }
 
   async getAvailablePorts(): Promise<PortInfo[]> {
-    // Mock port data
-    const ports: PortInfo[] = [
-      {
-        address: 'COM3',
-        label: 'COM3 (Arduino Uno)',
-        protocol: 'serial',
-        protocolLabel: 'Serial Port',
-        properties: {
-          pid: '0043',
-          vid: '2341',
-          serialNumber: '85439303738351F03170'
-        }
-      },
-      {
-        address: 'COM4',
-        label: 'COM4',
-        protocol: 'serial',
-        protocolLabel: 'Serial Port'
-      }
-    ];
-
-    await this.delay(200); // Simulate port detection
-    return ports;
+    try {
+      // Use ArduinoCLIService to get real ports
+      const { ArduinoCLIService } = await import('./ArduinoService');
+      const arduinoService = ArduinoCLIService.getInstance();
+      const ports = await arduinoService.listPorts();
+      return ports.map(p => ({
+        address: p.address,
+        label: p.label,
+        protocol: p.protocol,
+        protocolLabel: p.protocolLabel
+      }));
+    } catch (error) {
+      console.error('Failed to get available ports:', error);
+      return [];
+    }
   }
 
   // Global Cache Integration

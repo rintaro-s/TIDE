@@ -214,7 +214,7 @@ export class ArduinoCLIService {
           boardMap.set(c.fqbn || c.name, { ...c, connected: true });
         });
         
-        return Array.from(boardMap.values()).slice(0, 50);
+        return Array.from(boardMap.values());
       } catch (parseError) {
         const errorMsg = parseError instanceof Error ? parseError.message : String(parseError);
         logger.error('Failed to parse JSON from arduino-cli', errorMsg);
@@ -361,12 +361,25 @@ export class ArduinoCLIService {
       try {
         const data = JSON.parse(result.stdout);
         const libraries = data.libraries?.map((lib: any) => {
-          const latest = lib.releases ? Object.values(lib.releases).pop() as any : lib.latest;
+          // latest が無い場合、releases の最新版を取得
+          let latest = lib.latest;
+          if (!latest && lib.releases) {
+            const releaseKeys = Object.keys(lib.releases).sort((a, b) => 
+              b.localeCompare(a, undefined, {numeric: true})
+            );
+            if (releaseKeys.length > 0) {
+              latest = lib.releases[releaseKeys[0]];
+            }
+          }
+          
+          // latest が確実に object であることを確認
+          const latestData = typeof latest === 'object' && latest !== null ? latest : {};
+          
           return {
             name: lib.name || '',
-            version: latest?.version || lib.version || '1.0.0',
-            author: latest?.author || lib.author || '',
-            description: latest?.sentence || lib.sentence || lib.description || '',
+            version: latestData.version || lib.version || '1.0.0',
+            author: latestData.author || lib.author || '',
+            description: latestData.sentence || latestData.description || lib.sentence || lib.description || '',
             installed: false
           };
         }) || [];

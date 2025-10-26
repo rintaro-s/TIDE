@@ -50,15 +50,34 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
       const data = JSON.parse(cached);
       const now = Date.now();
       
+      // Check if cache is expired
       if (now - data.timestamp > CACHE_EXPIRY_MS) {
         localStorage.removeItem(key);
         return null;
       }
       
+      // Validate cached data - ensure no objects in availableVersions
+      const validatedItems = data.items?.map((item: any) => {
+        if (item.availableVersions && typeof item.availableVersions === 'object' && !Array.isArray(item.availableVersions)) {
+          return {
+            ...item,
+            availableVersions: Object.keys(item.availableVersions)
+          };
+        }
+        return item;
+      });
+      
       setCacheInfo({ lastUpdate: data.timestamp, source: 'cache' });
-      return data.items;
+      return validatedItems;
     } catch (error) {
       console.error('Failed to load cached data:', error);
+      // Clear corrupted cache
+      try {
+        const key = getCacheKey(cacheType);
+        localStorage.removeItem(key);
+      } catch (e) {
+        // ignore
+      }
       return null;
     }
   };
@@ -183,13 +202,36 @@ const BoardLibraryManager: React.FC<BoardManagerProps> = ({ type }) => {
             if (result.success && result.output) {
               try {
                 const data_parsed = JSON.parse(result.output);
-                const libList = data_parsed.libraries?.map((l: any) => ({
-                  name: l.name,
-                  version: l.latest?.version || '1.0.0',
-                  author: l.latest?.author || 'Unknown',
-                  description: l.latest?.description || '',
-                  website: l.latest?.website || ''
-                })) || [];
+                const libList = data_parsed.libraries?.map((l: any) => {
+                  // releases は object: { "1.0.0": {...}, "1.0.1": {...} }
+                  // これを配列に変換
+                  const releases = l.releases || {};
+                  const availableVersions = Object.keys(releases).sort((a, b) => {
+                    // バージョン番号でソート
+                    return b.localeCompare(a, undefined, {numeric: true});
+                  });
+                  
+                  // latest が無い場合は、availableVersions の最初（最新）のバージョンを取得
+                  let latest = l.latest;
+                  if (!latest && availableVersions.length > 0) {
+                    latest = releases[availableVersions[0]];
+                  }
+                  if (!latest) {
+                    latest = {};
+                  }
+                  
+                  // latest が object であることを確認
+                  const latestData = typeof latest === 'object' && latest !== null ? latest : {};
+                  
+                  return {
+                    name: l.name || 'Unknown',
+                    version: latestData.version || l.version || availableVersions[0] || '1.0.0',
+                    author: latestData.author || l.author || 'Unknown',
+                    description: latestData.description || latestData.sentence || '',
+                    website: latestData.website || '',
+                    availableVersions: availableVersions.slice(0, 10) // 最新10バージョンまで
+                  };
+                }) || [];
                 
                 logger.success(`Found ${libList.length} libraries`);
                 data = libList;  // すべてのライブラリを表示

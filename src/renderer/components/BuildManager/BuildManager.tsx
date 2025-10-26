@@ -73,6 +73,7 @@ const BuildManager: React.FC = () => {
   const [isBuilding, setIsBuilding] = useState(false);
   const [buildPhase, setBuildPhase] = useState<'idle' | 'compiling' | 'uploading' | 'complete' | 'error'>('idle');
   const [output, setOutput] = useState<string[]>([]);
+  const [boardHistory, setBoardHistory] = useState<{id: string; name: string; lastUsed: number}[]>([]);
   
   // Profile and settings state
   const [buildProfiles, setBuildProfiles] = useState<BuildProfile[]>([]);
@@ -282,6 +283,16 @@ const BuildManager: React.FC = () => {
         console.error('Failed to load build history:', error);
       }
     }
+    
+    // Load board history
+    const boardHistorySaved = localStorage.getItem('boardHistory');
+    if (boardHistorySaved) {
+      try {
+        setBoardHistory(JSON.parse(boardHistorySaved));
+      } catch (error) {
+        console.error('Failed to load board history:', error);
+      }
+    }
   };
 
   const saveBuildProfiles = (profiles: BuildProfile[]) => {
@@ -292,6 +303,24 @@ const BuildManager: React.FC = () => {
   const saveBuildHistory = (history: BuildHistoryEntry[]) => {
     localStorage.setItem('buildHistory', JSON.stringify(history));
     setBuildHistory(history);
+  };
+
+  const handleBoardSelect = (boardId: string, boardName?: string) => {
+    setSelectedBoard(boardId);
+    
+    // Add to board history
+    const now = Date.now();
+    const newHistory = boardHistory.filter(b => b.id !== boardId);
+    newHistory.unshift({
+      id: boardId,
+      name: boardName || boardId,
+      lastUsed: now
+    });
+    
+    // Keep only last 10 boards
+    const limitedHistory = newHistory.slice(0, 10);
+    setBoardHistory(limitedHistory);
+    localStorage.setItem('boardHistory', JSON.stringify(limitedHistory));
   };
 
   const addOutput = (message: string) => {
@@ -338,6 +367,15 @@ const BuildManager: React.FC = () => {
 
   const handleCompile = async () => {
     if (!validateBuildSetup()) return;
+    
+    // Record board usage
+    const board = availableBoards.find(b => {
+      const boardId = 'id' in b ? b.id : b.fqbn;
+      return boardId === selectedBoard;
+    });
+    if (board) {
+      handleBoardSelect(selectedBoard, board.name);
+    }
     
     setIsBuilding(true);
     setBuildPhase('compiling');
@@ -564,6 +602,33 @@ const BuildManager: React.FC = () => {
           <div className="wizard-step-content">
             <div className="step-icon">🎯</div>
             <h3>ボード選択</h3>
+            
+            {/* Recent Boards */}
+            {boardHistory.length > 0 && (
+              <div className="recent-boards-section" style={{ marginBottom: '20px' }}>
+                <h4 style={{ marginBottom: '10px', fontSize: '14px', opacity: 0.7 }}>最近使用したボード</h4>
+                <div className="recent-boards-list" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  {boardHistory.slice(0, 5).map(boardHist => (
+                    <button
+                      key={boardHist.id}
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '4px',
+                        border: selectedBoard === boardHist.id ? '2px solid #007ACC' : '1px solid #ccc',
+                        backgroundColor: selectedBoard === boardHist.id ? '#007ACC' : '#f5f5f5',
+                        color: selectedBoard === boardHist.id ? 'white' : 'black',
+                        cursor: 'pointer',
+                        fontSize: '12px'
+                      }}
+                      onClick={() => handleBoardSelect(boardHist.id, boardHist.name)}
+                    >
+                      {boardHist.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div className="board-search-section">
               <input
                 type="text"
@@ -583,7 +648,7 @@ const BuildManager: React.FC = () => {
                   <div 
                     key={boardId}
                     className={`board-card ${isSelected ? 'selected' : ''}`}
-                    onClick={() => setSelectedBoard(boardId)}
+                    onClick={() => handleBoardSelect(boardId, board.name)}
                   >
                     <div className="board-icon">
                       {board.name.toLowerCase().includes('esp') ? '📡' : 
