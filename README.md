@@ -2,6 +2,7 @@
 
 <img width="2559" height="1342" alt="スクリーンショット 2025-10-25 003226" src="https://github.com/user-attachments/assets/126a2e9a-e2d6-4d87-9464-31fc968a2925" />
 
+```
 src/
 ├── main/                    # Electron メインプロセス
 │   ├── main.ts             # メインプロセス
@@ -24,8 +25,7 @@ src/
 │   │   └── BuildService.ts # ビルドサービス
 │   └── styles/            # CSS スタイル
 └── types/                 # TypeScript 型定義
-git clone <repository-url>
-npm run build      # プロダクションビルド
+```
 
 # Tova IDE
 
@@ -46,8 +46,6 @@ Arduino/PlatformIO 統合開発環境
 
 ### 1. インストール
 ```
-git clone <repository-url>
-cd tova-ide
 npm install
 npm run build
 npm start
@@ -70,7 +68,7 @@ npm run dev
 ## 動作環境
 
 - Node.js 16.x 以上
-- Arduino CLI または PlatformIO Core
+- Arduino CLI または PlatformIO Coreいずれかは必須
 - Git
 
 ---
