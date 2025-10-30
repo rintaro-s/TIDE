@@ -1,6 +1,7 @@
 // PlatformIO CLI service - 実際のコマンドに基づいた完全実装
 
 import { logger, toast } from '../utils/logger';
+import { joinPaths } from '../utils/crossPlatformPath';
 
 export interface PlatformIOBoard {
   id: string;
@@ -421,9 +422,9 @@ void loop() {
   // Your code here
 }`;
         
-        const srcPath = `${projectPath}/src`;
+        const srcPath = joinPaths(projectPath, 'src');
         await window.electronAPI.fs.mkdir(srcPath);
-        await window.electronAPI.fs.writeFile(`${srcPath}/main.cpp`, mainContent);
+        await window.electronAPI.fs.writeFile(joinPaths(srcPath, 'main.cpp'), mainContent);
         
         logger.success('PlatformIO プロジェクトを作成しました', projectPath);
         toast.success('プロジェクトを作成しました', `${projectPath}`);
@@ -474,7 +475,7 @@ void loop() {
       logger.info('Starting PlatformIO build process...', projectPath);
       
       // Check if project exists and has platformio.ini
-      const iniPath = `${projectPath}/platformio.ini`;
+      const iniPath = joinPaths(projectPath, 'platformio.ini');
       const iniExists = await window.electronAPI.fs.exists(iniPath);
       if (!iniExists) {
         throw new Error('platformio.ini not found. Is this a valid PlatformIO project?');
@@ -531,7 +532,7 @@ void loop() {
         output,
         errors,
         warnings,
-        binaryPath: success ? `${projectPath}/.pio/build` : undefined
+        binaryPath: success ? joinPaths(projectPath, '.pio', 'build') : undefined
       };
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : String(error);

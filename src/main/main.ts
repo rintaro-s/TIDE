@@ -467,54 +467,31 @@ class TovaIDE {
         
         let child;
         
-        if (isWindows) {
-          // WindowsではPowerShellを使用してコマンドを実行
-          const fullCommand = `${command} ${args.join(' ')}`;
-          child = execFile('powershell.exe', ['-Command', fullCommand], {
-            cwd: options?.cwd || process.cwd(),
-            windowsHide: true,
-            maxBuffer,
-            encoding: 'utf-8',
-            ...options
-          }, (error, stdout, stderr) => {
-            if (error && error.code !== 0) {
-              // Command failed, but still return output for parsing
-              resolve({
-                stdout: stdout || '',
-                stderr: stderr || error.message,
-                exitCode: error.code || 1
-              });
-            } else {
-              resolve({
-                stdout: stdout || '',
-                stderr: stderr || '',
-                exitCode: 0
-              });
-            }
-          });
-        } else {
-          child = execFile(command, args, {
-            cwd: options?.cwd || process.cwd(),
-            shell: true,
-            maxBuffer,
-            encoding: 'utf-8',
-            ...options
-          }, (error, stdout, stderr) => {
-            if (error && error.code !== 0) {
-              resolve({
-                stdout: stdout || '',
-                stderr: stderr || error.message,
-                exitCode: error.code || 1
-              });
-            } else {
-              resolve({
-                stdout: stdout || '',
-                stderr: stderr || '',
-                exitCode: 0
-              });
-            }
-          });
-        }
+        // Use execFile with shell option for cross-platform compatibility
+        // shell: true allows the system to handle the command properly on all platforms
+        child = execFile(command, args, {
+          cwd: options?.cwd || process.cwd(),
+          shell: true,
+          windowsHide: isWindows,
+          maxBuffer,
+          encoding: 'utf-8',
+          ...options
+        }, (error, stdout, stderr) => {
+          if (error && error.code !== 0) {
+            // Command failed, but still return output for parsing
+            resolve({
+              stdout: stdout || '',
+              stderr: stderr || error.message,
+              exitCode: error.code || 1
+            });
+          } else {
+            resolve({
+              stdout: stdout || '',
+              stderr: stderr || '',
+              exitCode: 0
+            });
+          }
+        });
 
         if (!child) {
           reject(new Error('Failed to spawn process'));
@@ -525,18 +502,20 @@ class TovaIDE {
     // Execute command handler
     ipcMain.handle('execute:command', async (_, command: string) => {
       const { exec } = await import('child_process');
+      const isWindows = process.platform === 'win32';
       
       return new Promise((resolve) => {
         try {
           log('⚙️', 'Executing command:', command);
           
-          // Use exec directly for Windows - it handles quotes properly
+          // Use exec with cross-platform support
           const maxBuffer = 50 * 1024 * 1024; // 50MB
           
           exec(command, {
             maxBuffer,
-            windowsHide: true,
+            windowsHide: isWindows,
             encoding: 'utf-8',
+            shell: isWindows ? undefined : '/bin/sh', // Use default shell on Unix
           }, (error, stdout, stderr) => {
             if (error) {
               log('⚠️', 'Command stderr:', stderr);

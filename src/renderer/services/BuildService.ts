@@ -1,4 +1,6 @@
 import { globalCompileCache } from './GlobalCompileCacheService';
+import { getFileName } from '../utils/pathUtils';
+import { joinPaths } from '../utils/crossPlatformPath';
 
 export interface BuildProgress {
   phase: 'compiling' | 'linking' | 'uploading' | 'completed' | 'error';
@@ -472,7 +474,7 @@ export class BuildService {
   private async getUsedLibraries(projectPath: string, mode: 'arduino' | 'platformio'): Promise<string[]> {
     try {
       if (mode === 'platformio') {
-        const platformioIniPath = `${projectPath}/platformio.ini`;
+        const platformioIniPath = joinPaths(projectPath, 'platformio.ini');
         if (await window.electronAPI.fs.exists(platformioIniPath)) {
           const content = await window.electronAPI.fs.readFile(platformioIniPath);
           const libRegex = /lib_deps\s*=\s*(.*)/g;
@@ -526,10 +528,10 @@ export class BuildService {
 
   private getBinaryPath(projectPath: string, mode: 'arduino' | 'platformio'): string {
     if (mode === 'platformio') {
-      return `${projectPath}/.pio/build/default/firmware.bin`;
+      return joinPaths(projectPath, '.pio', 'build', 'default', 'firmware.bin');
     } else {
-      const projectName = projectPath.split('/').pop() || projectPath.split('\\').pop() || 'project';
-      return `${projectPath}/build/${projectName}.hex`;
+      const projectName = getFileName(projectPath);
+      return joinPaths(projectPath, 'build', `${projectName}.hex`);
     }
   }
 

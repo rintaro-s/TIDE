@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useApp } from '../../contexts/AppContext';
+import { getFileName } from '../../utils/pathUtils';
 import ProgressLog from '../ProgressLog/ProgressLog';
 import LANShareManager from '../LANShareManager/LANShareManager';
 import './TitleBar.css';
@@ -149,7 +150,7 @@ const TitleBar: React.FC<TitleBarProps> = ({ mode, onNewProject }) => {
             (window as any).currentFile = result.filePath;
             
             // Update document title
-            const fileName = result.filePath.split(/[/\\]/).pop() || 'untitled';
+            const fileName = getFileName(result.filePath);
             document.title = `${fileName} - Tova IDE`;
             
             // Dispatch save event

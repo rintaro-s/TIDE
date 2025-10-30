@@ -3,6 +3,8 @@ import { useApp } from '../../contexts/AppContext';
 import arduinoService, { ArduinoCLIService } from '../../services/ArduinoService';
 import platformioService, { PlatformIOService } from '../../services/PlatformIOService';
 import { logger, toast } from '../../utils/logger';
+import { getFileName } from '../../utils/pathUtils';
+import { joinPaths } from '../../utils/crossPlatformPath';
 import ProgressIndicator from '../ProgressIndicator/ProgressIndicator';
 import './ProjectManager.css';
 
@@ -184,7 +186,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
         throw new Error('Template not found');
       }
 
-      const fullProjectPath = `${projectPath}/${projectName}`;
+      const fullProjectPath = joinPaths(projectPath, projectName);
       
       // Save recent location
       await saveRecentLocation(projectPath);
@@ -268,7 +270,7 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
       
       if (result && !result.canceled && result.filePaths.length > 0) {
         const folderPath = result.filePaths[0];
-        const folderName = folderPath.split(/[/\\]/).pop() || 'project';
+        const folderName = getFileName(folderPath);
         
         setProgressMessage('プロジェクトを分析中...');
         setProgressDetails(`${folderPath} の種類を判定しています`);
@@ -277,8 +279,8 @@ const ProjectManager: React.FC<ProjectManagerProps> = ({ onClose }) => {
         logger.debug(`プロジェクトを開く: ${folderPath}`);
         
         // Detect project type
-        const hasArduinoFiles = await window.electronAPI.fs.exists(`${folderPath}/*.ino`);
-        const hasPlatformIOConfig = await window.electronAPI.fs.exists(`${folderPath}/platformio.ini`);
+        const hasArduinoFiles = await window.electronAPI.fs.exists(joinPaths(folderPath, '*.ino'));
+        const hasPlatformIOConfig = await window.electronAPI.fs.exists(joinPaths(folderPath, 'platformio.ini'));
         
         let projectType: 'arduino' | 'platformio' = 'arduino';
         if (hasPlatformIOConfig) {

@@ -5,6 +5,7 @@ import debounce from 'lodash.debounce';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useApp } from '../../contexts/AppContext';
 import arduinoCommandsData from '../../data/arduinoCommands.json';
+import { getFileName } from '../../utils/pathUtils';
 import './AdvancedEditor.css';
 
 interface AdvancedEditorProps {
@@ -742,7 +743,7 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
     <div className="advanced-editor-wrapper">
       <div className="editor-header">
         <div className="editor-info">
-          <span className="file-name">{filePath.split('/').pop() || filePath.split('\\').pop()}</span>
+          <span className="file-name">{getFileName(filePath)}</span>
           <span className="language-indicator">{language.toUpperCase()}</span>
         </div>
         <div className="editor-actions">

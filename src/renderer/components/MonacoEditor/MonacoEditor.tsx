@@ -3,6 +3,7 @@ import * as monaco from 'monaco-editor';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useApp } from '../../contexts/AppContext';
 import { arduinoCommandsService, CodeSnippet } from '../../services/ArduinoCommandsService';
+import { getFileName } from '../../utils/pathUtils';
 import './MonacoEditor.css';
 
 interface MonacoEditorProps {
@@ -360,7 +361,7 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
           onChange(content);
           
           // Mark document as dirty
-          const fileName = filePath.split(/[/\\]/).pop() || 'untitled';
+          const fileName = getFileName(filePath);
           document.title = `●${fileName} - Tova IDE`;
           
           // Store current editor instance globally for menu access
@@ -387,7 +388,7 @@ const MonacoEditor: React.FC<MonacoEditorProps> = ({
           window.dispatchEvent(saveEvent);
           
           // Update document title to remove dirty indicator
-          const fileName = filePath.split(/[/\\]/).pop() || 'untitled';
+          const fileName = getFileName(filePath);
           document.title = `${fileName} - Tova IDE`;
           
         } catch (error) {

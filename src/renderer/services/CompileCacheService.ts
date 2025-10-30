@@ -261,10 +261,19 @@ export class CompileCacheService {
 
   /**
    * ファイアウォール許可をリクエスト
+   * Windows専用機能
    */
   async requestFirewallPermission(): Promise<boolean> {
     try {
-      // Main プロセスに IPC でリクエスト
+      // Check if running on Windows
+      const isWindows = navigator.platform.toLowerCase().includes('win');
+      
+      if (!isWindows) {
+        console.log('Firewall configuration is Windows-specific, skipping on this platform');
+        return true; // Return success on non-Windows platforms
+      }
+      
+      // Main プロセスに IPC でリクエスト (Windows only)
       const result = await window.electronAPI?.process.exec('netsh', [
         'advfirewall',
         'firewall',

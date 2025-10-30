@@ -1,6 +1,7 @@
 // Arduino CLI Service - Complete implementation based on actual commands
 
 import { logger, toast } from '../utils/logger';
+import { joinPaths } from '../utils/crossPlatformPath';
 import CompileCacheService from './CompileCacheService';
 
 export interface ArduinoBoard {
@@ -65,20 +66,30 @@ export class ArduinoCLIService {
     options?: { cwd?: string }
   ): Promise<{ stdout: string; stderr: string; exitCode: number }> {
     try {
-      // Try with full path first (Windows)
+      // Try with full path first
       let result: any;
       try {
         result = await window.electronAPI.process.exec(command, args, options || {});
       } catch (err) {
-        // If command not found, try with 'where' to locate it
+        // If command not found, try to locate it
         if (command === 'arduino-cli') {
           console.warn('arduino-cli not found in PATH, attempting to locate...');
-          const whereResult = await window.electronAPI.process.exec('where', ['arduino-cli']);
-          if (whereResult.exitCode === 0 && whereResult.stdout) {
-            const foundPath = whereResult.stdout.trim().split('\n')[0];
-            console.log('Found arduino-cli at:', foundPath);
-            result = await window.electronAPI.process.exec(foundPath, args, options || {});
-          } else {
+          
+          // Use platform-appropriate command to find executable
+          const isWindows = navigator.platform.toLowerCase().includes('win');
+          const locateCommand = isWindows ? 'where' : 'which';
+          
+          try {
+            const whereResult = await window.electronAPI.process.exec(locateCommand, ['arduino-cli']);
+            if (whereResult.exitCode === 0 && whereResult.stdout) {
+              const foundPath = whereResult.stdout.trim().split('\n')[0];
+              console.log('Found arduino-cli at:', foundPath);
+              result = await window.electronAPI.process.exec(foundPath, args, options || {});
+            } else {
+              throw err;
+            }
+          } catch (locateErr) {
+            console.error(`Failed to locate arduino-cli using ${locateCommand}:`, locateErr);
             throw err;
           }
         } else {
@@ -622,9 +633,13 @@ export class ArduinoCLIService {
     try {
       logger.info(`Creating Arduino project "${name}"...`, { board, path });
       
-      const parentPath = path.split(/[/\\]/).slice(0, -1).join('/');
-      await this.executeCommand('mkdir', ['-p', path], { cwd: parentPath });
+      // Use Electron's fs:mkdir API instead of shell command for cross-platform compatibility
+      await window.electronAPI.fs.mkdir(path);
       logger.debug('Project directory created', path);
+      
+      // Get parent directory for createSketch
+      const pathParts = path.split(/[/\\]/);
+      const parentPath = pathParts.slice(0, -1).join('/');
       
       const result = await this.createSketch(parentPath, name);
       
@@ -718,7 +733,7 @@ export class ArduinoCLIService {
 
       // コンパイル成功時にローカルキャッシュに保存
       if (success && codeHash) {
-        const binaryPath = `${sketchPath}/build`;
+        const binaryPath = joinPaths(sketchPath, 'build');
         await cacheService.cacheLocally(codeHash, binaryPath, fqbn.split(':')[1], fqbn.split(':')[0]);
         logger.success('Arduino compilation completed successfully');
       } else {
@@ -730,7 +745,7 @@ export class ArduinoCLIService {
         output,
         errors,
         warnings,
-        binaryPath: result.exitCode === 0 ? `${sketchPath}/build` : undefined
+        binaryPath: result.exitCode === 0 ? joinPaths(sketchPath, 'build') : undefined
       };
     } catch (error) {
       return {

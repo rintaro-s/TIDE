@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../contexts/AppContext';
+import { joinPaths } from '../../utils/crossPlatformPath';
 import './BuildPanel.css';
 
 interface BuildPanelProps {
@@ -248,8 +249,8 @@ const BuildPanel: React.FC<BuildPanelProps> = ({ isExpanded = false }) => {
         
         // Save to cache
         const binaryPath = state.mode === 'arduino' 
-          ? `${state.currentProject.path}/build`
-          : `${state.currentProject.path}/.pio/build`;
+          ? joinPaths(state.currentProject.path, 'build')
+          : joinPaths(state.currentProject.path, '.pio', 'build');
         saveBuildCache(binaryPath);
       } else {
         addOutput('---');

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useApp } from '../../contexts/AppContext';
 import { logger, toast } from '../../utils/logger';
+import { joinPaths } from '../../utils/crossPlatformPath';
 import './FileExplorer.css';
 
 interface FileNode {
@@ -74,7 +75,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
           continue;
         }
         
-        const filePath = `${targetPath}/${file}`;
+        const filePath = joinPaths(targetPath, file);
         
         try {
           const fileStat = await window.electronAPI.fs.stat(filePath);
@@ -134,7 +135,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
         for (const file of files) {
           if (file.startsWith('.') || file === 'node_modules') continue;
           
-          const filePath = `${node.path}/${file}`;
+          const filePath = joinPaths(node.path, file);
           
           try {
             const fileStat = await window.electronAPI.fs.stat(filePath);
@@ -294,7 +295,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
           
           if (fileResult) {
             const parentPath = node?.type === 'folder' ? node.path : basePath;
-            const newFilePath = `${parentPath}/${fileResult}`;
+            const newFilePath = joinPaths(parentPath, fileResult);
             await window.electronAPI.fs.writeFile(newFilePath, '// New file\n');
             logger.success('File created', { path: newFilePath });
             toast.success('ファイルを作成しました', fileResult);
@@ -311,7 +312,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({ rootPath }) => {
           
           if (folderResult) {
             const parentPath = node?.type === 'folder' ? node.path : basePath;
-            const newFolderPath = `${parentPath}/${folderResult}`;
+            const newFolderPath = joinPaths(parentPath, folderResult);
             await window.electronAPI.fs.mkdir(newFolderPath);
             logger.success('Folder created', { path: newFolderPath });
             toast.success('フォルダを作成しました', folderResult);

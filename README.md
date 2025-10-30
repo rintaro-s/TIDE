@@ -69,9 +69,14 @@ npm run dev
 
 ## 動作環境
 
+- **対応OS**: Windows / Linux / macOS (クロスプラットフォーム対応)
 - Node.js 16.x 以上
 - Arduino CLI または PlatformIO Core
 - Git
 
 ---
-MIT License
+
+### 使用した生成AI
+- Claude sonnet 4/4.5 , haiku 4.5
+- GPT-5-codex
+- Qwen3-coder[local]
