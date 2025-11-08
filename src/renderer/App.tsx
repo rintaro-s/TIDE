@@ -112,11 +112,10 @@ const AppContent: React.FC<{ gitConfigured: boolean }> = ({ gitConfigured }) => 
   console.log('🎨 Rendering AppContent');
 
   return (
-    <div className="app">
-      <Wallpaper />
+    <>
       <MainWorkspace />
       <ToastNotification />
-    </div>
+    </>
   );
 };
 
@@ -171,17 +170,19 @@ const App: React.FC = () => {
 
   console.log('🎯 App component rendering, gitConfigured:', gitConfigured);
 
-  if (!gitConfigured) {
-    return (
-      <GitSetupWizard onComplete={handleGitSetupComplete} />
-    );
-  }
-
   return (
     <ErrorBoundary>
       <ThemeProvider>
         <AppProvider>
-          <AppContent gitConfigured={gitConfigured} />
+          <div className="app">
+            {/* Always render wallpaper regardless of app state */}
+            <Wallpaper />
+            {gitConfigured ? (
+              <AppContent gitConfigured={gitConfigured} />
+            ) : (
+              <GitSetupWizard onComplete={handleGitSetupComplete} />
+            )}
+          </div>
         </AppProvider>
       </ThemeProvider>
     </ErrorBoundary>

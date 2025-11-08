@@ -111,6 +111,16 @@ const SettingsPanel: React.FC = () => {
   };
 
   const renderWallpaperSettings = () => {
+    // Convert local file path to a safe file:// URL (cross-platform)
+    const toFileUrl = (p?: string): string | undefined => {
+      if (!p) return undefined;
+      // If already an URL (http/https/data), return as-is
+      if (/^(https?:|data:)/i.test(p)) return p;
+      // Normalize backslashes and ensure leading slash for Windows drive letters
+      const normalized = p.replace(/\\/g, '/');
+      const prefixed = normalized.startsWith('/') ? normalized : `/${normalized}`;
+      return `file://${encodeURI(prefixed)}`;
+    };
     const handleSelectWallpaper = async () => {
       try {
         const result = await window.electronAPI?.dialog.showOpenDialog({
@@ -172,9 +182,13 @@ const SettingsPanel: React.FC = () => {
         <div className="wallpaper-preview-container">
           {wallpaper.imagePath ? (
             <div className="wallpaper-preview" style={{
-              backgroundImage: `url('file:///${wallpaper.imagePath}')`,
+              backgroundImage: (() => {
+                const url = toFileUrl(wallpaper.imagePath);
+                return url ? `url(${url})` : 'none';
+              })(),
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
               opacity: wallpaper.enabled ? (wallpaper.opacity / 100) : 0.3
             }}>
               <div className="preview-overlay" style={{
