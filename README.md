@@ -70,6 +70,7 @@ npm run dev
 - **対応OS**: Windows / Linux / macOS (クロスプラットフォーム対応)
 - Node.js 16.x 以上
 - Arduino CLI または PlatformIO Coreいずれかは必須
+- オプションでyt-dlpとffmpeg
 - Git
 
 ---
