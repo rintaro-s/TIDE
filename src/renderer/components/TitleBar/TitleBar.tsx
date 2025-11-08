@@ -4,6 +4,7 @@ import { useApp } from '../../contexts/AppContext';
 import { getFileName } from '../../utils/pathUtils';
 import ProgressLog from '../ProgressLog/ProgressLog';
 import LANShareManager from '../LANShareManager/LANShareManager';
+import MusicControls from '../MusicControls/MusicControls';
 import './TitleBar.css';
 
 interface TitleBarProps {
@@ -498,6 +499,9 @@ const TitleBar: React.FC<TitleBarProps> = ({ mode, onNewProject }) => {
           </div>
         </div>
       </div>
+
+      {/* Music Controls */}
+      <MusicControls />
 
       <div className="title-bar-right">
         <span className="project-indicator">

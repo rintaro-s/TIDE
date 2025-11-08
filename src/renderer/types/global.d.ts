@@ -63,6 +63,19 @@ declare global {
         maximize: () => Promise<void>;
         close: () => Promise<void>;
       };
+      music: {
+        getAudioUrl: (videoId: string) => Promise<{
+          success: boolean;
+          url?: string;
+          type?: string;
+          bitrate?: number;
+          instance?: string;
+          error?: string;
+        }>;
+        search: (query: string, limit?: number) => Promise<{ success: boolean; items?: Array<{ id: string; title: string; duration?: number; thumbnail?: string; url?: string }>; error?: string }>;
+        getPlaylist: (playlistUrl: string, limit?: number) => Promise<{ success: boolean; items?: Array<{ id: string; title: string; duration?: number; thumbnail?: string; url?: string }>; error?: string }>;
+        clearCache: () => Promise<{ success: boolean; error?: string }>;
+      };
       openExternal: (url: string) => Promise<void>;
       showItemInFolder: (path: string) => void;
       onMenuAction: (callback: (action: string, data?: any) => void) => void;

@@ -52,6 +52,8 @@ declare class NetworkService {
     private startFileTransfer;
     private updatePresence;
     private startPeriodicDiscovery;
+    private musicSearch;
+    private musicGetPlaylist;
 }
 export default NetworkService;
 //# sourceMappingURL=NetworkService.d.ts.map

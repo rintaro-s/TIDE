@@ -504,6 +504,17 @@ class NetworkService {
             }
         }, 10000); // 10秒間隔でクリーンアップ
     }
+    // Music service methods (called by ipcMain handlers)
+    async musicSearch(query, limit) {
+        // This is handled by ipcMain in main.ts
+        // Returns empty array as this service only manages network communication
+        return { success: true, items: [] };
+    }
+    async musicGetPlaylist(playlistUrl, limit) {
+        // This is handled by ipcMain in main.ts
+        // Returns empty array as this service only manages network communication
+        return { success: true, items: [] };
+    }
 }
 exports.default = NetworkService;
 //# sourceMappingURL=NetworkService.js.map

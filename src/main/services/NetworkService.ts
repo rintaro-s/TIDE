@@ -556,6 +556,19 @@ class NetworkService {
       }
     }, 10000); // 10秒間隔でクリーンアップ
   }
+
+  // Music service methods (called by ipcMain handlers)
+  private async musicSearch(query: string, limit: number): Promise<any> {
+    // This is handled by ipcMain in main.ts
+    // Returns empty array as this service only manages network communication
+    return { success: true, items: [] };
+  }
+
+  private async musicGetPlaylist(playlistUrl: string, limit: number): Promise<any> {
+    // This is handled by ipcMain in main.ts
+    // Returns empty array as this service only manages network communication
+    return { success: true, items: [] };
+  }
 }
 
 export default NetworkService;

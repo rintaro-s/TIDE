@@ -93,6 +93,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
     close: () => ipcRenderer.invoke('window:close'),
   },
 
+  // Music operations
+  music: {
+    getAudioUrl: (videoId: string) => ipcRenderer.invoke('music:getAudioUrl', videoId),
+    search: (query: string, limit?: number) => ipcRenderer.invoke('music:search', query, limit || 10),
+    getPlaylist: (playlistUrl: string, limit?: number) => ipcRenderer.invoke('music:getPlaylist', playlistUrl, limit || 20),
+    clearCache: () => ipcRenderer.invoke('music:clearCache'),
+  },
+
   // Menu event listeners
   onMenuAction: (callback: (action: string, data?: any) => void) => {
     ipcRenderer.on('menu:new-file', () => callback('new-file'));

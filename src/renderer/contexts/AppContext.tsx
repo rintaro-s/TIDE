@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { audioService, Track, PlaybackState } from '../services/AudioService';
 
 type DevMode = 'arduino' | 'platformio';
 
@@ -91,6 +92,13 @@ interface AppSettings {
   };
 }
 
+interface MusicState {
+  currentTrack: Track | null;
+  queue: Track[];
+  history: Track[];
+  playbackState: PlaybackState;
+}
+
 interface AppState {
   mode: DevMode | null;
   currentProject: Project | null;
@@ -98,6 +106,7 @@ interface AppState {
   activeFile: string | null;
   settings: AppSettings;
   gitSkipped?: boolean;
+  music: MusicState;
 }
 
 interface AppContextType {
@@ -107,6 +116,7 @@ interface AppContextType {
   openFiles: FileTab[];
   activeFileId: string | null;
   settings: AppSettings;
+  music: MusicState;
   setMode: (mode: DevMode) => void;
   setCurrentProject: (project: Project | null) => void;
   openFile: (file: FileTab) => void;
@@ -116,6 +126,21 @@ interface AppContextType {
   updateSettings: (category: string, key: string, value: any) => void;
   saveFile: (fileId?: string) => Promise<boolean>;
   saveAllFiles: () => Promise<boolean>;
+  // Music controls
+  playTrack: (track: Track) => Promise<void>;
+  pauseTrack: () => void;
+  togglePlayPause: () => void;
+  nextTrack: () => Promise<void>;
+  previousTrack: () => Promise<void>;
+  seekTo: (time: number) => void;
+  setVolume: (volume: number) => void;
+  toggleMute: () => void;
+  setRepeatMode: (mode: 'none' | 'one' | 'all') => void;
+  toggleShuffle: () => void;
+  addToQueue: (tracks: Track | Track[]) => void;
+  clearQueue: () => void;
+  removeFromQueue: (index: number) => void;
+  setQueue: (tracks: Track[]) => void;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -130,6 +155,12 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     currentProject: null,
     openFiles: [],
     activeFile: null,
+    music: {
+      currentTrack: null,
+      queue: [],
+      history: [],
+      playbackState: audioService.getPlaybackState(),
+    },
     settings: {
       general: {
         autoSave: 'off',
@@ -243,6 +274,32 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     };
 
     initializeGlobalCache();
+
+    // Set up audio service listeners
+    const unsubscribePlayback = audioService.onPlaybackChange((playbackState) => {
+      setState(prev => ({
+        ...prev,
+        music: { ...prev.music, playbackState }
+      }));
+    });
+
+    const unsubscribeTrack = audioService.onTrackChange((track) => {
+      setState(prev => ({
+        ...prev,
+        music: {
+          ...prev.music,
+          currentTrack: track,
+          queue: audioService.getQueue(),
+          history: audioService.getHistory(),
+        }
+      }));
+    });
+
+    // Cleanup
+    return () => {
+      unsubscribePlayback();
+      unsubscribeTrack();
+    };
   }, []);
 
   // Save settings to electron store whenever they change
@@ -472,6 +529,79 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     });
   }, []);
 
+  // Music control functions
+  const playTrack = useCallback(async (track: Track) => {
+    await audioService.play(track);
+  }, []);
+
+  const pauseTrack = useCallback(() => {
+    audioService.pause();
+  }, []);
+
+  const togglePlayPause = useCallback(() => {
+    audioService.togglePlayPause();
+  }, []);
+
+  const nextTrack = useCallback(async () => {
+    await audioService.next();
+  }, []);
+
+  const previousTrack = useCallback(async () => {
+    await audioService.previous();
+  }, []);
+
+  const seekTo = useCallback((time: number) => {
+    audioService.seek(time);
+  }, []);
+
+  const setVolume = useCallback((volume: number) => {
+    audioService.setVolume(volume);
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    audioService.toggleMute();
+  }, []);
+
+  const setRepeatMode = useCallback((mode: 'none' | 'one' | 'all') => {
+    audioService.setRepeatMode(mode);
+  }, []);
+
+  const toggleShuffle = useCallback(() => {
+    audioService.toggleShuffle();
+  }, []);
+
+  const addToQueue = useCallback((tracks: Track | Track[]) => {
+    audioService.addToQueue(tracks);
+    setState(prev => ({
+      ...prev,
+      music: { ...prev.music, queue: audioService.getQueue() }
+    }));
+  }, []);
+
+  const clearQueue = useCallback(() => {
+    audioService.clearQueue();
+    setState(prev => ({
+      ...prev,
+      music: { ...prev.music, queue: [] }
+    }));
+  }, []);
+
+  const removeFromQueue = useCallback((index: number) => {
+    audioService.removeFromQueue(index);
+    setState(prev => ({
+      ...prev,
+      music: { ...prev.music, queue: audioService.getQueue() }
+    }));
+  }, []);
+
+  const setQueue = useCallback((tracks: Track[]) => {
+    audioService.setQueue(tracks);
+    setState(prev => ({
+      ...prev,
+      music: { ...prev.music, queue: audioService.getQueue() }
+    }));
+  }, []);
+
   const contextValue: AppContextType = {
     state,
     mode: state.mode,
@@ -479,6 +609,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     openFiles: state.openFiles,
     activeFileId: state.activeFile,
     settings: state.settings,
+    music: state.music,
     setMode,
     setCurrentProject,
     openFile,
@@ -488,6 +619,20 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     updateSettings,
     saveFile,
     saveAllFiles,
+    playTrack,
+    pauseTrack,
+    togglePlayPause,
+    nextTrack,
+    previousTrack,
+    seekTo,
+    setVolume,
+    toggleMute,
+    setRepeatMode,
+    toggleShuffle,
+    addToQueue,
+    clearQueue,
+    removeFromQueue,
+    setQueue,
   };
 
   return (

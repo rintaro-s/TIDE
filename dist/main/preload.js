@@ -82,6 +82,13 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
         maximize: () => electron_1.ipcRenderer.invoke('window:maximize'),
         close: () => electron_1.ipcRenderer.invoke('window:close'),
     },
+    // Music operations
+    music: {
+        getAudioUrl: (videoId) => electron_1.ipcRenderer.invoke('music:getAudioUrl', videoId),
+        search: (query, limit) => electron_1.ipcRenderer.invoke('music:search', query, limit || 10),
+        getPlaylist: (playlistUrl, limit) => electron_1.ipcRenderer.invoke('music:getPlaylist', playlistUrl, limit || 20),
+        clearCache: () => electron_1.ipcRenderer.invoke('music:clearCache'),
+    },
     // Menu event listeners
     onMenuAction: (callback) => {
         electron_1.ipcRenderer.on('menu:new-file', () => callback('new-file'));

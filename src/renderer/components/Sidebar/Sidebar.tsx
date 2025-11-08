@@ -9,6 +9,7 @@ import { UploadSettingsPanel } from '../UploadSettingsPanel/UploadSettingsPanel'
 import CopilotPanel from '../CopilotPanel/CopilotPanel';
 import LANPanel from '../LANPanel/LANPanel';
 import BuildPanel from '../BuildPanel/BuildPanel';
+import MusicPlayer from '../MusicPlayer/MusicPlayer';
 import './Sidebar.css';
 
 interface SidebarTab {
@@ -34,6 +35,7 @@ const Sidebar: React.FC<SidebarProps> = ({ width }) => {
     { id: 'explorer', name: 'Explorer', icon: 'F', component: FileExplorer },
     { id: 'search', name: 'Search', icon: 'S', component: SearchPanel },
     { id: 'build', name: 'Build', icon: 'B', component: BuildPanel, props: { isExpanded: true } },
+    { id: 'music', name: 'Music Player', icon: '🎵', component: MusicPlayer },
     { id: 'copilot', name: 'AI Copilot', icon: '🤖', component: CopilotPanel },
     { id: 'lan', name: 'LAN Collaboration', icon: '🌐', component: LANPanel },
     { id: 'git', name: 'Git', icon: 'G', component: GitPanel },
