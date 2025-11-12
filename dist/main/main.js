@@ -41,6 +41,7 @@ const path = __importStar(require("path"));
 const fs_1 = require("fs");
 const electron_store_1 = __importDefault(require("electron-store"));
 const NetworkService_1 = __importDefault(require("./services/NetworkService"));
+const crossPlatformPath_1 = require("./utils/crossPlatformPath");
 // Store for persistent settings
 const store = new electron_store_1.default();
 // Logger setup
@@ -307,19 +308,22 @@ class TovaIDE {
         });
         // File operations
         electron_1.ipcMain.handle('fs:exists', (_, filePath) => {
-            log('🔍', 'fs:exists', filePath);
-            return (0, fs_1.existsSync)(filePath);
+            const platformPath = (0, crossPlatformPath_1.toPlatformPath)(filePath);
+            log('🔍', 'fs:exists', platformPath);
+            return (0, fs_1.existsSync)(platformPath);
         });
         electron_1.ipcMain.handle('fs:readFile', async (_, filePath, encoding) => {
-            const { normalize } = await Promise.resolve().then(() => __importStar(require('path')));
-            const normalizedPath = normalize(filePath);
+            // Convert path to platform-specific format
+            const platformPath = (0, crossPlatformPath_1.toPlatformPath)(filePath);
+            const normalizedPath = (0, crossPlatformPath_1.normalizePath)(platformPath);
             log('📄', 'fs:readFile', normalizedPath, encoding || 'utf-8');
             const { readFile } = await Promise.resolve().then(() => __importStar(require('fs/promises')));
             return await readFile(normalizedPath, (encoding || 'utf-8'));
         });
         electron_1.ipcMain.handle('fs:writeFile', async (_, filePath, content) => {
-            const { normalize } = await Promise.resolve().then(() => __importStar(require('path')));
-            const normalizedPath = normalize(filePath);
+            // Convert path to platform-specific format
+            const platformPath = (0, crossPlatformPath_1.toPlatformPath)(filePath);
+            const normalizedPath = (0, crossPlatformPath_1.normalizePath)(platformPath);
             log('✍️', 'fs:writeFile', normalizedPath);
             log('📝', 'Content to write (first 100 chars):', content.substring(0, 100));
             log('📏', 'Content length:', content.length);
@@ -644,8 +648,8 @@ class TovaIDE {
                 catch (e) {
                     // ignore cache lookup errors and continue to download
                 }
-                // Output template for mp3 file
-                const outputTemplate = path.join(tempDir, `%(id)s_%(title)s.%(ext)s`);
+                // Output template for mp3 file (use Unix-style path for yt-dlp)
+                const outputTemplate = path.join(tempDir, '%(id)s_%(title)s.%(ext)s').replace(/\\/g, '/');
                 // yt-dlp args to DOWNLOAD mp3 file (not just get URL with -g)
                 const ytDlpArgs = [
                     '--no-playlist',
@@ -656,9 +660,15 @@ class TovaIDE {
                     '-o', outputTemplate,
                     videoUrl
                 ];
+                // Use shell:false on Unix to avoid shell interpretation issues
+                const execOptions = {
+                    shell: process.platform === 'win32',
+                    maxBuffer: 10 * 1024 * 1024,
+                    timeout: 120000
+                };
                 const ytResult = await new Promise((resolve, reject) => {
                     try {
-                        execFile('yt-dlp', ytDlpArgs, { shell: true, maxBuffer: 10 * 1024 * 1024, timeout: 120000 }, (error, stdout, stderr) => {
+                        execFile('yt-dlp', ytDlpArgs, execOptions, (error, stdout, stderr) => {
                             if (error && error.code !== 0) {
                                 const exitCode = (error && typeof error.code === 'number') ? error.code : Number(error.code) || 1;
                                 resolve({ stdout: stdout || '', stderr: stderr || error.message, exitCode });
@@ -747,13 +757,16 @@ class TovaIDE {
                 const result = await new Promise((resolve) => {
                     let stdout = '';
                     let stderr = '';
+                    // Use spawn without shell to avoid shell interpretation issues on Unix
                     const proc = spawn('yt-dlp', [
                         '--quiet',
                         '--no-warnings',
                         '--flat-playlist',
                         `ytsearch${limit_clamped}:${query}`,
                         '--print', '%(id)s|%(title)s|%(duration)s'
-                    ]);
+                    ], {
+                        shell: process.platform === 'win32'
+                    });
                     proc.stdout.on('data', (data) => {
                         stdout += data.toString('utf8');
                     });
@@ -823,7 +836,9 @@ class TovaIDE {
                         '--playlist-items', `1-${limit}`,
                         '--print', '%(id)s|%(title)s|%(webpage_url)s',
                         playlistUrl
-                    ]);
+                    ], {
+                        shell: process.platform === 'win32'
+                    });
                     proc.stdout.on('data', (data) => {
                         stdout += data.toString('utf8');
                     });
@@ -883,9 +898,15 @@ class TovaIDE {
             try {
                 const { execFile } = await Promise.resolve().then(() => __importStar(require('child_process')));
                 const ytArgs = ['--dump-single-json', playlistUrl];
+                // Use shell only on Windows
+                const execOptions = {
+                    shell: process.platform === 'win32',
+                    maxBuffer: 20 * 1024 * 1024,
+                    timeout: 120000
+                };
                 const result = await new Promise((resolve) => {
                     try {
-                        execFile('yt-dlp', ytArgs, { shell: true, maxBuffer: 20 * 1024 * 1024, timeout: 120000 }, (error, stdout, stderr) => {
+                        execFile('yt-dlp', ytArgs, execOptions, (error, stdout, stderr) => {
                             if (error && error.code !== 0) {
                                 const exitCode = (error && typeof error.code === 'number') ? error.code : Number(error.code) || 1;
                                 resolve({ stdout: stdout || '', stderr: stderr || error.message, exitCode });
@@ -905,7 +926,7 @@ class TovaIDE {
                     const fallbackArgs = ['--flat-playlist', '--dump-single-json', playlistUrl];
                     const fallbackResult = await new Promise((resolve) => {
                         try {
-                            execFile('yt-dlp', fallbackArgs, { shell: true, maxBuffer: 20 * 1024 * 1024, timeout: 120000 }, (error, stdout, stderr) => {
+                            execFile('yt-dlp', fallbackArgs, execOptions, (error, stdout, stderr) => {
                                 if (error && error.code !== 0) {
                                     const exitCode = (error && typeof error.code === 'number') ? error.code : Number(error.code) || 1;
                                     resolve({ stdout: stdout || '', stderr: stderr || error.message, exitCode });

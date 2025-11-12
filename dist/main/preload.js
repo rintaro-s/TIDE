@@ -34,6 +34,14 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
         getLocalInfo: () => electron_1.ipcRenderer.invoke('network:getLocalInfo'),
         startFileTransfer: (targetId, filePath) => electron_1.ipcRenderer.invoke('network:startFileTransfer', targetId, filePath),
         updatePresence: (presence) => electron_1.ipcRenderer.invoke('network:updatePresence', presence),
+        // 新しいLAN機能
+        setPremiumStatus: (isPremium) => electron_1.ipcRenderer.invoke('network:setPremiumStatus', isPremium),
+        shareProject: (project) => electron_1.ipcRenderer.invoke('network:shareProject', project),
+        getSharedProjects: () => electron_1.ipcRenderer.invoke('network:getSharedProjects'),
+        downloadProject: (peerId, projectId) => electron_1.ipcRenderer.invoke('network:downloadProject', peerId, projectId),
+        inviteCollaboration: (peerId, projectId) => electron_1.ipcRenderer.invoke('network:inviteCollaboration', peerId, projectId),
+        joinCollaboration: (peerId, projectId) => electron_1.ipcRenderer.invoke('network:joinCollaboration', peerId, projectId),
+        syncFileChange: (projectId, filePath, content) => electron_1.ipcRenderer.invoke('network:syncFileChange', projectId, filePath, content),
         // Event listeners
         onMessage: (callback) => {
             electron_1.ipcRenderer.on('network:message', (_, message) => callback(message));
@@ -43,6 +51,9 @@ electron_1.contextBridge.exposeInMainWorld('electronAPI', {
         },
         onTeamMemberLeft: (callback) => {
             electron_1.ipcRenderer.on('network:teamMemberLeft', (_, memberId) => callback(memberId));
+        },
+        onCollaborationMessage: (callback) => {
+            electron_1.ipcRenderer.on('network:collaborationMessage', (_, message) => callback(message));
         },
         // Legacy support for existing code
         startServer: (options) => electron_1.ipcRenderer.invoke('network:startServer', options),

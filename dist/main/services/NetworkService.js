@@ -48,6 +48,8 @@ class NetworkService {
         this.udpPort = 8767;
         this.teamMembers = new Map();
         this.isStarted = false;
+        this.isPremiumUser = false; // 上位ユーザー設定
+        this.sharedProjects = new Map(); // 共有プロジェクト
         this.localId = this.generateId();
         this.localName = os.hostname();
         this.setupIPCHandlers();
@@ -61,6 +63,27 @@ class NetworkService {
         // ネットワークサービスの停止
         electron_1.ipcMain.handle('network:stop', async () => {
             return await this.stopService();
+        });
+        // Peer Discovery (for BoardLibraryManager and other components)
+        electron_1.ipcMain.handle('network:discoverPeers', async () => {
+            try {
+                // Trigger discovery broadcast
+                await this.announcePresence();
+                // Wait a bit for responses
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Return current team members
+                return {
+                    success: true,
+                    peers: Array.from(this.teamMembers.values())
+                };
+            }
+            catch (error) {
+                return {
+                    success: false,
+                    error: error instanceof Error ? error.message : String(error),
+                    peers: []
+                };
+            }
         });
         // チームメンバーリストの取得
         electron_1.ipcMain.handle('network:getTeamMembers', () => {
@@ -92,20 +115,92 @@ class NetworkService {
         electron_1.ipcMain.handle('network:updatePresence', async (event, presence) => {
             return await this.updatePresence(presence);
         });
+        // 上位ユーザー設定
+        electron_1.ipcMain.handle('network:setPremiumStatus', async (event, isPremium) => {
+            this.isPremiumUser = isPremium;
+            await this.announcePresence(); // 再アナウンス
+            return { success: true, isPremium: this.isPremiumUser };
+        });
+        // プロジェクトの共有
+        electron_1.ipcMain.handle('network:shareProject', async (event, project) => {
+            this.sharedProjects.set(project.id, project);
+            await this.announcePresence(); // 共有プロジェクトを含めて再アナウンス
+            return { success: true, projectId: project.id };
+        });
+        // 共有プロジェクト一覧の取得
+        electron_1.ipcMain.handle('network:getSharedProjects', () => {
+            return Array.from(this.sharedProjects.values());
+        });
+        // リモートプロジェクトのダウンロード
+        electron_1.ipcMain.handle('network:downloadProject', async (event, peerId, projectId) => {
+            return await this.downloadProject(peerId, projectId);
+        });
+        // 共同作業への招待
+        electron_1.ipcMain.handle('network:inviteCollaboration', async (event, peerId, projectId) => {
+            const message = {
+                type: 'collaboration_invite',
+                sender: this.localId,
+                data: { projectId, senderName: this.localName },
+                timestamp: Date.now()
+            };
+            return await this.sendMessage(peerId, message);
+        });
+        // 共同作業への参加
+        electron_1.ipcMain.handle('network:joinCollaboration', async (event, peerId, projectId) => {
+            const message = {
+                type: 'collaboration_join',
+                sender: this.localId,
+                data: { projectId, senderName: this.localName },
+                timestamp: Date.now()
+            };
+            return await this.sendMessage(peerId, message);
+        });
+        // ファイル変更の同期
+        electron_1.ipcMain.handle('network:syncFileChange', async (event, projectId, filePath, content) => {
+            const message = {
+                type: 'file_change',
+                sender: this.localId,
+                data: { projectId, filePath, content },
+                timestamp: Date.now()
+            };
+            return await this.broadcastMessage(message);
+        });
     }
     generateId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
     getLocalIP() {
         const interfaces = os.networkInterfaces();
+        // Prioritize non-internal IPv4 addresses
         for (const name of Object.keys(interfaces)) {
             for (const iface of interfaces[name] || []) {
+                // Skip internal (loopback) addresses
                 if (iface.family === 'IPv4' && !iface.internal) {
                     return iface.address;
                 }
             }
         }
+        // Fallback to loopback
         return '127.0.0.1';
+    }
+    getBroadcastAddress() {
+        const interfaces = os.networkInterfaces();
+        // Try to find a suitable broadcast address from network interfaces
+        for (const name of Object.keys(interfaces)) {
+            for (const iface of interfaces[name] || []) {
+                // Look for IPv4, non-internal interfaces
+                if (iface.family === 'IPv4' && !iface.internal) {
+                    // Calculate broadcast address from IP and netmask
+                    // This is a simplified approach - for production, use a proper library
+                    const ip = iface.address.split('.').map(Number);
+                    const netmask = (iface.netmask || '255.255.255.0').split('.').map(Number);
+                    const broadcast = ip.map((octet, i) => octet | (~netmask[i] & 255));
+                    return broadcast.join('.');
+                }
+            }
+        }
+        // Fallback to limited broadcast (may not work on all systems)
+        return '255.255.255.255';
     }
     async startService() {
         try {
@@ -279,6 +374,8 @@ class NetworkService {
                 port: this.port,
                 wsPort: this.wsPort,
                 capabilities: ['build', 'compile', 'upload', 'monitor'],
+                isPremium: this.isPremiumUser,
+                sharedProjects: Array.from(this.sharedProjects.values()),
                 timestamp: Date.now()
             }));
         }
@@ -287,6 +384,11 @@ class NetworkService {
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(Array.from(this.teamMembers.values())));
         }
+        else if (url.startsWith('/api/project/') && method === 'GET') {
+            // プロジェクトデータの提供
+            const projectId = url.replace('/api/project/', '');
+            this.handleProjectRequest(projectId, res);
+        }
         else if (url.startsWith('/api/file/') && method === 'GET') {
             // ファイル転送処理
             this.handleFileRequest(req, res);
@@ -294,6 +396,33 @@ class NetworkService {
         else {
             res.writeHead(404);
             res.end('Not Found');
+        }
+    }
+    async handleProjectRequest(projectId, res) {
+        try {
+            const project = this.sharedProjects.get(projectId);
+            if (!project) {
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Project not found' }));
+                return;
+            }
+            // プロジェクトデータを読み込んで送信
+            // 実装: プロジェクトディレクトリを圧縮して送信
+            const fs = await Promise.resolve().then(() => __importStar(require('fs/promises')));
+            const path = await Promise.resolve().then(() => __importStar(require('path')));
+            // Note: In production, you'd want to compress the project directory
+            // For now, send project metadata
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+                project,
+                message: 'Full project transfer requires additional implementation'
+            }));
+        }
+        catch (error) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+                error: error instanceof Error ? error.message : String(error)
+            }));
         }
     }
     handleWebSocketMessage(ws, message) {
@@ -320,7 +449,9 @@ class NetworkService {
                 port: message.data.port,
                 lastSeen: Date.now(),
                 capabilities: message.data.capabilities || [],
-                workload: message.data.workload || 0
+                workload: message.data.workload || 0,
+                isPremium: message.data.isPremium || false,
+                sharedProjects: message.data.sharedProjects || []
             };
             this.teamMembers.set(member.id, member);
             // レンダラープロセスに通知
@@ -336,8 +467,24 @@ class NetworkService {
             if (member) {
                 member.lastSeen = Date.now();
                 member.workload = message.data.workload || 0;
+                if (message.data.isPremium !== undefined) {
+                    member.isPremium = message.data.isPremium;
+                }
+                if (message.data.sharedProjects) {
+                    member.sharedProjects = message.data.sharedProjects;
+                }
                 this.teamMembers.set(member.id, member);
+                // レンダラープロセスに通知
+                electron_1.BrowserWindow.getAllWindows().forEach((window) => {
+                    window.webContents.send('network:teamMemberUpdated', member);
+                });
             }
+        }
+        else if (message.type === 'collaboration_invite' || message.type === 'collaboration_join' || message.type === 'file_change') {
+            // 共同作業関連メッセージをレンダラープロセスに転送
+            electron_1.BrowserWindow.getAllWindows().forEach((window) => {
+                window.webContents.send('network:collaborationMessage', message);
+            });
         }
     }
     handleFileRequest(req, res) {
@@ -361,7 +508,9 @@ class NetworkService {
                 port: this.port,
                 wsPort: this.wsPort,
                 capabilities: ['build', 'compile', 'upload', 'monitor'],
-                workload: 0
+                workload: 0,
+                isPremium: this.isPremiumUser,
+                sharedProjects: Array.from(this.sharedProjects.values())
             },
             timestamp: Date.now()
         };
@@ -387,7 +536,9 @@ class NetworkService {
                 port: this.port,
                 wsPort: this.wsPort,
                 capabilities: ['build', 'compile', 'upload', 'monitor'],
-                workload: 0
+                workload: 0,
+                isPremium: this.isPremiumUser,
+                sharedProjects: Array.from(this.sharedProjects.values())
             },
             timestamp: Date.now()
         };
@@ -410,10 +561,16 @@ class NetworkService {
             return;
         try {
             const buffer = Buffer.from(JSON.stringify(message));
-            // ローカルネットワークにブロードキャスト
-            this.udpSocket.send(buffer, this.udpPort, '255.255.255.255', (error) => {
+            const broadcastAddr = this.getBroadcastAddress();
+            // Try to send to calculated broadcast address
+            this.udpSocket.send(buffer, this.udpPort, broadcastAddr, (error) => {
                 if (error) {
                     console.error('Failed to broadcast UDP message:', error);
+                    // If broadcast fails, try multicast as fallback
+                    const errCode = error.code;
+                    if (errCode === 'ENETUNREACH' || errCode === 'ENETDOWN') {
+                        console.log('Broadcast failed, network may be unavailable. Skipping...');
+                    }
                 }
             });
         }
@@ -481,6 +638,54 @@ class NetworkService {
         };
         await this.broadcastUDP(message);
         return { success: true };
+    }
+    async downloadProject(peerId, projectId) {
+        const member = this.teamMembers.get(peerId);
+        if (!member) {
+            return { success: false, error: 'Peer not found' };
+        }
+        try {
+            // HTTP GETでプロジェクトデータを取得
+            const http = require('http');
+            return new Promise((resolve) => {
+                const options = {
+                    hostname: member.ip,
+                    port: member.port,
+                    path: `/api/project/${projectId}`,
+                    method: 'GET'
+                };
+                const req = http.request(options, (res) => {
+                    let data = '';
+                    res.on('data', (chunk) => {
+                        data += chunk;
+                    });
+                    res.on('end', () => {
+                        if (res.statusCode === 200) {
+                            try {
+                                const projectData = JSON.parse(data);
+                                resolve({ success: true, data: projectData });
+                            }
+                            catch (error) {
+                                resolve({ success: false, error: 'Failed to parse project data' });
+                            }
+                        }
+                        else {
+                            resolve({ success: false, error: `HTTP ${res.statusCode}` });
+                        }
+                    });
+                });
+                req.on('error', (error) => {
+                    resolve({ success: false, error: error.message });
+                });
+                req.end();
+            });
+        }
+        catch (error) {
+            return {
+                success: false,
+                error: error instanceof Error ? error.message : String(error)
+            };
+        }
     }
     startPeriodicDiscovery() {
         // 定期的にプレゼンスをアナウンス

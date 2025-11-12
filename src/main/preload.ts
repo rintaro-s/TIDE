@@ -36,6 +36,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
     startFileTransfer: (targetId: string, filePath: string) => ipcRenderer.invoke('network:startFileTransfer', targetId, filePath),
     updatePresence: (presence: any) => ipcRenderer.invoke('network:updatePresence', presence),
     
+    // 新しいLAN機能
+    setPremiumStatus: (isPremium: boolean) => ipcRenderer.invoke('network:setPremiumStatus', isPremium),
+    shareProject: (project: any) => ipcRenderer.invoke('network:shareProject', project),
+    getSharedProjects: () => ipcRenderer.invoke('network:getSharedProjects'),
+    downloadProject: (peerId: string, projectId: string) => ipcRenderer.invoke('network:downloadProject', peerId, projectId),
+    inviteCollaboration: (peerId: string, projectId: string) => ipcRenderer.invoke('network:inviteCollaboration', peerId, projectId),
+    joinCollaboration: (peerId: string, projectId: string) => ipcRenderer.invoke('network:joinCollaboration', peerId, projectId),
+    syncFileChange: (projectId: string, filePath: string, content: string) => ipcRenderer.invoke('network:syncFileChange', projectId, filePath, content),
+    
     // Event listeners
     onMessage: (callback: (message: any) => void) => {
       ipcRenderer.on('network:message', (_, message) => callback(message));
@@ -45,6 +54,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     onTeamMemberLeft: (callback: (memberId: string) => void) => {
       ipcRenderer.on('network:teamMemberLeft', (_, memberId) => callback(memberId));
+    },
+    onCollaborationMessage: (callback: (message: any) => void) => {
+      ipcRenderer.on('network:collaborationMessage', (_, message) => callback(message));
     },
     
     // Legacy support for existing code

@@ -3,6 +3,7 @@ import * as path from 'path';
 import { existsSync, mkdirSync } from 'fs';
 import Store from 'electron-store';
 import NetworkService from './services/NetworkService';
+import { toPlatformPath, normalizePath } from './utils/crossPlatformPath';
 
 // Store for persistent settings
 const store = new Store();
@@ -290,21 +291,24 @@ class TovaIDE {
 
     // File operations
     ipcMain.handle('fs:exists', (_, filePath: string) => {
-      log('🔍', 'fs:exists', filePath);
-      return existsSync(filePath);
+      const platformPath = toPlatformPath(filePath);
+      log('🔍', 'fs:exists', platformPath);
+      return existsSync(platformPath);
     });
 
     ipcMain.handle('fs:readFile', async (_, filePath: string, encoding?: string) => {
-      const { normalize } = await import('path');
-      const normalizedPath = normalize(filePath);
+      // Convert path to platform-specific format
+      const platformPath = toPlatformPath(filePath);
+      const normalizedPath = normalizePath(platformPath);
       log('📄', 'fs:readFile', normalizedPath, encoding || 'utf-8');
       const { readFile } = await import('fs/promises');
       return await readFile(normalizedPath, (encoding || 'utf-8') as BufferEncoding);
     });
 
     ipcMain.handle('fs:writeFile', async (_, filePath: string, content: string) => {
-      const { normalize } = await import('path');
-      const normalizedPath = normalize(filePath);
+      // Convert path to platform-specific format
+      const platformPath = toPlatformPath(filePath);
+      const normalizedPath = normalizePath(platformPath);
       log('✍️', 'fs:writeFile', normalizedPath);
       log('📝', 'Content to write (first 100 chars):', content.substring(0, 100));
       log('📏', 'Content length:', content.length);
@@ -664,8 +668,8 @@ class TovaIDE {
           // ignore cache lookup errors and continue to download
         }
 
-        // Output template for mp3 file
-        const outputTemplate = path.join(tempDir, `%(id)s_%(title)s.%(ext)s`);
+        // Output template for mp3 file (use Unix-style path for yt-dlp)
+        const outputTemplate = path.join(tempDir, '%(id)s_%(title)s.%(ext)s').replace(/\\/g, '/');
 
         // yt-dlp args to DOWNLOAD mp3 file (not just get URL with -g)
         const ytDlpArgs = [
@@ -678,9 +682,16 @@ class TovaIDE {
           videoUrl
         ];
 
+        // Use shell:false on Unix to avoid shell interpretation issues
+        const execOptions = {
+          shell: process.platform === 'win32',
+          maxBuffer: 10 * 1024 * 1024,
+          timeout: 120000
+        };
+
         const ytResult: { stdout: string; stderr: string; exitCode: number } = await new Promise((resolve, reject) => {
           try {
-            execFile('yt-dlp', ytDlpArgs, { shell: true, maxBuffer: 10 * 1024 * 1024, timeout: 120000 }, (error, stdout, stderr) => {
+            execFile('yt-dlp', ytDlpArgs, execOptions, (error, stdout, stderr) => {
               if (error && (error as any).code !== 0) {
                 const exitCode = (error && typeof (error as any).code === 'number') ? (error as any).code : Number((error as any).code) || 1;
                 resolve({ stdout: stdout || '', stderr: stderr || (error as any).message, exitCode });
@@ -770,13 +781,16 @@ class TovaIDE {
           let stdout = '';
           let stderr = '';
 
+          // Use spawn without shell to avoid shell interpretation issues on Unix
           const proc = spawn('yt-dlp', [
             '--quiet',
             '--no-warnings',
             '--flat-playlist',
             `ytsearch${limit_clamped}:${query}`,
             '--print', '%(id)s|%(title)s|%(duration)s'
-          ]);
+          ], {
+            shell: process.platform === 'win32'
+          });
 
           proc.stdout.on('data', (data: Buffer) => {
             stdout += data.toString('utf8');
@@ -858,7 +872,9 @@ class TovaIDE {
             '--playlist-items', `1-${limit}`,
             '--print', '%(id)s|%(title)s|%(webpage_url)s',
             playlistUrl
-          ]);
+          ], {
+            shell: process.platform === 'win32'
+          });
 
           proc.stdout.on('data', (data: Buffer) => {
             stdout += data.toString('utf8');
@@ -929,10 +945,17 @@ class TovaIDE {
         const { execFile } = await import('child_process');
 
         const ytArgs = ['--dump-single-json', playlistUrl];
+        
+        // Use shell only on Windows
+        const execOptions = {
+          shell: process.platform === 'win32',
+          maxBuffer: 20 * 1024 * 1024,
+          timeout: 120000
+        };
 
         const result: { stdout: string; stderr: string; exitCode: number } = await new Promise((resolve) => {
           try {
-            execFile('yt-dlp', ytArgs, { shell: true, maxBuffer: 20 * 1024 * 1024, timeout: 120000 }, (error, stdout, stderr) => {
+            execFile('yt-dlp', ytArgs, execOptions, (error, stdout, stderr) => {
               if (error && (error as any).code !== 0) {
                 const exitCode = (error && typeof (error as any).code === 'number') ? (error as any).code : Number((error as any).code) || 1;
                 resolve({ stdout: stdout || '', stderr: stderr || (error as any).message, exitCode });
@@ -951,7 +974,7 @@ class TovaIDE {
           const fallbackArgs = ['--flat-playlist', '--dump-single-json', playlistUrl];
           const fallbackResult: { stdout: string; stderr: string; exitCode: number } = await new Promise((resolve) => {
             try {
-              execFile('yt-dlp', fallbackArgs, { shell: true, maxBuffer: 20 * 1024 * 1024, timeout: 120000 }, (error, stdout, stderr) => {
+              execFile('yt-dlp', fallbackArgs, execOptions, (error, stdout, stderr) => {
                 if (error && (error as any).code !== 0) {
                   const exitCode = (error && typeof (error as any).code === 'number') ? (error as any).code : Number((error as any).code) || 1;
                   resolve({ stdout: stdout || '', stderr: stderr || (error as any).message, exitCode });
